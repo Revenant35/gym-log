@@ -1,10 +1,10 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { IonicRouteStrategy } from '@ionic/angular';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { RouteReuseStrategy } from '@angular/router';
-
 import { routes } from './app.routes';
+import { UserPreferences } from './services/user-preferences.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,6 +12,10 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideIonicAngular(),
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    provideAppInitializer(async () => {
+      const userPreferences = inject(UserPreferences);
+      await userPreferences.init();
+    }),
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
   ]
 };
