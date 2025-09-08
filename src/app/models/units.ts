@@ -1,4 +1,5 @@
 export type WeightUnit = 'kg' | 'lb';
 export const DEFAULT_WEIGHT_UNIT: WeightUnit = 'kg';
-export const isWeightUnit = (v: unknown): v is WeightUnit =>
-  v === 'kg' || v === 'lb';
+export function isWeightUnit(v: unknown): v is WeightUnit {
+  return v === 'kg' || v === 'lb';
+}
