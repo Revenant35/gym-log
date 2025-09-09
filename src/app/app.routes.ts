@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: 'exercises',
-    loadComponent: () => import('./screens/exercises-screen/exercises-screen').then((m) => m.ExercisesScreen),
+    path: 'session',
+    loadComponent: () => import('./screens/session-screen/session-screen').then((m) => m.SessionScreen),
   },
   {
     path: 'more',

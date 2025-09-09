@@ -3,15 +3,16 @@ import {IonicModule} from "@ionic/angular";
 import {SessionPerformance} from '../../models/session-performance';
 
 @Component({
-  selector: 'app-exercises-screen',
+  selector: 'app-session-screen',
     imports: [
         IonicModule
     ],
-  templateUrl: './exercises-screen.html',
-  styleUrl: './exercises-screen.scss'
+  templateUrl: './session-screen.html',
+  styleUrl: './session-screen.scss'
 })
-export class ExercisesScreen {
+export class SessionScreen {
   performance = signal<SessionPerformance>({
+    name: 'Monday Afternoon Session',
     date: new Date(),
     exercises: [
       {
