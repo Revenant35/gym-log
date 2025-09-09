@@ -1,6 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { addIcons } from 'ionicons';
-import { ellipsisHorizontalCircleOutline, barbellOutline } from 'ionicons/icons';
+import {
+  ellipsisHorizontalCircleOutline,
+  barbellOutline,
+  chevronBackOutline,
+  scaleOutline,
+} from 'ionicons/icons';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
@@ -13,6 +18,11 @@ export class App {
   protected readonly title = signal('gym-progression-app');
 
   constructor() {
-    addIcons({ ellipsisHorizontalCircleOutline, barbellOutline });
+    addIcons({
+      ellipsisHorizontalCircleOutline,
+      barbellOutline,
+      chevronBackOutline,
+      scaleOutline,
+    });
   }
 }

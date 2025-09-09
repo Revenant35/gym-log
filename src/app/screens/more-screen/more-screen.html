@@ -3,8 +3,24 @@
     <ion-title>More</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content>
-  <div>More content</div>
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">More</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <section>
+    <ion-list-header>
+      <ion-label>General</ion-label>
+    </ion-list-header>
+    <ion-list>
+      <ion-item [button]="true" href="/units">
+          <ion-icon slot="start" name="scale-outline"></ion-icon>
+          <ion-label>Units</ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
+  <div style="height: 120vh"></div>
   <section>
     <h2>Units</h2>
 

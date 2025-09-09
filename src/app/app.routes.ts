@@ -9,4 +9,12 @@ export const routes: Routes = [
     path: 'more',
     loadComponent: () => import('./screens/more-screen/more-screen').then((m) => m.MoreScreen),
   },
+  {
+    path: 'units',
+    loadComponent: () => import('./screens/units-screen/units-screen').then((m) => m.UnitsScreen),
+  },
+  {
+    path: '**',
+    redirectTo: 'exercises',
+  }
 ];
