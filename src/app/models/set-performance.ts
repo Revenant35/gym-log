@@ -1,8 +1,8 @@
 import {WeightUnit} from './units';
-import {SetGoal} from './set-goal';
+import {SetKind} from './set-kind';
 
 export interface SetPerformance {
-  goal?: SetGoal;
+  kind?: SetKind;
   reps: number;
   weight: number;
   unit: WeightUnit;

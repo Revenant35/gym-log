@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    @for (exercise of exercises(); track exercise.name) {
+    @for (exercise of performance().exercises; track exercise.name) {
       <ion-item>
         <ion-label>{{exercise.name}}</ion-label>
       </ion-item>

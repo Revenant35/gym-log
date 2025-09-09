@@ -1,6 +1,6 @@
 import {Component, signal} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {Exercise} from '../../models/exercise';
+import {SessionPerformance} from '../../models/session-performance';
 
 @Component({
   selector: 'app-exercises-screen',
@@ -11,18 +11,21 @@ import {Exercise} from '../../models/exercise';
   styleUrl: './exercises-screen.scss'
 })
 export class ExercisesScreen {
-  exercises = signal<Exercise[]>([
-    {
-      name: 'Barbell Benchpress',
-      category: 'compound'
-    },
-    {
-      name: 'Barbell Squat',
-      category: 'compound'
-    },
-    {
-      name: 'Barbell Deadlift',
-      category: 'compound'
-    },
-  ]);
+  performance = signal<SessionPerformance>({
+    date: new Date(),
+    exercises: [
+      {
+        name: 'Barbell Benchpress',
+        sets: [],
+      },
+      {
+        name: 'Barbell Squat',
+        sets: [],
+      },
+      {
+        name: 'Barbell Deadlift',
+        sets: [],
+      },
+    ]
+  });
 }
