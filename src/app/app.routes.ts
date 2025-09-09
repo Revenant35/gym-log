@@ -11,11 +11,11 @@ export const routes: Routes = [
   },
   {
     path: 'units',
-    loadComponent: () => import('./screens/units-screen/units-screen').then((m) => m.UnitsScreen),
+    loadComponent: () => import('./screens/more-screen/units-screen/units-screen').then((m) => m.UnitsScreen),
   },
   {
     path: 'account',
-    loadComponent: () => import('./screens/account-screen/account-screen').then((m) => m.AccountScreen),
+    loadComponent: () => import('./screens/more-screen/account-screen/account-screen').then((m) => m.AccountScreen),
   },
   {
     path: '**',

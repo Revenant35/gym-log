@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {UserPreferences} from '../../services/user-preferences.service';
-import {isClockUnit, isHeightUnit, isWeightUnit} from '../../models/units';
+import {UserPreferences} from '../../../services/user-preferences.service';
+import {isClockUnit, isHeightUnit, isWeightUnit} from '../../../models/units';
 
 @Component({
   selector: 'app-units-screen',
