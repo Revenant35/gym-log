@@ -24,19 +24,4 @@
       </ion-item>
     </ion-list>
   </section>
-  <div style="height: 120vh"></div>
-  <section>
-    <h2>Units</h2>
-
-    @if (weightUnit(); as unit) {
-      <ion-radio-group [value]="unit" (ionChange)="onSelect($event)">
-        <ion-radio value="lb" labelPlacement="fixed">Pounds (lb)</ion-radio><br />
-        <ion-radio value="kg" labelPlacement="fixed">Kilos (kg)</ion-radio><br />
-      </ion-radio-group>
-
-      <p style="margin-top: .5rem; opacity: .7;">
-        Current: <strong>{{ unit }}</strong>
-      </p>
-    }
-  </section>
 </ion-content>
