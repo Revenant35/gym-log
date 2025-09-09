@@ -5,6 +5,7 @@ import { provideIonicAngular } from '@ionic/angular/standalone';
 import { RouteReuseStrategy } from '@angular/router';
 import { routes } from './app.routes';
 import { UserPreferences } from './services/user-preferences.service';
+import { providePreferences } from './services/preferences-injection-token';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +17,7 @@ export const appConfig: ApplicationConfig = {
       const userPreferences = inject(UserPreferences);
       await userPreferences.init();
     }),
-    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
+    {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
+    providePreferences(),
   ]
 };
