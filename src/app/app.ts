@@ -5,6 +5,7 @@ import {
   barbellOutline,
   chevronBackOutline,
   scaleOutline,
+  personOutline,
 } from 'ionicons/icons';
 import { IonicModule } from '@ionic/angular';
 
@@ -23,6 +24,7 @@ export class App {
       barbellOutline,
       chevronBackOutline,
       scaleOutline,
+      personOutline,
     });
   }
 }

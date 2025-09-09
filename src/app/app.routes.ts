@@ -14,6 +14,10 @@ export const routes: Routes = [
     loadComponent: () => import('./screens/units-screen/units-screen').then((m) => m.UnitsScreen),
   },
   {
+    path: 'account',
+    loadComponent: () => import('./screens/account-screen/account-screen').then((m) => m.AccountScreen),
+  },
+  {
     path: '**',
     redirectTo: 'exercises',
   }
