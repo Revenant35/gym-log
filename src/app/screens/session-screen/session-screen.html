@@ -16,10 +16,8 @@
           <ion-label>{{exercise.name}}</ion-label>
         </ion-list-header>
         <ion-list>
-          @for (set of exercise.sets; track set) {
-            <ion-item>
-              <ion-label>Set</ion-label>
-            </ion-item>
+          @for (set of exercise.sets; track set; let i = $index) {
+            <app-set [number]="i+1" [set]="set"></app-set>
           }
           <ion-item [button]="true">
             <ion-icon aria-hidden="true" name="add" slot="start"></ion-icon>
