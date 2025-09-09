@@ -4,5 +4,11 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <div>Exercises content</div>
+  <ion-list>
+    @for (exercise of exercises(); track exercise.name) {
+      <ion-item>
+        <ion-label>{{exercise.name}}</ion-label>
+      </ion-item>
+    }
+  </ion-list>
 </ion-content>

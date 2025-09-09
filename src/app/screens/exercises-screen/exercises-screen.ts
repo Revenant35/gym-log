@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
+import {Exercise} from '../../models/exercise';
 
 @Component({
   selector: 'app-exercises-screen',
@@ -10,5 +11,18 @@ import {IonicModule} from "@ionic/angular";
   styleUrl: './exercises-screen.scss'
 })
 export class ExercisesScreen {
-
+  exercises = signal<Exercise[]>([
+    {
+      name: 'Barbell Benchpress',
+      category: 'compound'
+    },
+    {
+      name: 'Barbell Squat',
+      category: 'compound'
+    },
+    {
+      name: 'Barbell Deadlift',
+      category: 'compound'
+    },
+  ]);
 }
