@@ -10,22 +10,7 @@
         <ion-title size="large">{{ performance.name }}</ion-title>
       </ion-toolbar>
     </ion-header>
-    @for (exercise of performance.exercises; track exercise.name) {
-      <section>
-        <ion-list-header>
-          <ion-label>{{exercise.name}}</ion-label>
-        </ion-list-header>
-        <ion-list>
-          @for (set of exercise.sets; track set; let i = $index) {
-            <app-set [number]="i+1" [set]="set"></app-set>
-          }
-          <ion-item [button]="true">
-            <ion-icon aria-hidden="true" name="add" slot="start"></ion-icon>
-            <ion-label>Add Set</ion-label>
-          </ion-item>
-        </ion-list>
-      </section>
-    }
+    <app-exercise-list [(exercises)]="performance.exercises" />
   </ion-content>
 } @else {
   Loading...

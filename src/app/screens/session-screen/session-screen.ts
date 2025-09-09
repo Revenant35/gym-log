@@ -1,13 +1,13 @@
 import {Component, signal} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {SessionPerformance} from '../../models/session-performance';
-import {Set} from './set/set';
+import {ExerciseListComponent} from './exercise-list/exercise-list.component';
 
 @Component({
   selector: 'app-session-screen',
   imports: [
     IonicModule,
-    Set
+    ExerciseListComponent
   ],
   templateUrl: './session-screen.html',
   styleUrl: './session-screen.scss'

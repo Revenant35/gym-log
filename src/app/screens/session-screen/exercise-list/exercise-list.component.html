@@ -1,0 +1,14 @@
+@for (exercise of exercises(); track exercise.name; let i = $index) {
+  <section>
+    <ion-list-header>
+      <ion-label>{{ exercise.name }}</ion-label>
+    </ion-list-header>
+    <ion-list>
+      <app-set-list [(sets)]="exercise.sets" />
+      <ion-item [button]="true">
+        <ion-icon aria-hidden="true" name="add" slot="start"></ion-icon>
+        <ion-label>Add Set</ion-label>
+      </ion-item>
+    </ion-list>
+  </section>
+}

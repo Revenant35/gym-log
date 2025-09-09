@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Set } from './set';
+import { SetListComponent } from './set-list.component';
 
-describe('Set', () => {
-  let component: Set;
-  let fixture: ComponentFixture<Set>;
+describe('SetList', () => {
+  let component: SetListComponent;
+  let fixture: ComponentFixture<SetListComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Set]
+      imports: [SetListComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Set);
+    fixture = TestBed.createComponent(SetListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
