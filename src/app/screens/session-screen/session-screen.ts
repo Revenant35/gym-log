@@ -1,18 +1,22 @@
-import {Component, signal} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {Component, inject, signal} from '@angular/core';
+import {IonicModule, ModalController} from "@ionic/angular";
 import {SessionPerformance} from '../../models/session-performance';
-import {ExerciseListComponent} from './exercise-list/exercise-list.component';
+import {SetPerformance} from '../../models/set-performance';
+import {SetModalComponent} from './set-modal/set-modal.component';
+import {UserPreferences} from '../../services/user-preferences.service';
 
 @Component({
   selector: 'app-session-screen',
   imports: [
     IonicModule,
-    ExerciseListComponent
   ],
   templateUrl: './session-screen.html',
   styleUrl: './session-screen.scss'
 })
 export class SessionScreen {
+  private readonly modalController = inject(ModalController);
+  private readonly userPreferences = inject(UserPreferences);
+
   performance = signal<SessionPerformance>({
     name: 'Monday Afternoon Session',
     date: new Date(),
@@ -39,4 +43,57 @@ export class SessionScreen {
       },
     ]
   });
+
+
+  async openCreateSetModal(exerciseIndex: number) {
+    let createdSet = await this.openSetModal(`New Set`, {
+      kind: 'normal',
+      unit: this.userPreferences.weightUnit(),
+    });
+    if (!createdSet) {
+      return;
+    }
+
+    this.performance.update((performance) => {
+      performance.exercises[exerciseIndex].sets.push(createdSet);
+      return {
+        ...performance
+      };
+    })
+  }
+
+  async openEditSetModal(exerciseIndex: number, set: SetPerformance, setIndex: number) {
+    let updatedSet = await this.openSetModal(`Update Set ${ setIndex + 1 }`, set);
+    if (!updatedSet) {
+      return;
+    }
+
+    this.performance.update((performance) => {
+      performance.exercises[exerciseIndex].sets[setIndex] = updatedSet;
+      return {
+        ...performance
+      };
+    })
+  }
+
+  async openSetModal(name: string, set?: SetPerformance): Promise<SetPerformance | undefined> {
+    const modal = await this.modalController.create({
+      component: SetModalComponent,
+      componentProps: {
+        name: name,
+        set: {
+          ...set
+        },
+      }
+    });
+
+    await modal.present();
+    const { data, role } = await modal.onWillDismiss<SetPerformance>();
+
+    if (role === 'confirm' && data) {
+      return data;
+    } else {
+      return undefined;
+    }
+  }
 }
