@@ -76,6 +76,21 @@ export class SessionScreen {
     })
   }
 
+  async duplicateSet(exerciseIndex: number, setIndex: number) {
+    this.performance.update((performance) => {
+      const sets = performance.exercises[exerciseIndex].sets
+      sets.splice(setIndex, 0, sets[setIndex]);
+      return performance;
+    })
+  }
+
+  async deleteSet(exerciseIndex: number, setIndex: number) {
+    this.performance.update((performance) => {
+      performance.exercises[exerciseIndex].sets.splice(setIndex, 1);
+      return performance;
+    })
+  }
+
   async openSetModal(name: string, set?: SetPerformance): Promise<SetPerformance | undefined> {
     const modal = await this.modalController.create({
       component: SetModalComponent,

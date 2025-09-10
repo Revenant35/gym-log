@@ -17,32 +17,46 @@
         </ion-list-header>
         <ion-list>
           <ion-list>
-            @for (set of exercise.sets; track set; let setIndex = $index) {
-              <ion-item [button]="true" (click)="openEditSetModal(exerciseIndex, set, setIndex)">
-                <ion-label>
-                  <h3>Set #{{ setIndex + 1 }}</h3>
-                  @if (set.reps && set.weight) {
-                    <p>{{ set.reps }} Reps &#64; {{ set.weight }} {{ set.unit }}</p>
+            @for (set of exercise.sets; track $index; let setIndex = $index) {
+              <ion-item-sliding>
+                <ion-item>
+                  <ion-label>
+                    <h3>Set #{{ setIndex + 1 }}</h3>
+                    @if (set.reps && set.weight) {
+                      <p>{{ set.reps }} Reps &#64; {{ set.weight }} {{ set.unit }}</p>
+                    }
+                    @if (set.reps && !set.weight) {
+                      <p>{{ set.reps }} Reps</p>
+                    }
+                    @if (!set.reps && set.weight) {
+                      <p>{{ set.weight }} {{ set.unit }}</p>
+                    }
+                  </ion-label>
+                  @switch (set.kind) {
+                    @case ('warm-up') {
+                      <ion-badge>Warm-up</ion-badge>
+                    }
+                    @case ('drop-set') {
+                      <ion-badge>Drop Set</ion-badge>
+                    }
+                    @case ('failure') {
+                      <ion-badge color="danger">Failure</ion-badge>
+                    }
                   }
-                  @if (set.reps && !set.weight) {
-                    <p>{{ set.reps }} Reps</p>
-                  }
-                  @if (!set.reps && set.weight) {
-                    <p>{{ set.weight }} {{ set.unit }}</p>
-                  }
-                </ion-label>
-                @switch (set.kind) {
-                  @case ('warm-up') {
-                    <ion-badge>Warm-up</ion-badge>
-                  }
-                  @case ('drop-set') {
-                    <ion-badge>Drop Set</ion-badge>
-                  }
-                  @case ('failure') {
-                    <ion-badge color="danger">Failure</ion-badge>
-                  }
-                }
-              </ion-item>
+                </ion-item>
+
+                <ion-item-options>
+                  <ion-item-option (click)="duplicateSet(exerciseIndex, setIndex)">
+                    <ion-icon slot="icon-only" name="copy-outline"></ion-icon>
+                  </ion-item-option>
+                  <ion-item-option (click)="openEditSetModal(exerciseIndex, set, setIndex)">
+                    <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+                  </ion-item-option>
+                  <ion-item-option (click)="deleteSet(exerciseIndex, setIndex)" color="danger">
+                    <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                  </ion-item-option>
+                </ion-item-options>
+              </ion-item-sliding>
             }
             <ion-item [button]="true" (click)="openCreateSetModal(exerciseIndex)">
               <ion-icon aria-hidden="true" name="add" slot="start"></ion-icon>
