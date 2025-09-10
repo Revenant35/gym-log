@@ -11,7 +11,7 @@
 </ion-header>
 <ion-content class="ion-padding">
     <ion-item>
-      <ion-select label="Type" [(ngModel)]="set.kind">
+      <ion-select label="Type" [(ngModel)]="set.kind" interface="popover">
         <ion-select-option value="warm-up">Warm Up</ion-select-option>
         <ion-select-option value="normal">Normal</ion-select-option>
         <ion-select-option value="drop-set">Drop Set</ion-select-option>
@@ -25,7 +25,7 @@
       <ion-input label="Weight" type="number" min="0" [(ngModel)]="set.weight"/>
     </ion-item>
     <ion-item>
-      <ion-select label="Unit" [(ngModel)]="set.unit">
+      <ion-select label="Unit" [(ngModel)]="set.unit" interface="popover">
         <ion-select-option value="lb">Pounds</ion-select-option>
         <ion-select-option value="kg">Kilos</ion-select-option>
       </ion-select>
