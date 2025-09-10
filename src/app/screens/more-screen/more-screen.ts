@@ -12,13 +12,5 @@ import { UserPreferences } from '../../services/user-preferences.service';
   styleUrl: './more-screen.scss'
 })
 export class MoreScreen {
-  private prefs = inject(UserPreferences);
-  protected weightUnit = this.prefs.weightUnit
 
-  async onSelect(event: Event): Promise<void> {
-    const target = event.target as HTMLInputElement;
-    if (isWeightUnit(target.value)) {
-      await this.prefs.setWeightUnit(target.value);
-    }
-  }
 }

@@ -24,13 +24,13 @@ const KEYS = {
 export class UserPreferences {
   private readonly _preferences = inject(PREFERENCES);
 
-  private _weightUnit = signal<WeightUnit | undefined>(undefined);
+  private _weightUnit = signal<WeightUnit>(DEFAULT_WEIGHT_UNIT);
   public weightUnit = this._weightUnit.asReadonly();
 
-  private _heightUnit = signal<HeightUnit | undefined>(undefined);
+  private _heightUnit = signal<HeightUnit>(DEFAULT_HEIGHT_UNIT);
   public heightUnit = this._heightUnit.asReadonly();
 
-  private _clockUnit = signal<ClockUnit | undefined>(undefined);
+  private _clockUnit = signal<ClockUnit>(DEFAULT_CLOCK_UNIT);
   public clockUnit = this._clockUnit.asReadonly();
 
   /**
@@ -65,9 +65,6 @@ export class UserPreferences {
     const { value } = await this._preferences.get({ key: KEYS.weightUnit });
     if (isWeightUnit(value)) {
       this._weightUnit.set(value);
-    } else {
-      await this._preferences.set({ key: KEYS.weightUnit, value: DEFAULT_WEIGHT_UNIT });
-      this._weightUnit.set(DEFAULT_WEIGHT_UNIT);
     }
   }
 
@@ -75,9 +72,6 @@ export class UserPreferences {
     const { value } = await this._preferences.get({ key: KEYS.heightUnit });
     if (isHeightUnit(value)) {
       this._heightUnit.set(value);
-    } else {
-      await this._preferences.set({ key: KEYS.heightUnit, value: DEFAULT_HEIGHT_UNIT });
-      this._heightUnit.set(DEFAULT_HEIGHT_UNIT);
     }
   }
 
@@ -85,9 +79,6 @@ export class UserPreferences {
     const { value } = await this._preferences.get({ key: KEYS.clockUnit });
     if (isClockUnit(value)) {
       this._clockUnit.set(value);
-    } else {
-      await this._preferences.set({ key: KEYS.clockUnit, value: DEFAULT_CLOCK_UNIT });
-      this._clockUnit.set(DEFAULT_CLOCK_UNIT);
     }
   }
 }
