@@ -1,12 +1,12 @@
-import { Component, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { isWeightUnit } from '../../models/units';
-import { UserPreferences } from '../../services/user-preferences.service';
+import {Component} from '@angular/core';
+import {IonicModule} from '@ionic/angular';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-more-screen',
   imports: [
-    IonicModule
+    IonicModule,
+    RouterLink,
   ],
   templateUrl: './more-screen.html',
   styleUrl: './more-screen.scss'

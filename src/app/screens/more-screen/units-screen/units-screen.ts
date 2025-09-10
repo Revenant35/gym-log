@@ -2,12 +2,14 @@ import {Component, inject} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {UserPreferences} from '../../../services/user-preferences.service';
 import {isClockUnit, isHeightUnit, isWeightUnit} from '../../../models/units';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-units-screen',
-    imports: [
-        IonicModule
-    ],
+  imports: [
+    IonicModule,
+    RouterLink
+  ],
   templateUrl: './units-screen.html',
   styleUrl: './units-screen.scss'
 })

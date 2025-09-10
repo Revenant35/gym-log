@@ -14,12 +14,12 @@
       <ion-label>General</ion-label>
     </ion-list-header>
     <ion-list>
-      <ion-item [button]="true" href="/account">
-        <ion-icon slot="start" name="person-outline"></ion-icon>
+      <ion-item [button]="true" routerLink="/account">
+        <ion-icon slot="start" name="person-outline" aria-hidden="true"></ion-icon>
         <ion-label>Account</ion-label>
       </ion-item>
-      <ion-item [button]="true" href="/units">
-          <ion-icon slot="start" name="scale-outline"></ion-icon>
+      <ion-item [button]="true" routerLink="/units">
+          <ion-icon slot="start" name="scale-outline" aria-hidden="true"></ion-icon>
           <ion-label>Units</ion-label>
       </ion-item>
     </ion-list>
