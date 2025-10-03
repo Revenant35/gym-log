@@ -6,6 +6,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { routes } from './app.routes';
 import { UserPreferences } from './services/user-preferences.service';
 import { providePreferences } from './services/preferences-injection-token';
+import { provideSupabase } from './util/supabase';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -19,5 +20,6 @@ export const appConfig: ApplicationConfig = {
     }),
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     providePreferences(),
+    provideSupabase(),
   ]
 };
