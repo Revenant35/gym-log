@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Exercises</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Exercises</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-item>
+    <ion-input
+      label="Search"
+      placeholder="E.g. Barbell Squat"
+      type="search"
+      [(ngModel)]="query"
+      [clearInput]="true">
+      <ion-icon slot="start" name="search" aria-hidden="true"></ion-icon>
+    </ion-input>
+  </ion-item>
+  @let r = result();
+  @if(isReady(r)) {
+      <ion-list>
+        @for (exercise of r.data; track exercise.id) {
+          <ion-label>
+            <h2>{{ exercise.name }}</h2>
+          </ion-label>
+        } @empty {
+            <p>No exercises found.</p>
+        }
+      </ion-list>
+  }
+  @if (isLoading(r) || r === undefined) {
+    <ion-spinner name="crescent" class="spinner-center"></ion-spinner>
+  }
+  @if (isError(r)) {
+    <div class="error-message">
+      <p>Error loading exercises. Please try again later.</p>
+    </div>
+  }
+</ion-content>

@@ -6,6 +6,10 @@ export const routes: Routes = [
     loadComponent: () => import('./screens/session-screen/session-screen').then((m) => m.SessionScreen),
   },
   {
+    path: 'exercises',
+    loadComponent: () => import('./screens/exercise-screen/exercise-screen').then((m) => m.ExerciseScreen),
+  },
+  {
     path: 'more',
     loadComponent: () => import('./screens/more-screen/more-screen').then((m) => m.MoreScreen),
   },
