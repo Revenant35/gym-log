@@ -1,16 +1,20 @@
-<ion-tabs>
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="exercises">
-      <ion-icon name="barbell-outline"></ion-icon>
-      Exercises
-    </ion-tab-button>
-    <ion-tab-button tab="session">
-      <ion-icon name="barbell-outline"></ion-icon>
-      Session
-    </ion-tab-button>
-    <ion-tab-button tab="more">
-      <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
-      More
-    </ion-tab-button>
-  </ion-tab-bar>
-</ion-tabs>
+@if (isAuthenticated()) {
+  <ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="exercises">
+        <ion-icon name="barbell-outline"></ion-icon>
+        Exercises
+      </ion-tab-button>
+      <ion-tab-button tab="session">
+        <ion-icon name="barbell-outline"></ion-icon>
+        Session
+      </ion-tab-button>
+      <ion-tab-button tab="more">
+        <ion-icon name="ellipsis-horizontal-circle-outline"></ion-icon>
+        More
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+} @else {
+  <ion-router-outlet></ion-router-outlet>
+}

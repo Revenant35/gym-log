@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { addIcons } from 'ionicons';
 import {
   ellipsisHorizontalCircleOutline,
@@ -11,8 +11,11 @@ import {
   copyOutline,
   createOutline,
   trashOutline,
+  logInOutline,
+  personAddOutline,
 } from 'ionicons/icons';
 import { IonicModule } from '@ionic/angular';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +24,10 @@ import { IonicModule } from '@ionic/angular';
   styleUrl: './app.scss'
 })
 export class App {
+  private readonly auth = inject(AuthService);
+
+  isAuthenticated = this.auth.isAuthenticated;
+
   constructor() {
     addIcons({
       ellipsisHorizontalCircleOutline,
@@ -33,6 +40,8 @@ export class App {
       copyOutline,
       createOutline,
       trashOutline,
+      logInOutline,
+      personAddOutline,
     });
   }
 }

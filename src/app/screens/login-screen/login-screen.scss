@@ -1,0 +1,11 @@
+ion-card {
+  @media(max-width: 600px) {
+    width: 90%;
+  }
+  @media(min-width: 601px) {
+    width: 400px;
+  }
+
+  margin-inline: auto;
+  margin-top: 50%;
+}

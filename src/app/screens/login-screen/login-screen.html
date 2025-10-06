@@ -1,0 +1,37 @@
+<ion-content class="ion-padding" [fullscreen]="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Login</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form (ngSubmit)="handleLogIn()" #form="ngForm">
+        <ion-input
+          type="email"
+          label="Email"
+          errorText="Invalid email"
+          name="email"
+          [required]="true"
+          [(ngModel)]="email"
+          email
+        ></ion-input>
+        <ion-input
+          type="password"
+          label="Password"
+          name="password"
+          [required]="true"
+          [(ngModel)]="password">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+        @if(invalidCredentials()) {
+          <ion-text color="danger">Invalid email or password</ion-text>
+        }
+        <ion-button
+          expand="block"
+          type="submit"
+          [disabled]="!form.valid">
+          Login
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
