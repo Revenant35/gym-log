@@ -7,6 +7,7 @@ import { routes } from './app.routes';
 import { UserPreferences } from './services/user-preferences.service';
 import { providePreferences } from './services/preferences-injection-token';
 import { provideSupabase } from './util/supabase';
+import { AuthService } from './services/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +17,12 @@ export const appConfig: ApplicationConfig = {
     provideIonicAngular(),
     provideAppInitializer(async () => {
       const userPreferences = inject(UserPreferences);
-      await userPreferences.init();
+      const authService = inject(AuthService);
+
+      await Promise.all([
+        userPreferences.init(),
+        authService.initialize(),
+      ])
     }),
     {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
     providePreferences(),

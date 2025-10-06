@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {AuthService} from '../../services/auth.service';
-import {lastValueFrom} from 'rxjs';
+import {firstValueFrom} from 'rxjs';
 
 @Component({
   selector: 'app-more-screen',
@@ -15,8 +15,14 @@ import {lastValueFrom} from 'rxjs';
 })
 export class MoreScreen {
   private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
-  handleSignOut() {
-    lastValueFrom(this.authService.signOut());
+  async handleSignOut() {
+    try {
+      await firstValueFrom(this.authService.signOut());
+      await this.router.navigate(['/login'], {replaceUrl: true});
+    } catch (error) {
+      console.error('Error during sign out:', error);
+    }
   }
 }

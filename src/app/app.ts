@@ -15,11 +15,12 @@ import {
   personAddOutline,
 } from 'ionicons/icons';
 import { IonicModule } from '@ionic/angular';
-import {AuthService} from './services/auth.service';
+import { AuthService } from './services/auth.service';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [IonicModule],
+  imports: [IonicModule, RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
