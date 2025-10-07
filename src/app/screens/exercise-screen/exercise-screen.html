@@ -3,34 +3,41 @@
     <ion-title>Exercises</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding" [fullscreen]="true">
+<ion-content class="ion-padding" [fullscreen]="true" color="dark">
   <ion-header collapse="condense">
-    <ion-toolbar>
+    <ion-toolbar color="dark">
       <ion-title size="large">Exercises</ion-title>
     </ion-toolbar>
-    <ion-toolbar>
-      <ion-searchbar
-        placeholder="E.g. Barbell Squat"
-        [animated]="true"
-        show-clear-button="focus"
-        [(ngModel)]="query"
-        [debounce]="300"
-      />
-    </ion-toolbar>
   </ion-header>
+  <ion-searchbar
+    placeholder="E.g. Barbell Squat"
+    [animated]="true"
+    show-clear-button="focus"
+    [(ngModel)]="query"
+    [debounce]="300"
+    color="medium"
+  />
   @if (exercises.hasValue()) {
     <ion-list [inset]="true">
       @for (exercise of exercises.value(); track exercise.id) {
-        <ion-item>
+        <ion-item color="medium">
           <ion-label>{{ exercise.name }}</ion-label>
         </ion-item>
       } @empty {
-        <ion-item>
+        <ion-item color="medium">
           <ion-label>No exercises found.</ion-label>
         </ion-item>
       }
     </ion-list>
   } @else {
-    <ion-spinner name="crescent" class="spinner-center"></ion-spinner>
+    <div class="spinner-container">
+      <ion-spinner name="crescent" color="medium" class="spinner"></ion-spinner>
+    </div>
   }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button [disabled]="!exercises.hasValue()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
