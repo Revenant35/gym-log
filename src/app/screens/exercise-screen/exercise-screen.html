@@ -8,35 +8,29 @@
     <ion-toolbar>
       <ion-title size="large">Exercises</ion-title>
     </ion-toolbar>
+    <ion-toolbar>
+      <ion-searchbar
+        placeholder="E.g. Barbell Squat"
+        [animated]="true"
+        show-clear-button="focus"
+        [(ngModel)]="query"
+        [debounce]="300"
+      />
+    </ion-toolbar>
   </ion-header>
-  <ion-item>
-    <ion-input
-      label="Search"
-      placeholder="E.g. Barbell Squat"
-      type="search"
-      [(ngModel)]="query"
-      [clearInput]="true">
-      <ion-icon slot="start" name="search" aria-hidden="true"></ion-icon>
-    </ion-input>
-  </ion-item>
-  @let r = result();
-  @if(isReady(r)) {
-      <ion-list>
-        @for (exercise of r.data; track exercise.id) {
-          <ion-label>
-            <h2>{{ exercise.name }}</h2>
-          </ion-label>
-        } @empty {
-            <p>No exercises found.</p>
-        }
-      </ion-list>
-  }
-  @if (isLoading(r) || r === undefined) {
+  @if (exercises.hasValue()) {
+    <ion-list [inset]="true">
+      @for (exercise of exercises.value(); track exercise.id) {
+        <ion-item>
+          <ion-label>{{ exercise.name }}</ion-label>
+        </ion-item>
+      } @empty {
+        <ion-item>
+          <ion-label>No exercises found.</ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  } @else {
     <ion-spinner name="crescent" class="spinner-center"></ion-spinner>
-  }
-  @if (isError(r)) {
-    <div class="error-message">
-      <p>Error loading exercises. Please try again later.</p>
-    </div>
   }
 </ion-content>
