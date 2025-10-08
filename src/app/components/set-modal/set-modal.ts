@@ -1,7 +1,7 @@
 import {Component, inject, Input} from '@angular/core';
 import {IonicModule, ModalController} from '@ionic/angular';
-import {SetPerformance} from '../../../models/set-performance';
 import {FormsModule} from '@angular/forms';
+import {SessionSet} from '../../models/session-set';
 
 @Component({
   selector: 'app-set-modal',
@@ -9,15 +9,15 @@ import {FormsModule} from '@angular/forms';
     IonicModule,
     FormsModule
   ],
-  templateUrl: './set-modal.component.html',
-  styleUrl: './set-modal.component.scss'
+  templateUrl: './set-modal.html',
+  styleUrl: './set-modal.scss'
 })
-export class SetModalComponent {
+export class SetModal {
   private modalController = inject(ModalController);
 
   // NOTE: input signals do not work with ModalController.componentProps
   @Input({ required: true }) name!: string;
-  @Input({ required: true }) set!: SetPerformance;
+  @Input({ required: true }) set!: SessionSet;
 
   protected async cancel() {
     await this.modalController.dismiss(null, 'cancel');

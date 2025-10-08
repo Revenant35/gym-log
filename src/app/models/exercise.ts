@@ -1,23 +1,23 @@
-interface Exercise {
+export interface Exercise {
   id: string;
   name: string;
 }
 
-interface ExerciseSearchParams {
+export interface ExerciseSearchParams {
   query?: string;
   page: number;
   limit: number;
 }
 
-interface CreateExerciseParams {
+export interface CreateExerciseParams {
   name: string;
 }
 
-interface UpdateExerciseParams {
+export interface UpdateExerciseParams {
   id: string;
   name?: string;
 }
 
-interface DeleteExerciseParams {
+export interface DeleteExerciseParams {
   id: string;
 }

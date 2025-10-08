@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>{{ name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-input label="Weight" type="number" min="0" [(ngModel)]="set.weight"/>
+  </ion-item>
+  <ion-item>
+    <ion-select label="Unit" [(ngModel)]="set.weight_unit" interface="popover">
+      <ion-select-option value="LB">Pounds</ion-select-option>
+      <ion-select-option value="KG">Kilos</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Reps" type="number" min="0" [(ngModel)]="set.reps"/>
+  </ion-item>
+  <ion-item>
+    <ion-select label="Type" [(ngModel)]="set.type" interface="popover">
+      <ion-select-option value="WARM-UP">Warm Up</ion-select-option>
+      <ion-select-option value="NORMAL">Normal</ion-select-option>
+      <ion-select-option value="DROP-SET">Drop Set</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-toggle [(ngModel)]="set.did_fail">Failed</ion-toggle>
+  </ion-item>
+</ion-content>

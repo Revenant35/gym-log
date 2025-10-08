@@ -2,7 +2,7 @@ import {Component, inject, signal} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {SessionPerformance} from '../../models/session-performance';
 import {SetPerformance} from '../../models/set-performance';
-import {SetModalComponent} from './set-modal/set-modal.component';
+import {SetModal} from '../../components/set-modal/set-modal';
 import {UserPreferencesRepo} from '../../repos/user-preferences-repo';
 
 @Component({
@@ -93,7 +93,7 @@ export class SessionScreen {
 
   async openSetModal(name: string, set?: SetPerformance): Promise<SetPerformance | undefined> {
     const modal = await this.modalController.create({
-      component: SetModalComponent,
+      component: SetModal,
       componentProps: {
         name: name,
         set: {
