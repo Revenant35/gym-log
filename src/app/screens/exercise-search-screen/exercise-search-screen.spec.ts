@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExerciseScreen } from './exercise-screen';
+import { ExerciseSearchScreen } from './exercise-search-screen';
 
 describe('ExerciseScreen', () => {
-  let component: ExerciseScreen;
-  let fixture: ComponentFixture<ExerciseScreen>;
+  let component: ExerciseSearchScreen;
+  let fixture: ComponentFixture<ExerciseSearchScreen>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ExerciseScreen]
+      imports: [ExerciseSearchScreen]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ExerciseScreen);
+    fixture = TestBed.createComponent(ExerciseSearchScreen);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

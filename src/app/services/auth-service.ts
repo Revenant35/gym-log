@@ -2,7 +2,7 @@ import {computed, inject, Injectable, signal} from '@angular/core';
 import {SUPABASE} from '../injection-tokens';
 import {defer, map, Observable} from 'rxjs';
 import {User} from '@supabase/supabase-js';
-import {AppInitializer} from './AppInitializer';
+import {AppInitializer} from '../app-initializer';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class AuthService implements AppInitializer {
   })
 
   async initialize(): Promise<void> {
-    this.supabase.auth.onAuthStateChange((event, session) => {
+    this.supabase.auth.onAuthStateChange((_event, session) => {
       this._user.set(session?.user ?? undefined);
     });
 
@@ -27,17 +27,6 @@ export class AuthService implements AppInitializer {
     }
 
     this._user.set(data.user);
-  }
-
-  public signUpWithEmail(email: string, password: string): Observable<void> {
-    return defer(() => this.supabase.auth.signUp({email, password}))
-      .pipe(
-        map(({error}) => {
-          if (error) {
-            throw error;
-          }
-        })
-      );
   }
 
   public signInWithEmail(email: string, password: string): Observable<void> {

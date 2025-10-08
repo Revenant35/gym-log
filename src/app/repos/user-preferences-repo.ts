@@ -10,7 +10,8 @@ import {
   isWeightUnit,
   WeightUnit
 } from '../models/units';
-import { PREFERENCES } from './preferences-injection-token';
+import {PREFERENCES} from '../injection-tokens';
+import {AppInitializer} from '../app-initializer';
 
 const KEYS = {
   weightUnit: 'prefs.weightUnit.v1',
@@ -21,7 +22,7 @@ const KEYS = {
 @Injectable({
   providedIn: 'root'
 })
-export class UserPreferences {
+export class UserPreferencesRepo implements AppInitializer {
   private readonly _preferences = inject(PREFERENCES);
 
   private _weightUnit = signal<WeightUnit>(DEFAULT_WEIGHT_UNIT);
@@ -37,7 +38,7 @@ export class UserPreferences {
    * Call once during app bootstrap (or the first time the service is constructed)
    * to load persisted values into memory.
    */
-  async init(): Promise<void> {
+  async initialize(): Promise<void> {
     await this.initWeightUnit()
     await this.initHeightUnit()
     await this.initClockUnit()

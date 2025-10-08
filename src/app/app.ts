@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import { addIcons } from 'ionicons';
+import {addIcons} from 'ionicons';
 import {
   ellipsisHorizontalCircleOutline,
   barbellOutline,
@@ -14,9 +14,9 @@ import {
   logInOutline,
   personAddOutline,
 } from 'ionicons/icons';
-import { IonicModule } from '@ionic/angular';
-import { AuthService } from './services/auth.service';
-import { RouterOutlet } from '@angular/router';
+import {IonicModule} from '@ionic/angular';
+import {RouterOutlet} from '@angular/router';
+import {AuthService} from './services/auth-service';
 
 @Component({
   selector: 'app-root',
@@ -25,9 +25,9 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.scss'
 })
 export class App {
-  private readonly auth = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
-  isAuthenticated = this.auth.isAuthenticated;
+  isAuthenticated = this.authService.isAuthenticated;
 
   constructor() {
     addIcons({

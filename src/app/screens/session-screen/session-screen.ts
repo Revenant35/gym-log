@@ -3,7 +3,7 @@ import {IonicModule, ModalController} from "@ionic/angular";
 import {SessionPerformance} from '../../models/session-performance';
 import {SetPerformance} from '../../models/set-performance';
 import {SetModalComponent} from './set-modal/set-modal.component';
-import {UserPreferences} from '../../services/user-preferences.service';
+import {UserPreferencesRepo} from '../../repos/user-preferences-repo';
 
 @Component({
   selector: 'app-session-screen',
@@ -15,7 +15,7 @@ import {UserPreferences} from '../../services/user-preferences.service';
 })
 export class SessionScreen {
   private readonly modalController = inject(ModalController);
-  private readonly userPreferences = inject(UserPreferences);
+  private readonly userPreferencesRepo = inject(UserPreferencesRepo);
 
   performance = signal<SessionPerformance>({
     name: 'Monday Afternoon Session',
@@ -48,7 +48,7 @@ export class SessionScreen {
   async openCreateSetModal(exerciseIndex: number) {
     let createdSet = await this.openSetModal(`New Set`, {
       kind: 'normal',
-      unit: this.userPreferences.weightUnit(),
+      unit: this.userPreferencesRepo.weightUnit(),
     });
     if (!createdSet) {
       return;

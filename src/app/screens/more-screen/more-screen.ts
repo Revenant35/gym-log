@@ -1,7 +1,7 @@
 import {Component, inject} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {Router, RouterLink} from '@angular/router';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../services/auth-service';
 import {firstValueFrom} from 'rxjs';
 
 @Component({

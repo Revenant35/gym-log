@@ -13,7 +13,7 @@ export const routes: Routes = [
   },
   {
     path: 'exercises',
-    loadComponent: () => import('./screens/exercise-screen/exercise-screen').then((m) => m.ExerciseScreen),
+    loadComponent: () => import('./screens/exercise-search-screen/exercise-search-screen').then((m) => m.ExerciseSearchScreen),
     canActivate: [isAuthenticatedGuard]
   },
   {

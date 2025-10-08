@@ -1,5 +1,5 @@
 import {inject, Injectable} from '@angular/core';
-import {defer, delay, map, Observable, of} from 'rxjs';
+import {defer, map, Observable} from 'rxjs';
 import {SUPABASE} from '../injection-tokens';
 
 @Injectable({
@@ -37,23 +37,46 @@ export class ExerciseService {
   }
 
   createExercise(params: CreateExerciseParams): Observable<Exercise> {
-    const exercise = {id: this.createExerciseId(), name: params.name};
-    // TODO: Write to Supabase
-    return of(exercise);
+    const exercise = {name: params.name};
+
+    const query = this.supabase.from('exercise').insert(exercise).select().single();
+
+    return defer(() => query)
+      .pipe(
+        map(({data, error}) => {
+          if (error) {
+            throw error;
+          }
+          return data;
+        })
+      );
   }
 
   updateExercise(params: UpdateExerciseParams): Observable<Exercise> {
-    const exercise = {id: params.id, name: params.name ?? 'TODO'};
-    // TODO: Update in Supabase
-    return of(exercise);
+    const exercise = {id: params.id, name: params.name};
+    const query = this.supabase.from('exercise').update(exercise).eq('id', params.id).select().single();
+
+    return defer(() => query)
+      .pipe(
+        map(({data, error}) => {
+          if (error) {
+            throw error;
+          }
+          return data;
+        })
+      );
   }
 
   deleteExercise(params: DeleteExerciseParams): Observable<void> {
-    // TODO: Delete from Supabase
-    return of(undefined);
-  }
+    const query = this.supabase.from('exercise').delete().eq('id', params.id);
 
-  private createExerciseId(): string {
-    return crypto.randomUUID();
+    return defer(() => query)
+      .pipe(
+        map(({error}) => {
+          if (error) {
+            throw error;
+          }
+        })
+      );
   }
 }

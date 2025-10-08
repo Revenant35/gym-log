@@ -1,6 +1,6 @@
 import {Component, computed, inject, resource, signal} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {ExerciseService} from '../../services/exercise.service';
+import {ExerciseService} from '../../services/exercise-service';
 import {lastValueFrom} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 
@@ -10,10 +10,10 @@ import {FormsModule} from '@angular/forms';
     IonicModule,
     FormsModule
   ],
-  templateUrl: './exercise-screen.html',
-  styleUrl: './exercise-screen.scss'
+  templateUrl: './exercise-search-screen.html',
+  styleUrl: './exercise-search-screen.scss'
 })
-export class ExerciseScreen {
+export class ExerciseSearchScreen {
   private readonly exerciseService = inject(ExerciseService);
 
   readonly query = signal<string>('');
