@@ -4,6 +4,8 @@ import {SessionPerformance} from '../../models/session-performance';
 import {SetPerformance} from '../../models/set-performance';
 import {SetModal} from '../../components/set-modal/set-modal';
 import {UserPreferencesRepo} from '../../repos/user-preferences-repo';
+import {SessionSet} from '../../models/session-set';
+import {Session} from '../../models/session';
 
 @Component({
   selector: 'app-session-screen',
@@ -17,37 +19,75 @@ export class SessionScreen {
   private readonly modalController = inject(ModalController);
   private readonly userPreferencesRepo = inject(UserPreferencesRepo);
 
-  performance = signal<SessionPerformance>({
+  performance = signal<Session>({
     name: 'Monday Afternoon Session',
-    date: new Date(),
     exercises: [
       {
-        name: 'Barbell Benchpress',
+        exercise: {
+          id: '',
+          name: 'Barbell Benchpress',
+        },
         sets: [],
+        created_at: new Date().toDateString(),
       },
       {
-        name: 'Barbell Squat',
+        exercise: {
+          id: '',
+          name: 'Barbell Squat',
+        },
         sets: [
-          { kind: 'warm-up', unit: 'kg' },
-          { kind: 'normal', reps: 5, weight: 120, unit: 'kg' },
-          { kind: 'normal', reps: 5, weight: 120, unit: 'kg' },
-          { kind: 'failure', reps: 4, weight: 120, unit: 'kg' },
-          { kind: 'drop-set', reps: 8, weight: 100, unit: 'kg' },
+          {
+            type: 'WARM_UP',
+            reps: 12,
+            weight: 185,
+            weight_unit: 'LB',
+            did_fail: false,
+            created_at: new Date().toDateString()
+          },
+          {
+            type: 'NORMAL',
+            reps: 8,
+            weight: 255,
+            weight_unit: 'LB',
+            did_fail: false,
+            created_at: new Date().toDateString()
+          },
+          {
+            type: 'NORMAL',
+            reps: 8,
+            weight: 255,
+            weight_unit: 'LB',
+            did_fail: false,
+            created_at: new Date().toDateString()
+          },
+          {
+            type: 'NORMAL',
+            reps: 7,
+            weight: 255,
+            weight_unit: 'LB',
+            did_fail: true,
+            created_at: new Date().toDateString()
+          },
+          {
+            type: 'DROP_SET',
+            reps: 8,
+            weight: 225,
+            weight_unit: 'LB',
+            did_fail: false,
+            created_at: new Date().toDateString()
+          },
         ],
+        created_at: new Date().toDateString(),
       },
-      {
-        name: 'Barbell Deadlift',
-        sets: [
-          { kind: 'warm-up', unit: 'kg' },
-        ],
-      },
-    ]
+    ],
+    user_id: '',
+    created_at: new Date().toDateString(),
   });
 
 
   async openCreateSetModal(exerciseIndex: number) {
     let createdSet = await this.openSetModal(`New Set`, {
-      kind: 'normal',
+      type: 'NORMAL',
       unit: this.userPreferencesRepo.weightUnit(),
     });
     if (!createdSet) {
@@ -91,7 +131,7 @@ export class SessionScreen {
     })
   }
 
-  async openSetModal(name: string, set?: SetPerformance): Promise<SetPerformance | undefined> {
+  async openSetModal(name: string, set?: SessionSet): Promise<SetPerformance | undefined> {
     const modal = await this.modalController.create({
       component: SetModal,
       componentProps: {

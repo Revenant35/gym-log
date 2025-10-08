@@ -2,9 +2,6 @@ import {WeightUnit} from './weight-unit';
 import {SessionSetType} from './session-set-type';
 
 export interface SessionSet {
-  session_id: string;
-  session_index: number;
-  exercise_index: number;
   weight: number;
   weight_unit: WeightUnit;
   reps: number;

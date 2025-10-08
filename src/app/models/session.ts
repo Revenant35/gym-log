@@ -1,5 +1,8 @@
+import {SessionExercise} from './session-exercise';
+
 export interface Session {
   id: string;
+  exercises: SessionExercise[];
   user_id: string;
   created_at: string;
 }

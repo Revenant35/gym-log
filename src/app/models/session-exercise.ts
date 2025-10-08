@@ -1,7 +1,9 @@
+import {SessionSet} from './session-set';
+import {Exercise} from './exercise';
+
 export interface SessionExercise {
-  session_id: string;
-  session_index: number;
-  exercise_id: string;
+  exercise: Exercise;
+  sets: SessionSet[];
   created_at: string;
 }
 
