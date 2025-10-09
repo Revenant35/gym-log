@@ -1,6 +1,13 @@
 import {inject, Injectable} from '@angular/core';
 import {defer, map, Observable} from 'rxjs';
 import {SUPABASE} from '../injection-tokens';
+import {
+  CreateExerciseParams,
+  DeleteExerciseParams,
+  Exercise,
+  ExerciseSearchParams,
+  UpdateExerciseParams
+} from '../models';
 
 @Injectable({
   providedIn: 'root'

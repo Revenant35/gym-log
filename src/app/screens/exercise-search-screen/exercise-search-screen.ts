@@ -3,6 +3,7 @@ import {IonicModule} from "@ionic/angular";
 import {ExerciseService} from '../../services/exercise-service';
 import {lastValueFrom} from 'rxjs';
 import {FormsModule} from '@angular/forms';
+import {ExerciseSearchParams} from '../../models';
 
 @Component({
   selector: 'app-exercise-screen',
