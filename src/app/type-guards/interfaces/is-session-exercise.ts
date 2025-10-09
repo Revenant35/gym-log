@@ -1,7 +1,6 @@
 import {SessionExercise} from '../../models';
-import {isRecord, isDate, isArray} from '../primitives';
+import {isRecord, isDate, isArray, isString, isUUID} from '../primitives';
 import {hasKeys} from '../helpers';
-import {isExercise} from './is-exercise';
 import {isSessionSet} from './is-session-set';
 
 export function isSessionExercise(v: unknown): v is SessionExercise {
@@ -9,16 +8,18 @@ export function isSessionExercise(v: unknown): v is SessionExercise {
     return false;
   }
 
-  const requiredKeys = ["exercise", "sets", "created_at"] as const;
+  const requiredKeys = ["id", "name", "sets", "created_at"] as const;
   if (!hasKeys(v, requiredKeys)) {
     return false;
   }
 
+  const {id, name, sets, created_at} = v;
 
   return (
-    isExercise(v["exercise"]) &&
-    isArray(v["sets"]) &&
-    v["sets"].every((set) => isSessionSet(set)) &&
-    isDate(v["created_at"])
+    isUUID(id) &&
+    isString(name) &&
+    isArray(sets) &&
+    sets.every((set) => isSessionSet(set)) &&
+    isDate(created_at)
   );
 }
