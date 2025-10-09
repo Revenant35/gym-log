@@ -5,15 +5,17 @@
     </ion-buttons>
     <ion-title>{{ name }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!isValid">Confirm</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ion-item>
+    <!-- TODO: This non-null assertion is dangerous, at best. We should do this better! -->
     <ion-input label="Weight" type="number" min="0" [(ngModel)]="set.weight"/>
   </ion-item>
   <ion-item>
+    <!-- TODO: This non-null assertion is dangerous, at best. We should do this better! -->
     <ion-select label="Unit" [(ngModel)]="set.weight_unit" interface="popover">
       <ion-select-option value="LB">Pounds</ion-select-option>
       <ion-select-option value="KG">Kilos</ion-select-option>

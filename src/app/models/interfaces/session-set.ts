@@ -1,5 +1,5 @@
-import {WeightUnit} from './weight-unit';
-import {SessionSetType} from './session-set-type';
+import {WeightUnit} from '../enums/weight-unit';
+import {SessionSetType} from '../enums/session-set-type';
 
 export interface SessionSet {
   weight: number;
@@ -7,7 +7,7 @@ export interface SessionSet {
   reps: number;
   type: SessionSetType;
   did_fail: boolean;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface CreateSessionSetParams {

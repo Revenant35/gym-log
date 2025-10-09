@@ -1,16 +1,16 @@
-@if (performance(); as performance) {
+@if (session(); as session) {
   <ion-header>
     <ion-toolbar>
-      <ion-title>{{ performance.name }}</ion-title>
+      <ion-title>{{ session.created_at | date }}</ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding" [fullscreen]="true">
     <ion-header collapse="condense">
       <ion-toolbar>
-        <ion-title size="large">{{ performance.name }}</ion-title>
+        <ion-title size="large">{{ session.created_at | date }}</ion-title>
       </ion-toolbar>
     </ion-header>
-    @for (exercise of performance.exercises; track exercise.name; let exerciseIndex = $index) {
+    @for (exercise of session.exercises; track $index; let exerciseIndex = $index) {
       <section>
         <ion-list-header>
           <ion-label>{{ exercise.name }}</ion-label>
@@ -22,26 +22,18 @@
                 <ion-item>
                   <ion-label>
                     <h3>Set #{{ setIndex + 1 }}</h3>
-                    @if (set.reps && set.weight) {
-                      <p>{{ set.reps }} Reps &#64; {{ set.weight }} {{ set.unit }}</p>
-                    }
-                    @if (set.reps && !set.weight) {
-                      <p>{{ set.reps }} Reps</p>
-                    }
-                    @if (!set.reps && set.weight) {
-                      <p>{{ set.weight }} {{ set.unit }}</p>
-                    }
+                    <p>{{ set.reps }} Reps &#64; {{ set.weight }} {{ set.weight_unit }}</p>
                   </ion-label>
-                  @switch (set.kind) {
-                    @case ('warm-up') {
+                  @switch (set.type) {
+                    @case ('WARM_UP') {
                       <ion-badge>Warm-up</ion-badge>
                     }
-                    @case ('drop-set') {
+                    @case ('DROP_SET') {
                       <ion-badge>Drop Set</ion-badge>
                     }
-                    @case ('failure') {
-                      <ion-badge color="danger">Failure</ion-badge>
-                    }
+                  }
+                  @if (set.did_fail) {
+                    <ion-badge color="danger">Failure</ion-badge>
                   }
                 </ion-item>
 

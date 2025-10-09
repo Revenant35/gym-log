@@ -1,10 +1,9 @@
 import {SessionSet} from './session-set';
 import {Exercise} from './exercise';
 
-export interface SessionExercise {
-  exercise: Exercise;
+export interface SessionExercise extends Exercise {
   sets: SessionSet[];
-  created_at: string;
+  created_at: Date;
 }
 
 export interface CreateSessionExerciseParams {

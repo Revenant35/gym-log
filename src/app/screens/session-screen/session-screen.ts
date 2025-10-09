@@ -1,16 +1,16 @@
 import {Component, inject, signal} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
-import {SessionPerformance} from '../../models/session-performance';
-import {SetPerformance} from '../../models/set-performance';
 import {SetModal} from '../../components/set-modal/set-modal';
 import {UserPreferencesRepo} from '../../repos/user-preferences-repo';
-import {SessionSet} from '../../models/session-set';
-import {Session} from '../../models/session';
+import {SessionSet, Session, DeepPartial} from '../../models';
+import {isSessionSet} from '../../type-guards';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-session-screen',
   imports: [
     IonicModule,
+    DatePipe,
   ],
   templateUrl: './session-screen.html',
   styleUrl: './session-screen.scss'
@@ -19,22 +19,20 @@ export class SessionScreen {
   private readonly modalController = inject(ModalController);
   private readonly userPreferencesRepo = inject(UserPreferencesRepo);
 
-  performance = signal<Session>({
-    name: 'Monday Afternoon Session',
+  session = signal<Session>({
+    id: '',
+    user_id: '',
+    created_at: new Date(),
     exercises: [
       {
-        exercise: {
-          id: '',
-          name: 'Barbell Benchpress',
-        },
+        id: '',
+        name: 'Barbell Benchpress',
         sets: [],
-        created_at: new Date().toDateString(),
+        created_at: new Date(),
       },
       {
-        exercise: {
-          id: '',
-          name: 'Barbell Squat',
-        },
+        id: '',
+        name: 'Barbell Squat',
         sets: [
           {
             type: 'WARM_UP',
@@ -42,7 +40,7 @@ export class SessionScreen {
             weight: 185,
             weight_unit: 'LB',
             did_fail: false,
-            created_at: new Date().toDateString()
+            created_at: new Date()
           },
           {
             type: 'NORMAL',
@@ -50,7 +48,7 @@ export class SessionScreen {
             weight: 255,
             weight_unit: 'LB',
             did_fail: false,
-            created_at: new Date().toDateString()
+            created_at: new Date()
           },
           {
             type: 'NORMAL',
@@ -58,7 +56,7 @@ export class SessionScreen {
             weight: 255,
             weight_unit: 'LB',
             did_fail: false,
-            created_at: new Date().toDateString()
+            created_at: new Date()
           },
           {
             type: 'NORMAL',
@@ -66,7 +64,7 @@ export class SessionScreen {
             weight: 255,
             weight_unit: 'LB',
             did_fail: true,
-            created_at: new Date().toDateString()
+            created_at: new Date()
           },
           {
             type: 'DROP_SET',
@@ -74,81 +72,80 @@ export class SessionScreen {
             weight: 225,
             weight_unit: 'LB',
             did_fail: false,
-            created_at: new Date().toDateString()
+            created_at: new Date()
           },
         ],
-        created_at: new Date().toDateString(),
-      },
-    ],
-    user_id: '',
-    created_at: new Date().toDateString(),
+        created_at: new Date()
+      }
+    ]
   });
 
 
   async openCreateSetModal(exerciseIndex: number) {
     let createdSet = await this.openSetModal(`New Set`, {
       type: 'NORMAL',
-      unit: this.userPreferencesRepo.weightUnit(),
+      weight_unit: this.userPreferencesRepo.weightUnit()
     });
+
     if (!createdSet) {
       return;
     }
 
-    this.performance.update((performance) => {
-      performance.exercises[exerciseIndex].sets.push(createdSet);
-      return {
-        ...performance
-      };
+    this.session.update((session) => {
+      session.exercises[exerciseIndex].sets.push(createdSet);
+
+      return session;
     })
   }
 
-  async openEditSetModal(exerciseIndex: number, set: SetPerformance, setIndex: number) {
-    let updatedSet = await this.openSetModal(`Update Set ${ setIndex + 1 }`, set);
+  async openEditSetModal(exerciseIndex: number, set: SessionSet, setIndex: number) {
+    let updatedSet = await this.openSetModal(`Update Set ${setIndex + 1}`, set);
     if (!updatedSet) {
       return;
     }
 
-    this.performance.update((performance) => {
-      performance.exercises[exerciseIndex].sets[setIndex] = updatedSet;
-      return {
-        ...performance
-      };
+    this.session.update((session) => {
+      session.exercises[exerciseIndex].sets[setIndex] = updatedSet;
+      return session;
     })
   }
 
   async duplicateSet(exerciseIndex: number, setIndex: number) {
-    this.performance.update((performance) => {
-      const sets = performance.exercises[exerciseIndex].sets
+    this.session.update((session) => {
+      const sets = session.exercises[exerciseIndex].sets
       sets.splice(setIndex, 0, sets[setIndex]);
-      return performance;
+      return session;
     })
   }
 
   async deleteSet(exerciseIndex: number, setIndex: number) {
-    this.performance.update((performance) => {
-      performance.exercises[exerciseIndex].sets.splice(setIndex, 1);
-      return performance;
+    this.session.update((session) => {
+      session.exercises[exerciseIndex].sets.splice(setIndex, 1);
+      return session;
     })
   }
 
-  async openSetModal(name: string, set?: SessionSet): Promise<SetPerformance | undefined> {
+  // TODO: Return some sort of result type so we can tell if an error occurred
+  async openSetModal(name: string, set: Partial<SessionSet>): Promise<SessionSet | undefined> {
     const modal = await this.modalController.create({
       component: SetModal,
       componentProps: {
         name: name,
-        set: {
-          ...set
-        },
+        set: set,
       }
     });
 
     await modal.present();
-    const { data, role } = await modal.onWillDismiss<SetPerformance>();
+    const {data, role} = await modal.onWillDismiss<Partial<SessionSet>>();
 
-    if (role === 'confirm' && data) {
-      return data;
-    } else {
+    if (role !== 'confirm') {
       return undefined;
     }
+
+    if (!isSessionSet(data)) {
+      return undefined;
+    }
+
+    return data;
   }
 }

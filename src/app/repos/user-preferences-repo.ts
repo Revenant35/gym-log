@@ -1,17 +1,15 @@
 import { inject, Injectable, signal } from '@angular/core';
+import {PREFERENCES} from '../injection-tokens';
+import {AppInitializer} from '../app-initializer';
 import {
   ClockUnit,
   DEFAULT_CLOCK_UNIT,
   DEFAULT_HEIGHT_UNIT,
   DEFAULT_WEIGHT_UNIT,
   HeightUnit,
-  isClockUnit,
-  isHeightUnit,
-  isWeightUnit,
   WeightUnit
-} from '../models/units';
-import {PREFERENCES} from '../injection-tokens';
-import {AppInitializer} from '../app-initializer';
+} from '../models';
+import {isClockUnit, isHeightUnit, isWeightUnit} from '../type-guards';
 
 const KEYS = {
   weightUnit: 'prefs.weightUnit.v1',

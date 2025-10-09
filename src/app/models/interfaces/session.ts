@@ -4,7 +4,7 @@ export interface Session {
   id: string;
   exercises: SessionExercise[];
   user_id: string;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface CreateSessionParams {

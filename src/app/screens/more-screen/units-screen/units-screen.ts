@@ -1,8 +1,8 @@
 import {Component, inject} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {UserPreferencesRepo} from '../../../repos/user-preferences-repo';
-import {isClockUnit, isHeightUnit, isWeightUnit} from '../../../models/units';
 import {RouterLink} from '@angular/router';
+import {isClockUnit, isHeightUnit, isWeightUnit} from '../../../type-guards';
 
 @Component({
   selector: 'app-units-screen',
