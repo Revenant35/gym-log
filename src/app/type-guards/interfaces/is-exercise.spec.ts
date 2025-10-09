@@ -1,8 +1,9 @@
 import { isExercise } from './is-exercise';
+import {Exercise} from '../../models';
 
 describe('isExercise', () => {
   it('should return true for valid Exercise objects', () => {
-    const validExercise = {
+    const validExercise: Exercise = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press'
     };
@@ -17,14 +18,14 @@ describe('isExercise', () => {
   });
 
   it('should return false when name is missing', () => {
-    const invalidExercise = {
+    const invalidExercise: Partial<Exercise> = {
       id: '123e4567-e89b-12d3-a456-426614174000'
     };
     expect(isExercise(invalidExercise)).toBeFalse();
   });
 
   it('should return false when id is not a valid UUID', () => {
-    const invalidExercise = {
+    const invalidExercise: Exercise = {
       id: 'not-a-uuid',
       name: 'Bench Press'
     };

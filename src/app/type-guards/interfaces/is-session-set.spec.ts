@@ -1,8 +1,9 @@
 import { isSessionSet } from './is-session-set';
+import {SessionSet} from '../../models';
 
 describe('isSessionSet', () => {
   it('should return true for valid SessionSet objects', () => {
-    const validSessionSet = {
+    const validSessionSet: SessionSet = {
       weight: 135.5,
       weight_unit: 'LB',
       reps: 10,
@@ -14,7 +15,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return true for warm-up sets', () => {
-    const warmUpSet = {
+    const warmUpSet: SessionSet = {
       weight: 45,
       weight_unit: 'KG',
       reps: 5,
@@ -26,7 +27,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return true for drop sets', () => {
-    const dropSet = {
+    const dropSet: SessionSet = {
       weight: 100,
       weight_unit: 'LB',
       reps: 12,
@@ -38,7 +39,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return false when weight is missing', () => {
-    const invalidSet = {
+    const invalidSet: Partial<SessionSet> = {
       weight_unit: 'LB',
       reps: 10,
       type: 'NORMAL',
@@ -49,7 +50,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return false when weight is negative', () => {
-    const invalidSet = {
+    const invalidSet: SessionSet = {
       weight: -10,
       weight_unit: 'LB',
       reps: 10,
@@ -61,7 +62,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return false when weight is not finite', () => {
-    const invalidSet = {
+    const invalidSet: SessionSet = {
       weight: Infinity,
       weight_unit: 'LB',
       reps: 10,
@@ -85,7 +86,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return false when reps is not an integer', () => {
-    const invalidSet = {
+    const invalidSet: SessionSet = {
       weight: 135,
       weight_unit: 'LB',
       reps: 10.5,
@@ -96,8 +97,8 @@ describe('isSessionSet', () => {
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
 
-  it('should return false when reps is zero or negative', () => {
-    const invalidSet1 = {
+  it('should return false when reps is zero', () => {
+    const invalidSet: SessionSet = {
       weight: 135,
       weight_unit: 'LB',
       reps: 0,
@@ -105,9 +106,11 @@ describe('isSessionSet', () => {
       did_fail: false,
       created_at: new Date()
     };
-    expect(isSessionSet(invalidSet1)).toBeFalse();
+    expect(isSessionSet(invalidSet)).toBeFalse();
+  });
 
-    const invalidSet2 = {
+  it('should return false when reps is negative', () => {
+    const invalidSet: SessionSet = {
       weight: 135,
       weight_unit: 'LB',
       reps: -5,
@@ -115,7 +118,7 @@ describe('isSessionSet', () => {
       did_fail: false,
       created_at: new Date()
     };
-    expect(isSessionSet(invalidSet2)).toBeFalse();
+    expect(isSessionSet(invalidSet)).toBeFalse();
   });
 
   it('should return false when type is invalid', () => {
@@ -155,7 +158,7 @@ describe('isSessionSet', () => {
   });
 
   it('should return false when created_at is an invalid Date object', () => {
-    const invalidSet = {
+    const invalidSet: SessionSet = {
       weight: 135,
       weight_unit: 'LB',
       reps: 10,

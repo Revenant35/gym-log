@@ -1,8 +1,9 @@
 import { isSessionExercise } from './is-session-exercise';
+import {SessionExercise} from '../../models';
 
 describe('isSessionExercise', () => {
   it('should return true for valid SessionExercise objects', () => {
-    const validSessionExercise = {
+    const validSessionExercise: SessionExercise = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       sets: [
@@ -21,7 +22,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return true for SessionExercise with multiple sets', () => {
-    const sessionExercise = {
+    const sessionExercise: SessionExercise = {
       id: '550e8400-e29b-41d4-a716-446655440000',
       name: 'Squat',
       sets: [
@@ -56,7 +57,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return true for SessionExercise with empty sets array', () => {
-    const sessionExercise = {
+    const sessionExercise: SessionExercise = {
       id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
       name: 'Deadlift',
       sets: [],
@@ -66,7 +67,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when id is missing', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: Partial<SessionExercise> = {
       name: 'Bench Press',
       sets: [],
       created_at: new Date()
@@ -75,7 +76,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when id is not a valid UUID', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: SessionExercise = {
       id: 'not-a-uuid',
       name: 'Bench Press',
       sets: [],
@@ -85,7 +86,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when name is missing', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       sets: [],
       created_at: new Date()
@@ -104,7 +105,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when sets is missing', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       created_at: new Date()
@@ -123,7 +124,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when sets contains invalid SessionSet', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: SessionExercise = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       sets: [
@@ -150,7 +151,7 @@ describe('isSessionExercise', () => {
   });
 
   it('should return false when created_at is missing', () => {
-    const invalidSessionExercise = {
+    const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       sets: []

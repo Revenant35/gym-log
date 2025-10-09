@@ -1,8 +1,9 @@
 import { isSession } from './is-session';
+import {Session} from '../../models';
 
 describe('isSession', () => {
   it('should return true for valid Session objects', () => {
-    const validSession = {
+    const validSession: Session = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [
         {
@@ -28,7 +29,7 @@ describe('isSession', () => {
   });
 
   it('should return true for Session with multiple exercises', () => {
-    const session = {
+    const session: Session = {
       id: 'a1b2c3d4-e5f6-4789-abcd-ef0123456789',
       exercises: [
         {
@@ -69,7 +70,7 @@ describe('isSession', () => {
   });
 
   it('should return true for Session with empty exercises array', () => {
-    const session = {
+    const session: Session = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [],
       user_id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
@@ -79,7 +80,7 @@ describe('isSession', () => {
   });
 
   it('should return false when id is missing', () => {
-    const invalidSession = {
+    const invalidSession: Partial<Session> = {
       exercises: [],
       user_id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
       created_at: new Date()
@@ -88,7 +89,7 @@ describe('isSession', () => {
   });
 
   it('should return false when id is not a valid UUID', () => {
-    const invalidSession = {
+    const invalidSession: Session = {
       id: 'not-a-uuid',
       exercises: [],
       user_id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
@@ -98,7 +99,7 @@ describe('isSession', () => {
   });
 
   it('should return false when exercises is missing', () => {
-    const invalidSession = {
+    const invalidSession: Partial<Session> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       user_id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
       created_at: new Date()
@@ -117,7 +118,7 @@ describe('isSession', () => {
   });
 
   it('should return false when exercises contains invalid SessionExercise', () => {
-    const invalidSession = {
+    const invalidSession: Session = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [
         {
@@ -140,7 +141,7 @@ describe('isSession', () => {
   });
 
   it('should return false when user_id is missing', () => {
-    const invalidSession = {
+    const invalidSession: Partial<Session> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [],
       created_at: new Date()
@@ -149,7 +150,7 @@ describe('isSession', () => {
   });
 
   it('should return false when user_id is not a valid UUID', () => {
-    const invalidSession = {
+    const invalidSession: Session = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [],
       user_id: 'not-a-uuid',
@@ -159,7 +160,7 @@ describe('isSession', () => {
   });
 
   it('should return false when created_at is missing', () => {
-    const invalidSession = {
+    const invalidSession: Partial<Session> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       exercises: [],
       user_id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8'
