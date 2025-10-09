@@ -1,6 +1,5 @@
-import {isRecord, isNumber} from '../primitives';
+import {isRecord, isString, isUUID} from '../primitives';
 import {hasKeys} from '../helpers';
-import {isWeightUnit} from '../enums';
 import {Exercise} from '../../models';
 
 export function isExercise(v: unknown): v is Exercise {
@@ -13,7 +12,7 @@ export function isExercise(v: unknown): v is Exercise {
     return false;
   }
 
-  const {value, unit} = v;
+  const {id, name} = v;
 
-  return isNumber(value) && isFinite(value) && value >= 0 && isWeightUnit(unit);
+  return isUUID(id) && isString(name);
 }
