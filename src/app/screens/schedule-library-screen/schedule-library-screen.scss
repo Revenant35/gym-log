@@ -1,0 +1,122 @@
+.schedules-container {
+  padding: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 80px;
+    color: var(--ion-color-medium);
+    margin-bottom: 24px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0 0 32px 0;
+    font-size: 16px;
+    color: var(--ion-color-medium);
+  }
+}
+
+.schedules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 80px; // Space for FAB
+}
+
+.schedule-card {
+  margin: 0;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &.active {
+    border: 2px solid var(--ion-color-primary);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  ion-card-content {
+    padding: 20px;
+  }
+
+  .schedule-header {
+    margin-bottom: 16px;
+
+    .schedule-info {
+      .schedule-title-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 8px;
+
+        .schedule-name {
+          margin: 0;
+          font-size: 20px;
+          font-weight: 600;
+          color: var(--ion-color-dark);
+          flex: 1;
+        }
+
+        ion-badge {
+          font-size: 12px;
+          font-weight: 600;
+          padding: 4px 8px;
+        }
+      }
+
+      .schedule-summary {
+        margin: 0 0 4px 0;
+        font-size: 14px;
+        color: var(--ion-color-medium);
+      }
+
+      .schedule-date {
+        margin: 0;
+        font-size: 13px;
+        color: var(--ion-color-medium-shade);
+      }
+    }
+  }
+
+  .schedule-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--ion-color-light);
+
+    ion-button {
+      margin: 0;
+      font-size: 13px;
+      text-transform: none;
+      --padding-start: 8px;
+      --padding-end: 8px;
+
+      ion-icon {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+ion-fab {
+  margin-bottom: 16px;
+  margin-right: 16px;
+}

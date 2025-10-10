@@ -1,0 +1,93 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Current Schedule</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/schedules']">
+        <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="schedule-container">
+    <!-- Week Day Indicators -->
+    <div class="week-indicators">
+      @for (indicator of dayIndicators(); track indicator.day) {
+        <button
+          class="day-indicator"
+          [class.has-workout]="indicator.hasWorkout"
+          [class.is-today]="indicator.isToday"
+          [class.is-selected]="indicator.isSelected"
+          (click)="selectDay($index)"
+        >
+          <span class="day-label">{{ indicator.label }}</span>
+          @if (indicator.hasWorkout) {
+            <span class="workout-dot"></span>
+          }
+        </button>
+      }
+    </div>
+
+    <!-- Day Navigation -->
+    <div class="day-navigation">
+      <ion-button fill="clear" (click)="previousDay()">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+      <h2 class="selected-day-title">
+        {{ selectedDay() | titlecase }}
+      </h2>
+      <ion-button fill="clear" (click)="nextDay()">
+        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
+      </ion-button>
+    </div>
+
+    <!-- Workout Content -->
+    @if (selectedDayWorkout(); as workout) {
+      <div class="workout-content">
+        <div class="workout-header">
+          <h3 class="workout-name">{{ workout.name }}</h3>
+          <p class="exercise-count">{{ workout.exercises.length }} exercises</p>
+        </div>
+
+        <div class="exercises-list">
+          @for (exercise of workout.exercises; track $index) {
+            <ion-card class="exercise-card">
+              <ion-card-content>
+                <div class="exercise-info">
+                  <h4 class="exercise-name">{{ exercise.name }}</h4>
+                  <p class="exercise-details">
+                    {{
+                      formatExerciseDetails(
+                        exercise.sets,
+                        exercise.reps,
+                        exercise.weight,
+                        exercise.weight_unit
+                      )
+                    }}
+                  </p>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          }
+        </div>
+
+        <div class="action-button-container">
+          <ion-button expand="block" size="large" [routerLink]="['/session']">
+            <ion-icon slot="start" name="barbell-outline"></ion-icon>
+            Start Workout
+          </ion-button>
+        </div>
+      </div>
+    } @else {
+      <div class="rest-day">
+        <ion-icon name="moon-outline" class="rest-icon"></ion-icon>
+        <h3>Rest Day</h3>
+        <p>No workout scheduled for {{ selectedDay() }}</p>
+        <ion-button fill="outline" [routerLink]="['/schedules']">
+          View All Schedules
+        </ion-button>
+      </div>
+    }
+  </div>
+</ion-content>

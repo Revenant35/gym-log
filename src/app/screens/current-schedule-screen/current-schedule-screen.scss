@@ -1,0 +1,162 @@
+.schedule-container {
+  padding: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.week-indicators {
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 12px;
+  background: var(--ion-color-light);
+  border-radius: 12px;
+}
+
+.day-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 40px;
+
+  .day-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ion-color-medium);
+  }
+
+  .workout-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ion-color-primary);
+  }
+
+  &.is-today {
+    .day-label {
+      color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+  }
+
+  &.is-selected {
+    background: var(--ion-color-primary);
+
+    .day-label {
+      color: white;
+    }
+
+    .workout-dot {
+      background: white;
+    }
+  }
+
+  &:hover:not(.is-selected) {
+    background: var(--ion-color-light-shade);
+  }
+}
+
+.day-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  .selected-day-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+}
+
+.workout-content {
+  .workout-header {
+    margin-bottom: 20px;
+
+    .workout-name {
+      margin: 0 0 4px 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--ion-color-dark);
+    }
+
+    .exercise-count {
+      margin: 0;
+      font-size: 14px;
+      color: var(--ion-color-medium);
+    }
+  }
+
+  .exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .exercise-card {
+    margin: 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    ion-card-content {
+      padding: 16px;
+    }
+
+    .exercise-info {
+      .exercise-name {
+        margin: 0 0 4px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--ion-color-dark);
+      }
+
+      .exercise-details {
+        margin: 0;
+        font-size: 14px;
+        color: var(--ion-color-medium);
+        font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+      }
+    }
+  }
+
+  .action-button-container {
+    margin-top: 24px;
+  }
+}
+
+.rest-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+
+  .rest-icon {
+    font-size: 64px;
+    color: var(--ion-color-medium);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ion-color-dark);
+  }
+
+  p {
+    margin: 0 0 24px 0;
+    font-size: 16px;
+    color: var(--ion-color-medium);
+  }
+}

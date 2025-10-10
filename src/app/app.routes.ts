@@ -32,6 +32,31 @@ export const routes: Routes = [
     canActivate: [isAuthenticatedGuard]
   },
   {
+    path: 'schedule',
+    loadComponent: () => import('./screens/current-schedule-screen/current-schedule-screen').then((m) => m.CurrentScheduleScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
+    path: 'schedules',
+    loadComponent: () => import('./screens/schedule-library-screen/schedule-library-screen').then((m) => m.ScheduleLibraryScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
+    path: 'schedule/detail/:id',
+    loadComponent: () => import('./screens/schedule-detail-screen/schedule-detail-screen').then((m) => m.ScheduleDetailScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
+    path: 'schedule/create',
+    loadComponent: () => import('./screens/schedule-builder-screen/schedule-builder-screen').then((m) => m.ScheduleBuilderScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
+    path: 'schedule/edit/:id',
+    loadComponent: () => import('./screens/schedule-builder-screen/schedule-builder-screen').then((m) => m.ScheduleBuilderScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
     path: '**',
     redirectTo: 'login',
   }

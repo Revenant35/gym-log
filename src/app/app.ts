@@ -13,6 +13,18 @@ import {
   trashOutline,
   logInOutline,
   personAddOutline,
+  calendarOutline,
+  chevronForwardOutline,
+  moonOutline,
+  eyeOutline,
+  checkmarkCircleOutline,
+  chevronUpOutline,
+  chevronDownOutline,
+  arrowForwardOutline,
+  ellipseOutline,
+  checkmarkCircle,
+  arrowUpOutline,
+  arrowDownOutline,
 } from 'ionicons/icons';
 import {IonicModule} from '@ionic/angular';
 import {RouterOutlet} from '@angular/router';
@@ -43,6 +55,18 @@ export class App {
       trashOutline,
       logInOutline,
       personAddOutline,
+      calendarOutline,
+      chevronForwardOutline,
+      moonOutline,
+      eyeOutline,
+      checkmarkCircleOutline,
+      chevronUpOutline,
+      chevronDownOutline,
+      arrowForwardOutline,
+      ellipseOutline,
+      checkmarkCircle,
+      arrowUpOutline,
+      arrowDownOutline,
     });
   }
 }

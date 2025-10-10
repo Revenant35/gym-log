@@ -1,0 +1,240 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      @if (selectedDay()) {
+        <ion-button (click)="backToDaysList()">
+          <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      } @else {
+        <ion-back-button defaultHref="/schedules"></ion-back-button>
+      }
+    </ion-buttons>
+    <ion-title>
+      @if (selectedDay()) {
+        {{ currentDayBuilder()?.dayName }}
+      } @else {
+        Create Schedule
+      }
+    </ion-title>
+    <ion-buttons slot="end">
+      @if (!selectedDay()) {
+        <ion-button (click)="saveSchedule()" [disabled]="!canSave()">
+          <strong>Save</strong>
+        </ion-button>
+      }
+    </ion-buttons>
+  </ion-toolbar>
+
+  @if (currentStep() === 'days' && !selectedDay()) {
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="currentStep" (ionChange)="handleEvent($event.detail)">
+        <ion-segment-button value="info">
+          <ion-label>Info</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="days">
+          <ion-label>Days</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  }
+</ion-header>
+
+<ion-content>
+  <div class="builder-container">
+    <!-- Step 1: Schedule Info -->
+    @if (currentStep() === 'info') {
+      <div class="info-step">
+        <div class="step-header">
+          <h2>Schedule Information</h2>
+          <p>Give your schedule a name to identify it</p>
+        </div>
+
+        <ion-item>
+          <ion-input
+            label="Schedule Name"
+            labelPlacement="stacked"
+            placeholder="e.g., Push Pull Legs"
+            [(ngModel)]="scheduleName"
+          ></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" (click)="goToStep('days')" [disabled]="!scheduleName().trim()">
+          Continue to Days
+          <ion-icon slot="end" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    }
+
+    <!-- Step 2: Days Overview -->
+    @if (currentStep() === 'days' && !selectedDay()) {
+      <div class="days-step">
+        <div class="step-header">
+          <h2>Select Training Days</h2>
+          <p>Choose which days you'll be working out</p>
+        </div>
+
+        <div class="days-grid">
+          @for (day of days(); track day.day) {
+            <div class="day-card" [class.selected]="day.isSelected">
+              <button class="day-toggle" (click)="toggleDay(day.day)">
+                <div class="day-toggle-content">
+                  <ion-icon
+                    [name]="day.isSelected ? 'checkmark-circle' : 'ellipse-outline'"
+                    [color]="day.isSelected ? 'primary' : 'medium'"
+                  ></ion-icon>
+                  <span class="day-name">{{ day.dayName }}</span>
+                </div>
+              </button>
+
+              @if (day.isSelected) {
+                <button class="edit-day-button" (click)="selectDayToEdit(day.day)">
+                  @let workout = day.workout;
+                  @if (workout) {
+                    <div class="workout-preview">
+                      <strong>{{ workout.name }}</strong>
+                      <span>{{ workout.exercises.length }} exercises</span>
+                    </div>
+                  } @else {
+                    <div class="workout-preview">
+                      <span class="placeholder">Add workout details</span>
+                    </div>
+                  }
+                  <ion-icon name="chevron-forward-outline"></ion-icon>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- Day Editor -->
+    @if (selectedDay() && currentDayBuilder(); as dayBuilder) {
+      <div class="day-editor">
+        <div class="editor-section">
+          <h3>Workout Name</h3>
+          <ion-item>
+            <ion-input
+              placeholder="e.g., Push Day, Upper Body"
+              [value]="dayBuilder.workout?.name || ''"
+              (ionInput)="updateWorkoutName($event.detail.value || '')"
+            ></ion-input>
+          </ion-item>
+        </div>
+
+        <div class="editor-section">
+          <div class="section-header">
+            <h3>Exercises</h3>
+            <ion-button size="small" (click)="addExercise()">
+              <ion-icon slot="start" name="add"></ion-icon>
+              Add Exercise
+            </ion-button>
+          </div>
+
+          @if (dayBuilder.workout?.exercises?.length === 0) {
+            <div class="empty-exercises">
+              <ion-icon name="barbell-outline" class="empty-icon"></ion-icon>
+              <p>No exercises yet</p>
+              <ion-button fill="outline" (click)="addExercise()">
+                <ion-icon slot="start" name="add"></ion-icon>
+                Add First Exercise
+              </ion-button>
+            </div>
+          } @else {
+            <div class="exercises-list">
+              @for (exercise of dayBuilder.workout?.exercises || []; track $index) {
+                <ion-card class="exercise-editor-card">
+                  <ion-card-content>
+                    <div class="exercise-header">
+                      <span class="exercise-number">{{ $index + 1 }}</span>
+                      <div class="exercise-actions">
+                        <ion-button
+                          fill="clear"
+                          size="small"
+                          (click)="moveExercise($index, 'up')"
+                          [disabled]="$index === 0"
+                        >
+                          <ion-icon slot="icon-only" name="arrow-up-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button
+                          fill="clear"
+                          size="small"
+                          (click)="moveExercise($index, 'down')"
+                          [disabled]="$index === (dayBuilder.workout?.exercises?.length || 0) - 1"
+                        >
+                          <ion-icon slot="icon-only" name="arrow-down-outline"></ion-icon>
+                        </ion-button>
+                        <ion-button
+                          fill="clear"
+                          size="small"
+                          color="danger"
+                          (click)="removeExercise($index)"
+                        >
+                          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                        </ion-button>
+                      </div>
+                    </div>
+
+                    <ion-item>
+                      <ion-input
+                        label="Exercise Name"
+                        labelPlacement="stacked"
+                        placeholder="e.g., Bench Press"
+                        [value]="exercise.name"
+                        (ionInput)="updateExercise($index, 'name', $event.detail.value)"
+                      ></ion-input>
+                    </ion-item>
+
+                    <div class="exercise-specs">
+                      <ion-item>
+                        <ion-input
+                          label="Sets"
+                          labelPlacement="stacked"
+                          type="number"
+                          [value]="exercise.sets"
+                          (ionInput)="updateExercise($index, 'sets', +$event.detail.value!)"
+                        ></ion-input>
+                      </ion-item>
+
+                      <ion-item>
+                        <ion-input
+                          label="Reps"
+                          labelPlacement="stacked"
+                          type="number"
+                          [value]="exercise.reps"
+                          (ionInput)="updateExercise($index, 'reps', +$event.detail.value!)"
+                        ></ion-input>
+                      </ion-item>
+
+                      <ion-item>
+                        <ion-input
+                          label="Weight"
+                          labelPlacement="stacked"
+                          type="number"
+                          [value]="exercise.weight"
+                          (ionInput)="updateExercise($index, 'weight', +$event.detail.value!)"
+                        ></ion-input>
+                      </ion-item>
+
+                      <ion-item>
+                        <ion-select
+                          label="Unit"
+                          labelPlacement="stacked"
+                          [value]="exercise.weight_unit"
+                          (ionChange)="updateExercise($index, 'weight_unit', $event.detail.value)"
+                        >
+                          <ion-select-option value="lbs">lbs</ion-select-option>
+                          <ion-select-option value="kg">kg</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+                  </ion-card-content>
+                </ion-card>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</ion-content>

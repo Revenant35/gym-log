@@ -1,0 +1,95 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/schedules"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ scheduleItem().name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button [routerLink]="['/schedule/edit', scheduleItem().id]">
+        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="schedule-detail-container">
+    <!-- Schedule Header -->
+    <div class="schedule-header">
+      <div class="header-content">
+        <h2 class="schedule-name">{{ scheduleItem().name }}</h2>
+        @if (scheduleItem().isActive) {
+          <ion-badge color="primary">Active Schedule</ion-badge>
+        }
+      </div>
+      @if (!scheduleItem().isActive) {
+        <ion-button expand="block" (click)="setActive()">
+          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+          Set as Active
+        </ion-button>
+      }
+    </div>
+
+    <!-- Week Overview -->
+    <div class="week-overview">
+      @for (dayInfo of weekDays(); track dayInfo.day) {
+        <div class="day-card" [class.has-workout]="dayInfo.workout" [class.expanded]="dayInfo.isExpanded">
+          <button class="day-header" (click)="toggleDay(dayInfo.day)">
+            <div class="day-header-content">
+              <div class="day-info">
+                <h3 class="day-name">{{ dayInfo.dayName }}</h3>
+                @if (dayInfo.workout) {
+                  <p class="workout-name">{{ dayInfo.workout.name }}</p>
+                  <p class="exercise-count">{{ dayInfo.workout.exercises.length }} exercises</p>
+                } @else {
+                  <p class="rest-day-label">Rest Day</p>
+                }
+              </div>
+              @if (dayInfo.workout) {
+                <ion-icon
+                  [name]="dayInfo.isExpanded ? 'chevron-up-outline' : 'chevron-down-outline'"
+                  class="expand-icon"
+                ></ion-icon>
+              }
+            </div>
+          </button>
+
+          @if (dayInfo.workout && dayInfo.isExpanded) {
+            <div class="day-exercises">
+              @for (exercise of dayInfo.workout.exercises; track $index) {
+                <div class="exercise-item">
+                  <div class="exercise-number">{{ $index + 1 }}</div>
+                  <div class="exercise-details">
+                    <h4 class="exercise-name">{{ exercise.name }}</h4>
+                    <p class="exercise-specs">
+                      {{
+                        formatExerciseDetails(
+                          exercise.sets,
+                          exercise.reps,
+                          exercise.weight,
+                          exercise.weight_unit
+                        )
+                      }}
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <ion-button expand="block" fill="outline" [routerLink]="['/schedule/edit', scheduleItem().id]">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Edit Schedule
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="medium">
+        <ion-icon slot="start" name="copy-outline"></ion-icon>
+        Duplicate Schedule
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
