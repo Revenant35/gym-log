@@ -2,7 +2,7 @@ import {Component, inject, signal} from '@angular/core';
 import {IonicModule, ModalController} from "@ionic/angular";
 import {SetModal} from '../../components/set-modal/set-modal';
 import {UserPreferencesRepo} from '../../repos/user-preferences-repo';
-import {SessionSet, Session, DeepPartial} from '../../models';
+import {SessionSet, Session} from '../../models';
 import {isSessionSet} from '../../type-guards';
 import {DatePipe} from '@angular/common';
 
@@ -84,7 +84,9 @@ export class SessionScreen {
   async openCreateSetModal(exerciseIndex: number) {
     let createdSet = await this.openSetModal(`New Set`, {
       type: 'NORMAL',
-      weight_unit: this.userPreferencesRepo.weightUnit()
+      weight_unit: this.userPreferencesRepo.weightUnit(),
+      did_fail: false,
+      created_at: new Date()
     });
 
     if (!createdSet) {
@@ -94,7 +96,9 @@ export class SessionScreen {
     this.session.update((session) => {
       session.exercises[exerciseIndex].sets.push(createdSet);
 
-      return session;
+      return {
+        ...session
+      };
     })
   }
 
@@ -106,7 +110,9 @@ export class SessionScreen {
 
     this.session.update((session) => {
       session.exercises[exerciseIndex].sets[setIndex] = updatedSet;
-      return session;
+      return {
+        ...session
+      };
     })
   }
 
@@ -114,14 +120,18 @@ export class SessionScreen {
     this.session.update((session) => {
       const sets = session.exercises[exerciseIndex].sets
       sets.splice(setIndex, 0, sets[setIndex]);
-      return session;
+      return {
+        ...session
+      };
     })
   }
 
   async deleteSet(exerciseIndex: number, setIndex: number) {
     this.session.update((session) => {
       session.exercises[exerciseIndex].sets.splice(setIndex, 1);
-      return session;
+      return {
+        ...session
+      };
     })
   }
 
@@ -131,7 +141,9 @@ export class SessionScreen {
       component: SetModal,
       componentProps: {
         name: name,
-        set: set,
+        set: {
+          ...set
+        },
       }
     });
 
