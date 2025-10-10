@@ -1,6 +1,6 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import {IonicModule, SegmentChangeEventDetail} from '@ionic/angular';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek, DAYS_OF_WEEK, WeightUnit } from '../../models';
 
@@ -11,15 +11,25 @@ interface DayBuilder {
   workout?: ScheduleDay;
 }
 
+interface ScheduleItem {
+  id: string;
+  name: string;
+  schedule: Schedule;
+  isActive: boolean;
+}
+
 @Component({
   selector: 'app-schedule-builder-screen',
   imports: [IonicModule, FormsModule],
   templateUrl: './schedule-builder-screen.html',
   styleUrl: './schedule-builder-screen.scss',
 })
-export class ScheduleBuilderScreen {
-  private readonly router = Router;
+export class ScheduleBuilderScreen implements OnInit {
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
+  readonly scheduleId = signal<string | null>(null);
+  readonly isEditMode = computed(() => !!this.scheduleId());
   readonly scheduleName = signal<string>('');
   readonly currentStep = signal<'info' | 'days'>('info');
   readonly selectedDay = signal<DayOfWeek | null>(null);
@@ -40,6 +50,75 @@ export class ScheduleBuilderScreen {
     if (!day) return null;
     return this.days().find((d) => d.day === day);
   });
+
+  // Mock data for editing - would normally fetch from service
+  private readonly mockSchedules: ScheduleItem[] = [
+    {
+      id: '1',
+      name: 'Push Pull Legs',
+      isActive: true,
+      schedule: {
+        days: {
+          monday: {
+            name: 'Push Day',
+            exercises: [
+              { name: 'Bench Press', sets: 4, reps: 8, weight: 185, weight_unit: 'LB' },
+              { name: 'Overhead Press', sets: 3, reps: 10, weight: 95, weight_unit: 'LB' },
+              { name: 'Incline Dumbbell Press', sets: 3, reps: 12, weight: 60, weight_unit: 'LB' },
+              { name: 'Tricep Dips', sets: 3, reps: 12, weight: 0, weight_unit: 'LB' },
+            ],
+          },
+          wednesday: {
+            name: 'Pull Day',
+            exercises: [
+              { name: 'Deadlift', sets: 4, reps: 6, weight: 275, weight_unit: 'LB' },
+              { name: 'Pull-ups', sets: 3, reps: 10, weight: 0, weight_unit: 'LB' },
+              { name: 'Barbell Rows', sets: 3, reps: 10, weight: 135, weight_unit: 'LB' },
+              { name: 'Face Pulls', sets: 3, reps: 15, weight: 40, weight_unit: 'LB' },
+            ],
+          },
+          friday: {
+            name: 'Leg Day',
+            exercises: [
+              { name: 'Squat', sets: 4, reps: 8, weight: 225, weight_unit: 'LB' },
+              { name: 'Romanian Deadlift', sets: 3, reps: 10, weight: 185, weight_unit: 'LB' },
+              { name: 'Leg Press', sets: 3, reps: 12, weight: 360, weight_unit: 'LB' },
+              { name: 'Leg Curls', sets: 3, reps: 12, weight: 90, weight_unit: 'LB' },
+            ],
+          },
+        },
+      },
+    },
+  ];
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.scheduleId.set(id);
+      this.loadSchedule(id);
+    }
+  }
+
+  private loadSchedule(id: string): void {
+    // Mock loading - would normally fetch from service
+    const scheduleItem = this.mockSchedules.find((s) => s.id === id);
+    if (!scheduleItem) return;
+
+    this.scheduleName.set(scheduleItem.name);
+
+    // Convert schedule to day builders
+    const newDays = DAYS_OF_WEEK.map((day) => {
+      const workout = scheduleItem.schedule.days[day];
+      return {
+        day,
+        dayName: day.charAt(0).toUpperCase() + day.slice(1),
+        isSelected: !!workout,
+        workout: workout ? { ...workout } : undefined,
+      };
+    });
+
+    this.days.set(newDays);
+  }
 
   toggleDay(day: DayOfWeek): void {
     this.days.update((days) =>

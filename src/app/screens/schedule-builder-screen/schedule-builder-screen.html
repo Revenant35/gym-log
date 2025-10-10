@@ -12,6 +12,8 @@
     <ion-title>
       @if (selectedDay()) {
         {{ currentDayBuilder()?.dayName }}
+      } @else if (isEditMode()) {
+        Edit Schedule
       } @else {
         Create Schedule
       }
@@ -223,8 +225,8 @@
                           [value]="exercise.weight_unit"
                           (ionChange)="updateExercise($index, 'weight_unit', $event.detail.value)"
                         >
-                          <ion-select-option value="lbs">lbs</ion-select-option>
-                          <ion-select-option value="kg">kg</ion-select-option>
+                          <ion-select-option value="LB">lbs</ion-select-option>
+                          <ion-select-option value="KG">kg</ion-select-option>
                         </ion-select>
                       </ion-item>
                     </div>
