@@ -28,6 +28,8 @@ import {
   closeOutline,
   checkmarkOutline,
   addOutline,
+  alertCircleOutline,
+  refreshOutline,
 } from 'ionicons/icons';
 import {IonicModule} from '@ionic/angular';
 import {RouterOutlet} from '@angular/router';
@@ -73,6 +75,8 @@ export class App {
       closeOutline,
       checkmarkOutline,
       addOutline,
+      alertCircleOutline,
+      refreshOutline,
     });
   }
 }
