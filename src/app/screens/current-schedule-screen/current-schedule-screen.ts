@@ -4,15 +4,18 @@ import { RouterLink } from '@angular/router';
 import { Schedule, ScheduleDay, DayOfWeek, DAYS_OF_WEEK } from '../../models';
 import { TitleCasePipe } from '@angular/common';
 import { ScheduleService } from '../../services/schedule.service';
+import {ScheduleDayOfWeekPicker} from '../../components/day-of-week-picker/schedule-day-of-week-picker.component';
+import {DateProvider} from '../../services/date-provider';
 
 @Component({
   selector: 'app-current-schedule-screen',
-  imports: [IonicModule, RouterLink, TitleCasePipe],
+  imports: [IonicModule, RouterLink, TitleCasePipe, ScheduleDayOfWeekPicker],
   templateUrl: './current-schedule-screen.html',
   styleUrl: './current-schedule-screen.scss',
 })
 export class CurrentScheduleScreen implements OnInit {
   private readonly scheduleService = inject(ScheduleService);
+  private readonly dateProvider = inject(DateProvider);
 
   // Mock data - current active schedule (fallback)
   private readonly mockSchedule: Schedule = {
@@ -48,10 +51,8 @@ export class CurrentScheduleScreen implements OnInit {
   };
 
   readonly schedule = signal<Schedule>(this.mockSchedule);
-  readonly selectedDayIndex = signal<number>(this.getTodayIndex());
+  readonly selectedDay = signal<DayOfWeek>(this.dateProvider.dayOfWeek());
   readonly isLoading = signal<boolean>(true);
-
-  readonly daysOfWeek = DAYS_OF_WEEK;
 
   async ngOnInit(): Promise<void> {
     await this.loadActiveSchedule();
@@ -61,7 +62,7 @@ export class CurrentScheduleScreen implements OnInit {
     this.isLoading.set(true);
     try {
       const activeSchedule = await this.scheduleService.getActiveSchedule();
-      
+
       if (activeSchedule) {
         const schedule = this.scheduleService.convertToSchedule(activeSchedule);
         this.schedule.set(schedule);
@@ -78,42 +79,62 @@ export class CurrentScheduleScreen implements OnInit {
     }
   }
 
-  readonly selectedDay = computed<DayOfWeek>(() => {
-    return this.daysOfWeek[this.selectedDayIndex()];
-  });
-
   readonly selectedDayWorkout = computed<ScheduleDay | undefined>(() => {
     return this.schedule().days[this.selectedDay()];
   });
 
-  readonly dayIndicators = computed(() => {
-    return this.daysOfWeek.map((day, index) => ({
-      day,
-      label: day.substring(0, 1).toUpperCase(),
-      hasWorkout: !!this.schedule().days[day],
-      isToday: index === this.getTodayIndex(),
-      isSelected: index === this.selectedDayIndex(),
-    }));
-  });
-
-  selectDay(index: number): void {
-    this.selectedDayIndex.set(index);
-  }
-
   previousDay(): void {
-    const current = this.selectedDayIndex();
-    this.selectedDayIndex.set(current === 0 ? 6 : current - 1);
+    switch (this.selectedDay()) {
+      case "monday":
+        this.selectedDay.set("sunday");
+        break;
+      case "tuesday":
+        this.selectedDay.set("monday");
+        break;
+      case "wednesday":
+        this.selectedDay.set("tuesday");
+        break;
+      case "thursday":
+        this.selectedDay.set("wednesday");
+        break;
+      case "friday":
+        this.selectedDay.set("thursday");
+        break;
+      case "saturday":
+        this.selectedDay.set("friday");
+        break;
+      case "sunday":
+        this.selectedDay.set("saturday");
+        break;
+
+    }
   }
 
   nextDay(): void {
-    const current = this.selectedDayIndex();
-    this.selectedDayIndex.set(current === 6 ? 0 : current + 1);
-  }
+    switch (this.selectedDay()) {
+      case "monday":
+        this.selectedDay.set("tuesday");
+        break;
+      case "tuesday":
+        this.selectedDay.set("wednesday");
+        break;
+      case "wednesday":
+        this.selectedDay.set("thursday");
+        break;
+      case "thursday":
+        this.selectedDay.set("friday");
+        break;
+      case "friday":
+        this.selectedDay.set("saturday");
+        break;
+      case "saturday":
+        this.selectedDay.set("sunday");
+        break;
+      case "sunday":
+        this.selectedDay.set("monday");
+        break;
 
-  private getTodayIndex(): number {
-    const today = new Date().getDay();
-    // Convert Sunday (0) to 6, and shift others down by 1
-    return today === 0 ? 6 : today - 1;
+    }
   }
 
   formatExerciseDetails(sets: number, reps: number, weight: number, unit: string): string {
