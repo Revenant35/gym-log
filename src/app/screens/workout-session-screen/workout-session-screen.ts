@@ -2,27 +2,16 @@ import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {IonicModule} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {FormsModule} from '@angular/forms';
-import {DayOfWeek, ScheduleDay, ScheduleExercise} from '../../models';
+import {DayOfWeek, ScheduleDay} from '../../models';
 import {WorkoutSessionService} from '../../services/workout-session.service';
 import {ScheduleService} from '../../services/schedule.service';
 import {WorkoutSessionProgressBar} from '../../components/workout-session-progress-bar/workout-session-progress-bar';
-
-interface WorkoutSet {
-  reps: number;
-  weight: number;
-  completed: boolean;
-}
-
-interface ExerciseLog {
-  exercise: ScheduleExercise;
-  sets: WorkoutSet[];
-  currentSetIndex: number;
-  isExpanded: boolean;
-}
+import {ExerciseLoggingCard} from '../../components/exercise-logging-card/exercise-logging-card';
+import {ExerciseLog} from '../../models';
 
 @Component({
   selector: 'app-workout-session-screen',
-  imports: [IonicModule, FormsModule, WorkoutSessionProgressBar],
+  imports: [IonicModule, FormsModule, WorkoutSessionProgressBar, ExerciseLoggingCard],
   templateUrl: './workout-session-screen.html',
   styleUrl: './workout-session-screen.scss',
 })
@@ -71,23 +60,6 @@ export class WorkoutSessionScreen implements OnInit {
     const diff = now.getTime() - this.startTime().getTime();
     return Math.floor(diff / 60000);
   });
-
-  // Helper methods for template
-  isExerciseComplete(log: ExerciseLog): boolean {
-    return log.sets.every(set => set.completed);
-  }
-
-  getCompletedSetsCount(log: ExerciseLog): number {
-    return log.sets.filter(set => set.completed).length;
-  }
-
-  getSetProgressValue(log: ExerciseLog): number {
-    return this.getCompletedSetsCount(log) / log.sets.length;
-  }
-
-  getProgressColor(log: ExerciseLog): string {
-    return this.isExerciseComplete(log) ? 'success' : 'primary';
-  }
 
   async ngOnInit(): Promise<void> {
     await this.loadWorkout();
@@ -164,125 +136,15 @@ export class WorkoutSessionScreen implements OnInit {
     this.exerciseLogs.set(logs);
   }
 
-  toggleExercise(index: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === index ? { ...log, isExpanded: !log.isExpanded } : log
-      )
-    );
-  }
-
-  updateSet(exerciseIndex: number, setIndex: number, field: 'reps' | 'weight', value: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === exerciseIndex
-          ? {
-              ...log,
-              sets: log.sets.map((set, j) =>
-                j === setIndex ? { ...set, [field]: value } : set
-              ),
-            }
-          : log
-      )
-    );
-  }
-
-  completeSet(exerciseIndex: number, setIndex: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === exerciseIndex
-          ? {
-              ...log,
-              sets: log.sets.map((set, j) =>
-                j === setIndex ? { ...set, completed: true } : set
-              ),
-              currentSetIndex: Math.min(setIndex + 1, log.sets.length - 1),
-            }
-          : log
-      )
-    );
-
-    // Check if all sets of current exercise are now complete
-    const currentLog = this.exerciseLogs()[exerciseIndex];
-    const allSetsComplete = currentLog.sets.every(set => set.completed);
-
-    if (allSetsComplete) {
-      // Collapse the current exercise
-      this.exerciseLogs.update(logs =>
-        logs.map((log, i) =>
-          i === exerciseIndex ? { ...log, isExpanded: false } : log
-        )
-      );
-
-      // Check if this was the last exercise
-      const allExercisesComplete = this.exerciseLogs().every(log =>
-        log.sets.every(set => set.completed)
-      );
-
-      if (allExercisesComplete) {
-        // Auto-complete the workout
-        this.completeWorkout();
-      } else if (exerciseIndex < this.exerciseLogs().length - 1) {
-        // Expand next exercise if there is one
-        this.exerciseLogs.update(logs =>
-          logs.map((log, i) =>
-            i === exerciseIndex + 1 ? { ...log, isExpanded: true } : log
-          )
-        );
-      }
-    }
-  }
-
-  uncompleteSet(exerciseIndex: number, setIndex: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === exerciseIndex
-          ? {
-              ...log,
-              sets: log.sets.map((set, j) =>
-                j === setIndex ? { ...set, completed: false } : set
-              ),
-            }
-          : log
-      )
-    );
-  }
-
-  addSet(exerciseIndex: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === exerciseIndex
-          ? {
-              ...log,
-              sets: [
-                ...log.sets,
-                {
-                  reps: log.exercise.reps,
-                  weight: log.exercise.weight,
-                  completed: false,
-                },
-              ],
-            }
-          : log
-      )
-    );
-  }
-
-  removeSet(exerciseIndex: number, setIndex: number): void {
-    this.exerciseLogs.update(logs =>
-      logs.map((log, i) =>
-        i === exerciseIndex && log.sets.length > 1
-          ? {
-              ...log,
-              sets: log.sets.filter((_, j) => j !== setIndex),
-            }
-          : log
-      )
-    );
-  }
-
   canCompleteWorkout(): boolean {
     return this.completedSets() > 0;
+  }
+
+  updateLog(logIndex: number, updatedLog: ExerciseLog): void {
+    this.exerciseLogs.update(logs => {
+      logs[logIndex] = updatedLog;
+      return [...logs];
+    });
   }
 
   async completeWorkout(): Promise<void> {
