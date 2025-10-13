@@ -1,15 +1,15 @@
 import { Component, computed, signal, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
-import { Schedule, ScheduleDay, DayOfWeek, DAYS_OF_WEEK } from '../../models';
-import { TitleCasePipe } from '@angular/common';
+import { Schedule, ScheduleDay, DayOfWeek } from '../../models';
 import { ScheduleService } from '../../services/schedule.service';
 import {ScheduleDayOfWeekPicker} from '../../components/day-of-week-picker/schedule-day-of-week-picker.component';
 import {DateProvider} from '../../services/date-provider';
+import {DayOfWeekNavigator} from '../../components/day-of-week-navigator/day-of-week-navigator';
 
 @Component({
   selector: 'app-current-schedule-screen',
-  imports: [IonicModule, RouterLink, TitleCasePipe, ScheduleDayOfWeekPicker],
+  imports: [IonicModule, RouterLink, ScheduleDayOfWeekPicker, DayOfWeekNavigator],
   templateUrl: './current-schedule-screen.html',
   styleUrl: './current-schedule-screen.scss',
 })
@@ -82,60 +82,6 @@ export class CurrentScheduleScreen implements OnInit {
   readonly selectedDayWorkout = computed<ScheduleDay | undefined>(() => {
     return this.schedule().days[this.selectedDay()];
   });
-
-  previousDay(): void {
-    switch (this.selectedDay()) {
-      case "monday":
-        this.selectedDay.set("sunday");
-        break;
-      case "tuesday":
-        this.selectedDay.set("monday");
-        break;
-      case "wednesday":
-        this.selectedDay.set("tuesday");
-        break;
-      case "thursday":
-        this.selectedDay.set("wednesday");
-        break;
-      case "friday":
-        this.selectedDay.set("thursday");
-        break;
-      case "saturday":
-        this.selectedDay.set("friday");
-        break;
-      case "sunday":
-        this.selectedDay.set("saturday");
-        break;
-
-    }
-  }
-
-  nextDay(): void {
-    switch (this.selectedDay()) {
-      case "monday":
-        this.selectedDay.set("tuesday");
-        break;
-      case "tuesday":
-        this.selectedDay.set("wednesday");
-        break;
-      case "wednesday":
-        this.selectedDay.set("thursday");
-        break;
-      case "thursday":
-        this.selectedDay.set("friday");
-        break;
-      case "friday":
-        this.selectedDay.set("saturday");
-        break;
-      case "saturday":
-        this.selectedDay.set("sunday");
-        break;
-      case "sunday":
-        this.selectedDay.set("monday");
-        break;
-
-    }
-  }
 
   formatExerciseDetails(sets: number, reps: number, weight: number, unit: string): string {
     const weightStr = weight > 0 ? ` @ ${weight} ${unit}` : '';
