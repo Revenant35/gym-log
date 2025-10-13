@@ -1,0 +1,184 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelWorkout()">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ workoutName() }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="completeWorkout()" [disabled]="!canCompleteWorkout()">
+        <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+  <!-- Progress Bar -->
+  <div class="progress-header">
+    <div class="progress-stats">
+      <div class="stat">
+        <span class="stat-value">{{ completedExercises() }}/{{ totalExercises() }}</span>
+        <span class="stat-label">Exercises</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ completedSets() }}/{{ totalSets() }}</span>
+        <span class="stat-label">Sets</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ workoutDuration() }}m</span>
+        <span class="stat-label">Duration</span>
+      </div>
+    </div>
+    <ion-progress-bar 
+      [value]="totalSets() > 0 ? completedSets() / totalSets() : 0"
+      color="primary"
+    ></ion-progress-bar>
+  </div>
+</ion-header>
+
+<ion-content>
+  @if (isWorkoutComplete()) {
+    <div class="workout-complete">
+      <ion-icon name="checkmark-circle" color="success" class="complete-icon"></ion-icon>
+      <h2>Workout Complete!</h2>
+      <p>Great job! Your workout has been logged.</p>
+    </div>
+  } @else {
+    <div class="session-container">
+      @for (log of exerciseLogs(); track exerciseIdx; let exerciseIdx = $index) {
+        <ion-card class="exercise-card" [class.completed]="isExerciseComplete(log)">
+          <ion-card-header (click)="toggleExercise(exerciseIdx)">
+            <div class="exercise-header">
+              <div class="exercise-info">
+                <div class="exercise-title-row">
+                  <h3 class="exercise-name">{{ log.exercise.name }}</h3>
+                  @if (isExerciseComplete(log)) {
+                    <ion-icon name="checkmark-circle" color="success"></ion-icon>
+                  }
+                </div>
+                <p class="exercise-target">
+                  {{ log.exercise.sets }} × {{ log.exercise.reps }}
+                  @if (log.exercise.weight > 0) {
+                    <span> @ {{ log.exercise.weight }} {{ log.exercise.weight_unit }}</span>
+                  }
+                </p>
+                <div class="set-progress">
+                  <ion-progress-bar 
+                    [value]="getSetProgressValue(log)"
+                    [color]="getProgressColor(log)"
+                  ></ion-progress-bar>
+                  <span class="progress-text">
+                    {{ getCompletedSetsCount(log) }}/{{ log.sets.length }} sets
+                  </span>
+                </div>
+              </div>
+              <ion-icon 
+                [name]="log.isExpanded ? 'chevron-up-outline' : 'chevron-down-outline'"
+                class="expand-icon"
+              ></ion-icon>
+            </div>
+          </ion-card-header>
+
+          @if (log.isExpanded) {
+            <ion-card-content>
+              <div class="sets-list">
+                @for (set of log.sets; track setIdx; let setIdx = $index) {
+                  <div class="set-row" [class.completed]="set.completed">
+                    <div class="set-number">{{ setIdx + 1 }}</div>
+                    
+                    <div class="set-inputs">
+                      <div class="input-group">
+                        <label>Reps</label>
+                        <ion-input
+                          type="number"
+                          [value]="set.reps"
+                          (ionInput)="updateSet(exerciseIdx, setIdx, 'reps', +$event.detail.value!)"
+                          [disabled]="set.completed"
+                        ></ion-input>
+                      </div>
+
+                      @if (log.exercise.weight > 0) {
+                        <div class="input-group">
+                          <label>Weight</label>
+                          <div class="weight-input">
+                            <ion-input
+                              type="number"
+                              [value]="set.weight"
+                              (ionInput)="updateSet(exerciseIdx, setIdx, 'weight', +$event.detail.value!)"
+                              [disabled]="set.completed"
+                            ></ion-input>
+                            <span class="unit">{{ log.exercise.weight_unit }}</span>
+                          </div>
+                        </div>
+                      }
+                    </div>
+
+                    <div class="set-actions">
+                      @if (!set.completed) {
+                        <ion-button 
+                          fill="solid" 
+                          color="primary"
+                          size="small"
+                          (click)="completeSet(exerciseIdx, setIdx)"
+                        >
+                          <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+                        </ion-button>
+                      } @else {
+                        <ion-button 
+                          fill="outline" 
+                          color="success"
+                          size="small"
+                          (click)="uncompleteSet(exerciseIdx, setIdx)"
+                        >
+                          <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
+                        </ion-button>
+                      }
+                      
+                      @if (log.sets.length > 1) {
+                        <ion-button 
+                          fill="clear" 
+                          color="danger"
+                          size="small"
+                          (click)="removeSet(exerciseIdx, setIdx)"
+                        >
+                          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+                        </ion-button>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <ion-button 
+                expand="block" 
+                fill="outline" 
+                size="small"
+                (click)="addSet(exerciseIdx)"
+                class="add-set-button"
+              >
+                <ion-icon slot="start" name="add-outline"></ion-icon>
+                Add Set
+              </ion-button>
+            </ion-card-content>
+          }
+        </ion-card>
+      }
+    </div>
+  }
+</ion-content>
+
+@if (!isWorkoutComplete()) {
+  <ion-footer>
+    <ion-toolbar>
+      <ion-button 
+        expand="block" 
+        size="large"
+        (click)="completeWorkout()"
+        [disabled]="!canCompleteWorkout()"
+      >
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Complete Workout
+      </ion-button>
+    </ion-toolbar>
+  </ion-footer>
+}

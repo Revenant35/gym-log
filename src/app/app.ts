@@ -25,6 +25,9 @@ import {
   checkmarkCircle,
   arrowUpOutline,
   arrowDownOutline,
+  closeOutline,
+  checkmarkOutline,
+  addOutline,
 } from 'ionicons/icons';
 import {IonicModule} from '@ionic/angular';
 import {RouterOutlet} from '@angular/router';
@@ -67,6 +70,9 @@ export class App {
       checkmarkCircle,
       arrowUpOutline,
       arrowDownOutline,
+      closeOutline,
+      checkmarkOutline,
+      addOutline,
     });
   }
 }

@@ -7,11 +7,6 @@ export const routes: Routes = [
     loadComponent: () => import('./screens/login-screen/login-screen').then((m) => m.LoginScreen),
   },
   {
-    path: 'session',
-    loadComponent: () => import('./screens/session-screen/session-screen').then((m) => m.SessionScreen),
-    canActivate: [isAuthenticatedGuard]
-  },
-  {
     path: 'exercises',
     loadComponent: () => import('./screens/exercise-search-screen/exercise-search-screen').then((m) => m.ExerciseSearchScreen),
     canActivate: [isAuthenticatedGuard]
@@ -34,6 +29,11 @@ export const routes: Routes = [
   {
     path: 'schedule',
     loadComponent: () => import('./screens/current-schedule-screen/current-schedule-screen').then((m) => m.CurrentScheduleScreen),
+    canActivate: [isAuthenticatedGuard]
+  },
+  {
+    path: 'workout',
+    loadComponent: () => import('./screens/workout-session-screen/workout-session-screen').then((m) => m.WorkoutSessionScreen),
     canActivate: [isAuthenticatedGuard]
   },
   {
