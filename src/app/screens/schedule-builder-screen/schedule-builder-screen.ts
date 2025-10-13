@@ -1,8 +1,9 @@
 import { Component, signal, computed, inject, OnInit } from '@angular/core';
-import {IonicModule, SegmentChangeEventDetail} from '@ionic/angular';
+import { IonicModule, SegmentChangeEventDetail } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek, DAYS_OF_WEEK, WeightUnit } from '../../models';
+import { ScheduleService } from '../../services/schedule.service';
 
 interface DayBuilder {
   day: DayOfWeek;
@@ -27,12 +28,14 @@ interface ScheduleItem {
 export class ScheduleBuilderScreen implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly scheduleService = inject(ScheduleService);
 
   readonly scheduleId = signal<string | null>(null);
   readonly isEditMode = computed(() => !!this.scheduleId());
   readonly scheduleName = signal<string>('');
   readonly currentStep = signal<'info' | 'days'>('info');
   readonly selectedDay = signal<DayOfWeek | null>(null);
+  readonly isSaving = signal<boolean>(false);
 
   readonly days = signal<DayBuilder[]>(
     DAYS_OF_WEEK.map((day) => ({
@@ -91,33 +94,38 @@ export class ScheduleBuilderScreen implements OnInit {
     },
   ];
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.scheduleId.set(id);
-      this.loadSchedule(id);
+      await this.loadSchedule(id);
     }
   }
 
-  private loadSchedule(id: string): void {
-    // Mock loading - would normally fetch from service
-    const scheduleItem = this.mockSchedules.find((s) => s.id === id);
-    if (!scheduleItem) return;
+  private async loadSchedule(id: string): Promise<void> {
+    try {
+      const scheduleWithDetails = await this.scheduleService.getSchedule(id);
+      const schedule = this.scheduleService.convertToSchedule(scheduleWithDetails);
 
-    this.scheduleName.set(scheduleItem.name);
+      this.scheduleName.set(scheduleWithDetails.name);
 
-    // Convert schedule to day builders
-    const newDays = DAYS_OF_WEEK.map((day) => {
-      const workout = scheduleItem.schedule.days[day];
-      return {
-        day,
-        dayName: day.charAt(0).toUpperCase() + day.slice(1),
-        isSelected: !!workout,
-        workout: workout ? { ...workout } : undefined,
-      };
-    });
+      // Convert schedule to day builders
+      const newDays = DAYS_OF_WEEK.map((day) => {
+        const workout = schedule.days[day];
+        return {
+          day,
+          dayName: day.charAt(0).toUpperCase() + day.slice(1),
+          isSelected: !!workout,
+          workout: workout ? { ...workout } : undefined,
+        };
+      });
 
-    this.days.set(newDays);
+      this.days.set(newDays);
+    } catch (error) {
+      console.error('Error loading schedule:', error);
+      alert('Failed to load schedule. Please try again.');
+      this.router.navigate(['/schedules']);
+    }
   }
 
   toggleDay(day: DayOfWeek): void {
@@ -274,26 +282,42 @@ export class ScheduleBuilderScreen implements OnInit {
     );
   }
 
-  saveSchedule(): void {
-    if (!this.canSave()) return;
+  async saveSchedule(): Promise<void> {
+    if (!this.canSave() || this.isSaving()) return;
 
-    const schedule: Schedule = {
-      days: {},
-    };
+    this.isSaving.set(true);
 
-    this.selectedDays().forEach((d) => {
-      if (d.workout) {
-        schedule.days[d.day] = d.workout;
+    try {
+      const schedule: Schedule = {
+        days: {},
+      };
+
+      this.selectedDays().forEach((d) => {
+        if (d.workout) {
+          schedule.days[d.day] = d.workout;
+        }
+      });
+
+      const name = this.scheduleName();
+      const scheduleId = this.scheduleId();
+
+      if (scheduleId) {
+        // Update existing schedule
+        await this.scheduleService.updateSchedule(scheduleId, name, schedule);
+        console.log('Schedule updated successfully!');
+      } else {
+        // Create new schedule
+        await this.scheduleService.createSchedule(name, schedule, false);
+        console.log('Schedule created successfully!');
       }
-    });
 
-    console.log('Saving schedule:', {
-      name: this.scheduleName(),
-      schedule,
-    });
-
-    // Would normally save to service/backend here
-    // For now, just navigate back
-    // this.router.navigate(['/schedules']);
+      // Navigate back to schedules
+      this.router.navigate(['/schedules']);
+    } catch (error) {
+      console.error('Error saving schedule:', error);
+      alert('Failed to save schedule. Please try again.');
+    } finally {
+      this.isSaving.set(false);
+    }
   }
 }

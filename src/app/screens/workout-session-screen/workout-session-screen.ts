@@ -3,6 +3,8 @@ import { IonicModule } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ScheduleDay, ScheduleExercise, DayOfWeek, WeightUnit } from '../../models';
+import { WorkoutSessionService } from '../../services/workout-session.service';
+import { ScheduleService } from '../../services/schedule.service';
 
 interface WorkoutSet {
   reps: number;
@@ -26,12 +28,18 @@ interface ExerciseLog {
 export class WorkoutSessionScreen implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly workoutSessionService = inject(WorkoutSessionService);
+  private readonly scheduleService = inject(ScheduleService);
 
   readonly workoutName = signal<string>('');
   readonly dayOfWeek = signal<DayOfWeek | null>(null);
   readonly exerciseLogs = signal<ExerciseLog[]>([]);
   readonly startTime = signal<Date>(new Date());
   readonly isWorkoutComplete = signal<boolean>(false);
+  readonly isSaving = signal<boolean>(false);
+  
+  private scheduleId?: string;
+  private scheduleDayId?: string;
 
   // Mock workout data - would normally come from active schedule
   private readonly mockWorkout: ScheduleDay = {
@@ -82,12 +90,65 @@ export class WorkoutSessionScreen implements OnInit {
     return this.isExerciseComplete(log) ? 'success' : 'primary';
   }
 
-  ngOnInit(): void {
-    // Would normally load from route params or active schedule
-    this.loadWorkout();
+  async ngOnInit(): Promise<void> {
+    await this.loadWorkout();
   }
 
-  private loadWorkout(): void {
+  private async loadWorkout(): Promise<void> {
+    try {
+      // Try to load active schedule from Supabase
+      const activeSchedule = await this.scheduleService.getActiveSchedule();
+      
+      if (activeSchedule) {
+        // Get today's day of week
+        const today = new Date().getDay();
+        const dayNames: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const todayName = dayNames[today];
+        
+        // Find today's workout
+        const todayWorkout = activeSchedule.days.find(d => d.day_of_week === todayName);
+        
+        if (todayWorkout && todayWorkout.exercises.length > 0) {
+          this.scheduleId = activeSchedule.id;
+          this.scheduleDayId = todayWorkout.id;
+          this.workoutName.set(todayWorkout.name);
+          this.dayOfWeek.set(todayName);
+          
+          // Convert schedule exercises to workout format
+          const logs: ExerciseLog[] = todayWorkout.exercises
+            .sort((a, b) => a.exercise_index - b.exercise_index)
+            .map((scheduleEx, index) => ({
+              exercise: {
+                name: scheduleEx.exercise.name,
+                sets: scheduleEx.sets,
+                reps: scheduleEx.reps,
+                weight: scheduleEx.weight,
+                weight_unit: scheduleEx.weight_unit,
+              },
+              sets: Array.from({ length: scheduleEx.sets }, () => ({
+                reps: scheduleEx.reps,
+                weight: scheduleEx.weight,
+                completed: false,
+              })),
+              currentSetIndex: 0,
+              isExpanded: index === 0,
+            }));
+          
+          this.exerciseLogs.set(logs);
+          return;
+        }
+      }
+      
+      // Fallback to mock data if no active schedule
+      this.loadMockWorkout();
+    } catch (error) {
+      console.error('Error loading workout:', error);
+      // Fallback to mock data on error
+      this.loadMockWorkout();
+    }
+  }
+
+  private loadMockWorkout(): void {
     this.workoutName.set(this.mockWorkout.name);
 
     const logs: ExerciseLog[] = this.mockWorkout.exercises.map((exercise, index) => ({
@@ -98,7 +159,7 @@ export class WorkoutSessionScreen implements OnInit {
         completed: false,
       })),
       currentSetIndex: 0,
-      isExpanded: index === 0, // Expand first exercise by default
+      isExpanded: index === 0,
     }));
 
     this.exerciseLogs.set(logs);
@@ -226,31 +287,46 @@ export class WorkoutSessionScreen implements OnInit {
   }
 
   async completeWorkout(): Promise<void> {
-    // Would normally save workout data here
-    const workoutData = {
-      workoutName: this.workoutName(),
-      startTime: this.startTime(),
-      endTime: new Date(),
-      duration: this.workoutDuration(),
-      exercises: this.exerciseLogs().map(log => ({
-        name: log.exercise.name,
-        sets: log.sets.map(set => ({
-          reps: set.reps,
-          weight: set.weight,
-          weight_unit: log.exercise.weight_unit,
-          completed: set.completed,
+    if (this.isSaving()) return;
+
+    this.isSaving.set(true);
+
+    try {
+      const workoutData = {
+        workoutName: this.workoutName(),
+        scheduleId: this.scheduleId,
+        scheduleDayId: this.scheduleDayId,
+        startTime: this.startTime(),
+        endTime: new Date(),
+        duration: this.workoutDuration(),
+        exercises: this.exerciseLogs().map(log => ({
+          name: log.exercise.name,
+          sets: log.sets.map(set => ({
+            reps: set.reps,
+            weight: set.weight,
+            weight_unit: log.exercise.weight_unit,
+            completed: set.completed,
+          })),
         })),
-      })),
-    };
+      };
 
-    console.log('Workout completed:', workoutData);
+      // Save to Supabase
+      const sessionId = await this.workoutSessionService.saveWorkoutSession(workoutData);
+      console.log('Workout saved successfully! Session ID:', sessionId);
 
-    this.isWorkoutComplete.set(true);
+      this.isWorkoutComplete.set(true);
 
-    // Navigate back to schedule after a brief delay
-    setTimeout(() => {
-      this.router.navigate(['/schedule']);
-    }, 2000);
+      // Navigate back to schedule after a brief delay
+      setTimeout(() => {
+        this.router.navigate(['/schedule']);
+      }, 2000);
+    } catch (error) {
+      console.error('Error saving workout:', error);
+      // Show error to user (you could add a toast notification here)
+      alert('Failed to save workout. Please try again.');
+    } finally {
+      this.isSaving.set(false);
+    }
   }
 
   async cancelWorkout(): Promise<void> {

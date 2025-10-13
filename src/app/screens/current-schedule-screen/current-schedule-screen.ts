@@ -1,8 +1,9 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { Schedule, ScheduleDay, DayOfWeek, DAYS_OF_WEEK } from '../../models';
-import {TitleCasePipe} from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
+import { ScheduleService } from '../../services/schedule.service';
 
 @Component({
   selector: 'app-current-schedule-screen',
@@ -10,8 +11,10 @@ import {TitleCasePipe} from '@angular/common';
   templateUrl: './current-schedule-screen.html',
   styleUrl: './current-schedule-screen.scss',
 })
-export class CurrentScheduleScreen {
-  // Mock data - current active schedule
+export class CurrentScheduleScreen implements OnInit {
+  private readonly scheduleService = inject(ScheduleService);
+
+  // Mock data - current active schedule (fallback)
   private readonly mockSchedule: Schedule = {
     days: {
       monday: {
@@ -46,8 +49,34 @@ export class CurrentScheduleScreen {
 
   readonly schedule = signal<Schedule>(this.mockSchedule);
   readonly selectedDayIndex = signal<number>(this.getTodayIndex());
+  readonly isLoading = signal<boolean>(true);
 
   readonly daysOfWeek = DAYS_OF_WEEK;
+
+  async ngOnInit(): Promise<void> {
+    await this.loadActiveSchedule();
+  }
+
+  private async loadActiveSchedule(): Promise<void> {
+    this.isLoading.set(true);
+    try {
+      const activeSchedule = await this.scheduleService.getActiveSchedule();
+      
+      if (activeSchedule) {
+        const schedule = this.scheduleService.convertToSchedule(activeSchedule);
+        this.schedule.set(schedule);
+      } else {
+        // Use mock data if no active schedule
+        this.schedule.set(this.mockSchedule);
+      }
+    } catch (error) {
+      console.error('Error loading active schedule:', error);
+      // Fallback to mock data on error
+      this.schedule.set(this.mockSchedule);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
 
   readonly selectedDay = computed<DayOfWeek>(() => {
     return this.daysOfWeek[this.selectedDayIndex()];

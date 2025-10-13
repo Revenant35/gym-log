@@ -48,7 +48,7 @@ export interface ScheduleWithDetails extends ScheduleRow {
 })
 export class ScheduleService {
   private readonly supabase = inject(SUPABASE);
-
+  
   readonly activeSchedule = signal<ScheduleWithDetails | null>(null);
   readonly schedules = signal<ScheduleWithDetails[]>([]);
 

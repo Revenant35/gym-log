@@ -3,32 +3,40 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/schedules"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ scheduleItem().name }}</ion-title>
+    <ion-title>{{ scheduleItem()?.name || 'Schedule Details' }}</ion-title>
     <ion-buttons slot="end">
-      <ion-button [routerLink]="['/schedule/edit', scheduleItem().id]">
-        <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-      </ion-button>
+      @if (scheduleItem(); as item) {
+        <ion-button [routerLink]="['/schedule/edit', item.id]">
+          <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+        </ion-button>
+      }
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="schedule-detail-container">
-    <!-- Schedule Header -->
-    <div class="schedule-header">
-      <div class="header-content">
-        <h2 class="schedule-name">{{ scheduleItem().name }}</h2>
-        @if (scheduleItem().isActive) {
-          <ion-badge color="primary">Active Schedule</ion-badge>
+  @if (isLoading()) {
+    <div class="loading-container">
+      <ion-spinner></ion-spinner>
+      <p>Loading schedule...</p>
+    </div>
+  } @else if (scheduleItem(); as item) {
+    <div class="schedule-detail-container">
+      <!-- Schedule Header -->
+      <div class="schedule-header">
+        <div class="header-content">
+          <h2 class="schedule-name">{{ item.name }}</h2>
+          @if (item.isActive) {
+            <ion-badge color="primary">Active Schedule</ion-badge>
+          }
+        </div>
+        @if (!item.isActive) {
+          <ion-button expand="block" (click)="setActive()">
+            <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+            Set as Active
+          </ion-button>
         }
       </div>
-      @if (!scheduleItem().isActive) {
-        <ion-button expand="block" (click)="setActive()">
-          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-          Set as Active
-        </ion-button>
-      }
-    </div>
 
     <!-- Week Overview -->
     <div class="week-overview">
@@ -80,16 +88,25 @@
       }
     </div>
 
-    <!-- Action Buttons -->
-    <div class="action-buttons">
-      <ion-button expand="block" fill="outline" [routerLink]="['/schedule/edit', scheduleItem().id]">
-        <ion-icon slot="start" name="create-outline"></ion-icon>
-        Edit Schedule
-      </ion-button>
-      <ion-button expand="block" fill="outline" color="medium">
-        <ion-icon slot="start" name="copy-outline"></ion-icon>
-        Duplicate Schedule
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <ion-button expand="block" fill="outline" [routerLink]="['/schedule/edit', item.id]">
+          <ion-icon slot="start" name="create-outline"></ion-icon>
+          Edit Schedule
+        </ion-button>
+        <ion-button expand="block" fill="outline" color="medium">
+          <ion-icon slot="start" name="copy-outline"></ion-icon>
+          Duplicate Schedule
+        </ion-button>
+      </div>
+    </div>
+  } @else {
+    <div class="empty-state">
+      <ion-icon name="calendar-outline" size="large"></ion-icon>
+      <p>Schedule not found</p>
+      <ion-button [routerLink]="['/schedules']">
+        Back to Schedules
       </ion-button>
     </div>
-  </div>
+  }
 </ion-content>

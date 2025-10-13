@@ -1,7 +1,8 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, signal, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink, Router } from '@angular/router';
 import { Schedule, DayOfWeek, DAYS_OF_WEEK } from '../../models';
+import { ScheduleService } from '../../services/schedule.service';
 
 interface ScheduleItem {
   id: string;
@@ -16,11 +17,16 @@ interface ScheduleItem {
   templateUrl: './schedule-detail-screen.html',
   styleUrl: './schedule-detail-screen.scss',
 })
-export class ScheduleDetailScreen {
-  private readonly route = signal(ActivatedRoute);
+export class ScheduleDetailScreen implements OnInit {
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly scheduleService = inject(ScheduleService);
 
-  // Mock data - would normally fetch based on route param
-  readonly scheduleItem = signal<ScheduleItem>({
+  readonly scheduleItem = signal<ScheduleItem | null>(null);
+  readonly isLoading = signal<boolean>(true);
+
+  // Mock data - fallback
+  private readonly mockScheduleItem: ScheduleItem = {
     id: '1',
     name: 'Push Pull Legs',
     isActive: true,
@@ -55,14 +61,48 @@ export class ScheduleDetailScreen {
         },
       },
     },
-  });
+  };
+
+  async ngOnInit(): Promise<void> {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      await this.loadSchedule(id);
+    } else {
+      this.scheduleItem.set(this.mockScheduleItem);
+      this.isLoading.set(false);
+    }
+  }
+
+  private async loadSchedule(id: string): Promise<void> {
+    this.isLoading.set(true);
+    try {
+      const scheduleWithDetails = await this.scheduleService.getSchedule(id);
+      const schedule = this.scheduleService.convertToSchedule(scheduleWithDetails);
+
+      const item: ScheduleItem = {
+        id: scheduleWithDetails.id,
+        name: scheduleWithDetails.name,
+        schedule,
+        isActive: scheduleWithDetails.is_active,
+      };
+
+      this.scheduleItem.set(item);
+    } catch (error) {
+      console.error('Error loading schedule:', error);
+      this.scheduleItem.set(this.mockScheduleItem);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
 
   readonly expandedDays = signal<Set<DayOfWeek>>(new Set());
 
   readonly daysOfWeek = DAYS_OF_WEEK;
 
   readonly weekDays = computed(() => {
-    const schedule = this.scheduleItem().schedule;
+    const item = this.scheduleItem();
+    if (!item) return [];
+    const schedule = item.schedule;
     return this.daysOfWeek.map((day) => ({
       day,
       dayName: day.charAt(0).toUpperCase() + day.slice(1),
@@ -88,10 +128,18 @@ export class ScheduleDetailScreen {
     return `${sets} × ${reps}${weightStr}`;
   }
 
-  setActive(): void {
-    this.scheduleItem.update((item) => ({
-      ...item,
-      isActive: true,
-    }));
+  async setActive(): Promise<void> {
+    const item = this.scheduleItem();
+    if (!item) return;
+
+    try {
+      await this.scheduleService.setActiveSchedule(item.id);
+      this.scheduleItem.update((current) => 
+        current ? { ...current, isActive: true } : current
+      );
+    } catch (error) {
+      console.error('Error setting active schedule:', error);
+      alert('Failed to set active schedule. Please try again.');
+    }
   }
 }

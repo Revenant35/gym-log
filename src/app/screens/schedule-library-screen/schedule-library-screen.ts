@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { Schedule } from '../../models';
+import { ScheduleService, ScheduleWithDetails } from '../../services/schedule.service';
 
 interface ScheduleItem {
   id: string;
@@ -18,9 +19,14 @@ interface ScheduleItem {
   templateUrl: './schedule-library-screen.html',
   styleUrl: './schedule-library-screen.scss',
 })
-export class ScheduleLibraryScreen {
-  // Mock data - list of schedules
-  readonly schedules = signal<ScheduleItem[]>([
+export class ScheduleLibraryScreen implements OnInit {
+  private readonly scheduleService = inject(ScheduleService);
+
+  readonly schedules = signal<ScheduleItem[]>([]);
+  readonly isLoading = signal<boolean>(true);
+
+  // Mock data - list of schedules (fallback)
+  private readonly mockSchedules: ScheduleItem[] = [
     {
       id: '1',
       name: 'Push Pull Legs',
@@ -121,7 +127,41 @@ export class ScheduleLibraryScreen {
       createdAt: new Date('2025-08-20'),
       lastUsed: new Date('2025-09-10'),
     },
-  ]);
+  ];
+
+  async ngOnInit(): Promise<void> {
+    await this.loadSchedules();
+  }
+
+  private async loadSchedules(): Promise<void> {
+    this.isLoading.set(true);
+    try {
+      await this.scheduleService.loadSchedules();
+      const supabaseSchedules = this.scheduleService.schedules();
+      
+      if (supabaseSchedules.length > 0) {
+        // Convert Supabase schedules to ScheduleItem format
+        const items: ScheduleItem[] = supabaseSchedules.map(s => ({
+          id: s.id,
+          name: s.name,
+          schedule: this.scheduleService.convertToSchedule(s),
+          isActive: s.is_active,
+          createdAt: new Date(s.created_at),
+          lastUsed: undefined, // Would need to query sessions for this
+        }));
+        this.schedules.set(items);
+      } else {
+        // Use mock data if no schedules exist
+        this.schedules.set(this.mockSchedules);
+      }
+    } catch (error) {
+      console.error('Error loading schedules:', error);
+      // Fallback to mock data on error
+      this.schedules.set(this.mockSchedules);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
 
   getWorkoutDaysCount(schedule: Schedule): number {
     return Object.keys(schedule.days).length;
@@ -146,32 +186,56 @@ export class ScheduleLibraryScreen {
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
   }
 
-  setActive(scheduleId: string): void {
-    this.schedules.update((schedules) =>
-      schedules.map((s) => ({
-        ...s,
-        isActive: s.id === scheduleId,
-      }))
-    );
+  async setActive(scheduleId: string): Promise<void> {
+    try {
+      await this.scheduleService.setActiveSchedule(scheduleId);
+      // Update local state
+      this.schedules.update((schedules) =>
+        schedules.map((s) => ({
+          ...s,
+          isActive: s.id === scheduleId,
+        }))
+      );
+    } catch (error) {
+      console.error('Error setting active schedule:', error);
+      alert('Failed to set active schedule. Please try again.');
+    }
   }
 
-  duplicateSchedule(scheduleId: string): void {
-    const schedule = this.schedules().find((s) => s.id === scheduleId);
-    if (!schedule) return;
+  async duplicateSchedule(scheduleId: string): Promise<void> {
+    try {
+      const schedule = this.schedules().find((s) => s.id === scheduleId);
+      if (!schedule) return;
 
-    const newSchedule: ScheduleItem = {
-      ...schedule,
-      id: Date.now().toString(),
-      name: `${schedule.name} (Copy)`,
-      isActive: false,
-      createdAt: new Date(),
-      lastUsed: undefined,
-    };
+      const newSchedule = await this.scheduleService.duplicateSchedule(
+        scheduleId,
+        `${schedule.name} (Copy)`
+      );
 
-    this.schedules.update((schedules) => [newSchedule, ...schedules]);
+      // Add to local state
+      const newItem: ScheduleItem = {
+        id: newSchedule.id,
+        name: newSchedule.name,
+        schedule: this.scheduleService.convertToSchedule(newSchedule),
+        isActive: newSchedule.is_active,
+        createdAt: new Date(newSchedule.created_at),
+        lastUsed: undefined,
+      };
+
+      this.schedules.update((schedules) => [newItem, ...schedules]);
+    } catch (error) {
+      console.error('Error duplicating schedule:', error);
+      alert('Failed to duplicate schedule. Please try again.');
+    }
   }
 
-  deleteSchedule(scheduleId: string): void {
-    this.schedules.update((schedules) => schedules.filter((s) => s.id !== scheduleId));
+  async deleteSchedule(scheduleId: string): Promise<void> {
+    try {
+      await this.scheduleService.deleteSchedule(scheduleId);
+      this.schedules.update((schedules) => schedules.filter((s) => s.id !== scheduleId));
+    } catch (error) {
+      console.error('Error deleting schedule:', error);
+      alert('Failed to delete schedule. Please try again.');
+    }
   }
 }
