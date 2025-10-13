@@ -32,23 +32,166 @@ export type Database = {
         }
         Relationships: []
       }
-      session: {
+      schedule: {
         Row: {
           created_at: string
           id: string
+          is_active: boolean
+          name: string
+          updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          is_active?: boolean
+          name: string
+          updated_at?: string
           user_id?: string
         }
         Update: {
           created_at?: string
           id?: string
+          is_active?: boolean
+          name?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
+      }
+      schedule_day: {
+        Row: {
+          created_at: string
+          day_of_week: string
+          id: string
+          name: string
+          schedule_id: string
+        }
+        Insert: {
+          created_at?: string
+          day_of_week: string
+          id?: string
+          name: string
+          schedule_id: string
+        }
+        Update: {
+          created_at?: string
+          day_of_week?: string
+          id?: string
+          name?: string
+          schedule_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_schedule"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "schedule"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      schedule_exercise: {
+        Row: {
+          created_at: string
+          exercise_id: string
+          exercise_index: number
+          id: string
+          reps: number
+          schedule_day_id: string
+          sets: number
+          weight: number
+          weight_unit: Database["public"]["Enums"]["weight_unit"]
+        }
+        Insert: {
+          created_at?: string
+          exercise_id: string
+          exercise_index: number
+          id?: string
+          reps: number
+          schedule_day_id: string
+          sets: number
+          weight?: number
+          weight_unit?: Database["public"]["Enums"]["weight_unit"]
+        }
+        Update: {
+          created_at?: string
+          exercise_id?: string
+          exercise_index?: number
+          id?: string
+          reps?: number
+          schedule_day_id?: string
+          sets?: number
+          weight?: number
+          weight_unit?: Database["public"]["Enums"]["weight_unit"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_exercise"
+            columns: ["exercise_id"]
+            isOneToOne: false
+            referencedRelation: "exercise"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_schedule_day"
+            columns: ["schedule_day_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_day"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      session: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          duration_minutes: number | null
+          id: string
+          schedule_day_id: string | null
+          schedule_id: string | null
+          started_at: string
+          user_id: string
+          workout_name: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          schedule_day_id?: string | null
+          schedule_id?: string | null
+          started_at?: string
+          user_id?: string
+          workout_name?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          duration_minutes?: number | null
+          id?: string
+          schedule_day_id?: string | null
+          schedule_id?: string | null
+          started_at?: string
+          user_id?: string
+          workout_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_schedule_day_id_fkey"
+            columns: ["schedule_day_id"]
+            isOneToOne: false
+            referencedRelation: "schedule_day"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "session_schedule_id_fkey"
+            columns: ["schedule_id"]
+            isOneToOne: false
+            referencedRelation: "schedule"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       session_exercise: {
         Row: {
