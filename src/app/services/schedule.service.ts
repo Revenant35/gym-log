@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek } from '../models';
 import { SUPABASE } from '../injection-tokens';
@@ -48,14 +48,11 @@ export interface ScheduleWithDetails extends ScheduleRow {
 })
 export class ScheduleService {
   private readonly supabase = inject(SUPABASE);
-  
-  readonly activeSchedule = signal<ScheduleWithDetails | null>(null);
-  readonly schedules = signal<ScheduleWithDetails[]>([]);
 
   /**
-   * Load all schedules for the current user
+   * Get all schedules for the current user
    */
-  async loadSchedules(): Promise<void> {
+  async getSchedules(): Promise<ScheduleWithDetails[]> {
     const { data, error } = await this.supabase
       .from('schedule')
       .select(`
@@ -75,13 +72,7 @@ export class ScheduleService {
       throw error;
     }
 
-    this.schedules.set(data as ScheduleWithDetails[]);
-
-    // Set active schedule
-    const active = data.find(s => s.is_active);
-    if (active) {
-      this.activeSchedule.set(active as ScheduleWithDetails);
-    }
+    return data as ScheduleWithDetails[];
   }
 
   /**
@@ -110,11 +101,9 @@ export class ScheduleService {
 
     if (!data) {
       // No active schedule found
-      this.activeSchedule.set(null);
       return null;
     }
 
-    this.activeSchedule.set(data as ScheduleWithDetails);
     return data as ScheduleWithDetails;
   }
 
@@ -375,9 +364,6 @@ export class ScheduleService {
       console.error('Error deleting schedule:', error);
       throw error;
     }
-
-    // Reload schedules
-    await this.loadSchedules();
   }
 
   /**

@@ -24,11 +24,10 @@ export class ScheduleLibraryScreen {
 
   readonly schedulesResource = resource({
     loader: async () => {
-      await this.scheduleService.loadSchedules();
-      const supabaseSchedules = this.scheduleService.schedules();
+      const supabaseSchedules = await this.scheduleService.getSchedules();
 
       // Convert Supabase schedules to ScheduleItem format
-      const items: ScheduleItem[] = supabaseSchedules.map(s => ({
+      const items: ScheduleItem[] = supabaseSchedules.map((s) => ({
         id: s.id,
         name: s.name,
         schedule: this.scheduleService.convertToSchedule(s),
