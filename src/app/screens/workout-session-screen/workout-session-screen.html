@@ -13,27 +13,12 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <!-- Progress Bar -->
-  <div class="progress-header">
-    <div class="progress-stats">
-      <div class="stat">
-        <span class="stat-value">{{ completedExercises() }}/{{ totalExercises() }}</span>
-        <span class="stat-label">Exercises</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{{ completedSets() }}/{{ totalSets() }}</span>
-        <span class="stat-label">Sets</span>
-      </div>
-      <div class="stat">
-        <span class="stat-value">{{ workoutDuration() }}m</span>
-        <span class="stat-label">Duration</span>
-      </div>
-    </div>
-    <ion-progress-bar 
-      [value]="totalSets() > 0 ? completedSets() / totalSets() : 0"
-      color="primary"
-    ></ion-progress-bar>
-  </div>
+  <app-workout-session-progress-bar
+    [totalExercises]="totalExercises()"
+    [completedExercises]="completedExercises()"
+    [totalSets]="totalSets()"
+    [completedSets]="completedSets()"
+    [duration]="workoutDuration()"/>
 </ion-header>
 
 <ion-content>
@@ -63,7 +48,7 @@
                   }
                 </p>
                 <div class="set-progress">
-                  <ion-progress-bar 
+                  <ion-progress-bar
                     [value]="getSetProgressValue(log)"
                     [color]="getProgressColor(log)"
                   ></ion-progress-bar>
@@ -72,7 +57,7 @@
                   </span>
                 </div>
               </div>
-              <ion-icon 
+              <ion-icon
                 [name]="log.isExpanded ? 'chevron-up-outline' : 'chevron-down-outline'"
                 class="expand-icon"
               ></ion-icon>
@@ -85,7 +70,7 @@
                 @for (set of log.sets; track setIdx; let setIdx = $index) {
                   <div class="set-row" [class.completed]="set.completed">
                     <div class="set-number">{{ setIdx + 1 }}</div>
-                    
+
                     <div class="set-inputs">
                       <div class="input-group">
                         <label>Reps</label>
@@ -115,8 +100,8 @@
 
                     <div class="set-actions">
                       @if (!set.completed) {
-                        <ion-button 
-                          fill="solid" 
+                        <ion-button
+                          fill="solid"
                           color="primary"
                           size="small"
                           (click)="completeSet(exerciseIdx, setIdx)"
@@ -124,8 +109,8 @@
                           <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
                         </ion-button>
                       } @else {
-                        <ion-button 
-                          fill="outline" 
+                        <ion-button
+                          fill="outline"
                           color="success"
                           size="small"
                           (click)="uncompleteSet(exerciseIdx, setIdx)"
@@ -133,10 +118,10 @@
                           <ion-icon slot="icon-only" name="checkmark-outline"></ion-icon>
                         </ion-button>
                       }
-                      
+
                       @if (log.sets.length > 1) {
-                        <ion-button 
-                          fill="clear" 
+                        <ion-button
+                          fill="clear"
                           color="danger"
                           size="small"
                           (click)="removeSet(exerciseIdx, setIdx)"
@@ -149,9 +134,9 @@
                 }
               </div>
 
-              <ion-button 
-                expand="block" 
-                fill="outline" 
+              <ion-button
+                expand="block"
+                fill="outline"
                 size="small"
                 (click)="addSet(exerciseIdx)"
                 class="add-set-button"
@@ -170,8 +155,8 @@
 @if (!isWorkoutComplete()) {
   <ion-footer>
     <ion-toolbar>
-      <ion-button 
-        expand="block" 
+      <ion-button
+        expand="block"
         size="large"
         (click)="completeWorkout()"
         [disabled]="!canCompleteWorkout()"

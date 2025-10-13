@@ -1,10 +1,11 @@
-import { Component, computed, signal, OnInit, inject } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormsModule } from '@angular/forms';
-import { ScheduleDay, ScheduleExercise, DayOfWeek, WeightUnit } from '../../models';
-import { WorkoutSessionService } from '../../services/workout-session.service';
-import { ScheduleService } from '../../services/schedule.service';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {IonicModule} from '@ionic/angular';
+import {Router} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+import {DayOfWeek, ScheduleDay, ScheduleExercise} from '../../models';
+import {WorkoutSessionService} from '../../services/workout-session.service';
+import {ScheduleService} from '../../services/schedule.service';
+import {WorkoutSessionProgressBar} from '../../components/workout-session-progress-bar/workout-session-progress-bar';
 
 interface WorkoutSet {
   reps: number;
@@ -21,13 +22,12 @@ interface ExerciseLog {
 
 @Component({
   selector: 'app-workout-session-screen',
-  imports: [IonicModule, FormsModule],
+  imports: [IonicModule, FormsModule, WorkoutSessionProgressBar],
   templateUrl: './workout-session-screen.html',
   styleUrl: './workout-session-screen.scss',
 })
 export class WorkoutSessionScreen implements OnInit {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly workoutSessionService = inject(WorkoutSessionService);
   private readonly scheduleService = inject(ScheduleService);
 
@@ -37,7 +37,7 @@ export class WorkoutSessionScreen implements OnInit {
   readonly startTime = signal<Date>(new Date());
   readonly isWorkoutComplete = signal<boolean>(false);
   readonly isSaving = signal<boolean>(false);
-  
+
   private scheduleId?: string;
   private scheduleDayId?: string;
 
@@ -69,8 +69,7 @@ export class WorkoutSessionScreen implements OnInit {
   readonly workoutDuration = computed(() => {
     const now = new Date();
     const diff = now.getTime() - this.startTime().getTime();
-    const minutes = Math.floor(diff / 60000);
-    return minutes;
+    return Math.floor(diff / 60000);
   });
 
   // Helper methods for template
@@ -98,22 +97,22 @@ export class WorkoutSessionScreen implements OnInit {
     try {
       // Try to load active schedule from Supabase
       const activeSchedule = await this.scheduleService.getActiveSchedule();
-      
+
       if (activeSchedule) {
         // Get today's day of week
         const today = new Date().getDay();
         const dayNames: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
         const todayName = dayNames[today];
-        
+
         // Find today's workout
         const todayWorkout = activeSchedule.days.find(d => d.day_of_week === todayName);
-        
+
         if (todayWorkout && todayWorkout.exercises.length > 0) {
           this.scheduleId = activeSchedule.id;
           this.scheduleDayId = todayWorkout.id;
           this.workoutName.set(todayWorkout.name);
           this.dayOfWeek.set(todayName);
-          
+
           // Convert schedule exercises to workout format
           const logs: ExerciseLog[] = todayWorkout.exercises
             .sort((a, b) => a.exercise_index - b.exercise_index)
@@ -133,12 +132,12 @@ export class WorkoutSessionScreen implements OnInit {
               currentSetIndex: 0,
               isExpanded: index === 0,
             }));
-          
+
           this.exerciseLogs.set(logs);
           return;
         }
       }
-      
+
       // Fallback to mock data if no active schedule
       this.loadMockWorkout();
     } catch (error) {
