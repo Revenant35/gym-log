@@ -28,23 +28,7 @@
 
         <div class="exercises-list">
           @for (exercise of workout.exercises; track $index) {
-            <ion-card class="exercise-card">
-              <ion-card-content>
-                <div class="exercise-info">
-                  <h4 class="exercise-name">{{ exercise.name }}</h4>
-                  <p class="exercise-details">
-                    {{
-                      formatExerciseDetails(
-                        exercise.sets,
-                        exercise.reps,
-                        exercise.weight,
-                        exercise.weight_unit
-                      )
-                    }}
-                  </p>
-                </div>
-              </ion-card-content>
-            </ion-card>
+            <app-exercise-info-card [exercise]="exercise"></app-exercise-info-card>
           }
         </div>
 

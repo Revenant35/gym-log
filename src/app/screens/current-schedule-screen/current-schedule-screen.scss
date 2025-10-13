@@ -29,31 +29,6 @@
     margin-bottom: 24px;
   }
 
-  .exercise-card {
-    margin: 0;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-
-    ion-card-content {
-      padding: 16px;
-    }
-
-    .exercise-info {
-      .exercise-name {
-        margin: 0 0 4px 0;
-        font-size: 16px;
-        font-weight: 600;
-        color: var(--ion-color-dark);
-      }
-
-      .exercise-details {
-        margin: 0;
-        font-size: 14px;
-        color: var(--ion-color-medium);
-        font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
-      }
-    }
-  }
-
   .action-button-container {
     margin-top: 24px;
   }

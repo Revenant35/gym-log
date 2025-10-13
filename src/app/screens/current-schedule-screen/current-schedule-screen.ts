@@ -6,10 +6,11 @@ import { ScheduleService } from '../../services/schedule.service';
 import {ScheduleDayOfWeekPicker} from '../../components/day-of-week-picker/schedule-day-of-week-picker.component';
 import {DateProvider} from '../../services/date-provider';
 import {DayOfWeekNavigator} from '../../components/day-of-week-navigator/day-of-week-navigator';
+import {ExerciseInfoCard} from '../../components/exercise-info-card/exercise-info-card';
 
 @Component({
   selector: 'app-current-schedule-screen',
-  imports: [IonicModule, RouterLink, ScheduleDayOfWeekPicker, DayOfWeekNavigator],
+  imports: [IonicModule, RouterLink, ScheduleDayOfWeekPicker, DayOfWeekNavigator, ExerciseInfoCard],
   templateUrl: './current-schedule-screen.html',
   styleUrl: './current-schedule-screen.scss',
 })
@@ -82,9 +83,4 @@ export class CurrentScheduleScreen implements OnInit {
   readonly selectedDayWorkout = computed<ScheduleDay | undefined>(() => {
     return this.schedule().days[this.selectedDay()];
   });
-
-  formatExerciseDetails(sets: number, reps: number, weight: number, unit: string): string {
-    const weightStr = weight > 0 ? ` @ ${weight} ${unit}` : '';
-    return `${sets} × ${reps}${weightStr}`;
-  }
 }
