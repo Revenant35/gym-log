@@ -101,15 +101,17 @@ export class ScheduleService {
         )
       `)
       .eq('is_active', true)
-      .single();
+      .maybeSingle();
 
     if (error) {
-      if (error.code === 'PGRST116') {
-        // No active schedule found
-        return null;
-      }
       console.error('Error getting active schedule:', error);
       throw error;
+    }
+
+    if (!data) {
+      // No active schedule found
+      this.activeSchedule.set(null);
+      return null;
     }
 
     this.activeSchedule.set(data as ScheduleWithDetails);
