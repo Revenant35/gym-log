@@ -1,6 +1,8 @@
 export interface Exercise {
   id: string;
   name: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ExerciseSearchParams {
@@ -9,15 +11,8 @@ export interface ExerciseSearchParams {
   limit: number;
 }
 
-export interface CreateExerciseParams {
+export type CreateExercise = {
   name: string;
 }
 
-export interface UpdateExerciseParams {
-  id: string;
-  name?: string;
-}
-
-export interface DeleteExerciseParams {
-  id: string;
-}
+export type UpdateExercise = Partial<Exercise>;

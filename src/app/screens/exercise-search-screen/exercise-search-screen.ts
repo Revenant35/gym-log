@@ -1,6 +1,6 @@
 import {Component, computed, inject, resource, signal} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {ExerciseService} from '../../services/exercise-service';
+import {ExerciseService} from '../../services/exercise.service';
 import {lastValueFrom} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {ExerciseSearchParams} from '../../models';
@@ -33,7 +33,7 @@ export class ExerciseSearchScreen {
       page: this.page(),
       limit: this.pageSize(),
     }),
-    loader: ({params}) => lastValueFrom(this.exerciseService.searchExercises({
+    loader: ({params}) => lastValueFrom(this.exerciseService.findMany({
       query: params.query,
       page: params.page,
       limit: params.limit,
