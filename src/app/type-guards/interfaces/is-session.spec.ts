@@ -14,7 +14,7 @@ describe('isSession', () => {
               weight: 135,
               weight_unit: 'LB',
               reps: 10,
-              type: 'NORMAL',
+              type: 'WORK',
               did_fail: false,
               created_at: new Date('2025-10-08')
             }
@@ -40,7 +40,7 @@ describe('isSession', () => {
               weight: 135,
               weight_unit: 'LB',
               reps: 10,
-              type: 'NORMAL',
+              type: 'WORK',
               did_fail: false,
               created_at: new Date()
             }
@@ -55,7 +55,7 @@ describe('isSession', () => {
               weight: 100,
               weight_unit: 'KG',
               reps: 8,
-              type: 'NORMAL',
+              type: 'WORK',
               did_fail: false,
               created_at: new Date()
             }

@@ -7,7 +7,7 @@ describe('isSessionSet', () => {
       weight: 135.5,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date('2025-10-08')
     };
@@ -19,7 +19,7 @@ describe('isSessionSet', () => {
       weight: 45,
       weight_unit: 'KG',
       reps: 5,
-      type: 'WARM_UP',
+      type: 'WARMUP',
       did_fail: false,
       created_at: new Date()
     };
@@ -31,7 +31,7 @@ describe('isSessionSet', () => {
       weight: 100,
       weight_unit: 'LB',
       reps: 12,
-      type: 'DROP_SET',
+      type: 'DROP',
       did_fail: true,
       created_at: new Date()
     };
@@ -42,7 +42,7 @@ describe('isSessionSet', () => {
     const invalidSet: Partial<SessionSet> = {
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -54,7 +54,7 @@ describe('isSessionSet', () => {
       weight: -10,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -66,7 +66,7 @@ describe('isSessionSet', () => {
       weight: Infinity,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -78,7 +78,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'STONE',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -90,7 +90,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 10.5,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -102,7 +102,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 0,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -114,7 +114,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: -5,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date()
     };
@@ -138,7 +138,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: 'false',
       created_at: new Date()
     };
@@ -150,7 +150,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: 'not a date'
     };
@@ -162,7 +162,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date('invalid')
     };
@@ -174,7 +174,7 @@ describe('isSessionSet', () => {
       weight: 135,
       weight_unit: 'LB',
       reps: 10,
-      type: 'NORMAL',
+      type: 'WORK',
       did_fail: false,
       created_at: new Date(),
       extraKey: 'should not be here'

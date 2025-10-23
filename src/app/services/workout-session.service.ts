@@ -16,7 +16,7 @@ export interface WorkoutSessionData {
       weight: number;
       weight_unit: 'LB' | 'KG';
       completed: boolean;
-      type?: 'WARM_UP' | 'NORMAL' | 'DROP_SET';
+      type?: 'WARMUP' | 'WORK' | 'DROP';
       did_fail?: boolean;
     }>;
   }>;
@@ -123,7 +123,7 @@ export class WorkoutSessionService {
             reps: set.reps,
             weight: set.weight,
             weight_unit: set.weight_unit,
-            type: set.type || 'NORMAL',
+            type: set.type || 'WORK',
             did_fail: set.did_fail || false,
           });
 

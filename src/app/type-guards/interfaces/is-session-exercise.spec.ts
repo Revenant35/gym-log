@@ -11,7 +11,7 @@ describe('isSessionExercise', () => {
           weight: 135,
           weight_unit: 'LB',
           reps: 10,
-          type: 'NORMAL',
+          type: 'WORK',
           did_fail: false,
           created_at: new Date('2025-10-08')
         }
@@ -30,7 +30,7 @@ describe('isSessionExercise', () => {
           weight: 45,
           weight_unit: 'KG',
           reps: 5,
-          type: 'WARM_UP',
+          type: 'WARMUP',
           did_fail: false,
           created_at: new Date()
         },
@@ -38,7 +38,7 @@ describe('isSessionExercise', () => {
           weight: 100,
           weight_unit: 'KG',
           reps: 8,
-          type: 'NORMAL',
+          type: 'WORK',
           did_fail: false,
           created_at: new Date()
         },
@@ -46,7 +46,7 @@ describe('isSessionExercise', () => {
           weight: 80,
           weight_unit: 'KG',
           reps: 12,
-          type: 'DROP_SET',
+          type: 'DROP',
           did_fail: true,
           created_at: new Date()
         }
@@ -132,7 +132,7 @@ describe('isSessionExercise', () => {
           weight: 135,
           weight_unit: 'LB',
           reps: 10,
-          type: 'NORMAL',
+          type: 'WORK',
           did_fail: false,
           created_at: new Date()
         },
@@ -140,7 +140,7 @@ describe('isSessionExercise', () => {
           weight: -50, // Invalid: negative weight
           weight_unit: 'LB',
           reps: 10,
-          type: 'NORMAL',
+          type: 'WORK',
           did_fail: false,
           created_at: new Date()
         }

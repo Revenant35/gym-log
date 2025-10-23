@@ -281,7 +281,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      set_type: "WARM_UP" | "NORMAL" | "DROP_SET"
+      set_type: "WARMUP" | "WORK" | "DROP"
       weight_unit: "KG" | "LB"
     }
     CompositeTypes: {
@@ -410,7 +410,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      set_type: ["WARM_UP", "NORMAL", "DROP_SET"],
+      set_type: ["WARMUP", "WORK", "DROP"],
       weight_unit: ["KG", "LB"],
     },
   },
