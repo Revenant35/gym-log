@@ -1,16 +1,11 @@
 import { Component } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {RouterLink} from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-screen',
-  imports: [
-    IonicModule,
-    RouterLink,
-  ],
+  imports: [IonicModule, RouterLink],
   templateUrl: './account-screen.html',
-  styleUrl: './account-screen.scss'
+  styleUrl: './account-screen.scss',
 })
-export class AccountScreen {
-
-}
+export class AccountScreen {}

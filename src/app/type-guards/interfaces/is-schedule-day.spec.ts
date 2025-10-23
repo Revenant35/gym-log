@@ -11,9 +11,9 @@ describe('isScheduleDay', () => {
           sets: 3,
           reps: 10,
           weight: 135,
-          weight_unit: 'LB'
-        }
-      ]
+          weight_unit: 'LB',
+        },
+      ],
     };
     expect(isScheduleDay(validDay)).toBeTrue();
   });
@@ -27,23 +27,23 @@ describe('isScheduleDay', () => {
           sets: 5,
           reps: 5,
           weight: 225,
-          weight_unit: 'LB'
+          weight_unit: 'LB',
         },
         {
           name: 'Leg Press',
           sets: 3,
           reps: 12,
           weight: 300,
-          weight_unit: 'LB'
+          weight_unit: 'LB',
         },
         {
           name: 'Leg Curl',
           sets: 3,
           reps: 15,
           weight: 80,
-          weight_unit: 'LB'
-        }
-      ]
+          weight_unit: 'LB',
+        },
+      ],
     };
     expect(isScheduleDay(validDay)).toBeTrue();
   });
@@ -51,14 +51,14 @@ describe('isScheduleDay', () => {
   it('should return true for ScheduleDay with empty exercises array', () => {
     const validDay: ScheduleDay = {
       name: 'Rest Day',
-      exercises: []
+      exercises: [],
     };
     expect(isScheduleDay(validDay)).toBeTrue();
   });
 
   it('should return false when name is missing', () => {
     const invalidDay: Partial<ScheduleDay> = {
-      exercises: []
+      exercises: [],
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });
@@ -66,14 +66,14 @@ describe('isScheduleDay', () => {
   it('should return false when name is not a string', () => {
     const invalidDay = {
       name: 123,
-      exercises: []
+      exercises: [],
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });
 
   it('should return false when exercises is missing', () => {
     const invalidDay: Partial<ScheduleDay> = {
-      name: 'Push Day'
+      name: 'Push Day',
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });
@@ -81,7 +81,7 @@ describe('isScheduleDay', () => {
   it('should return false when exercises is not an array', () => {
     const invalidDay = {
       name: 'Push Day',
-      exercises: 'not an array'
+      exercises: 'not an array',
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });
@@ -95,16 +95,16 @@ describe('isScheduleDay', () => {
           sets: 3,
           reps: 10,
           weight: 135,
-          weight_unit: 'LB'
+          weight_unit: 'LB',
         },
         {
           name: 'Overhead Press',
           sets: -3, // Invalid: negative sets
           reps: 10,
           weight: 95,
-          weight_unit: 'LB'
-        }
-      ]
+          weight_unit: 'LB',
+        },
+      ],
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });
@@ -113,7 +113,7 @@ describe('isScheduleDay', () => {
     const invalidDay = {
       name: 'Push Day',
       exercises: [],
-      extraKey: 'should not be here'
+      extraKey: 'should not be here',
     };
     expect(isScheduleDay(invalidDay)).toBeFalse();
   });

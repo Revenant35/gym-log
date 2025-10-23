@@ -1,18 +1,15 @@
-import {Component, computed, inject, resource, signal} from '@angular/core';
-import {IonicModule} from "@ionic/angular";
-import {ExerciseService} from '../../services/exercise.service';
-import {lastValueFrom} from 'rxjs';
-import {FormsModule} from '@angular/forms';
-import {ExerciseSearchParams} from '../../models';
+import { Component, computed, inject, resource, signal } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { ExerciseService } from '../../services/exercise.service';
+import { lastValueFrom } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { ExerciseSearchParams } from '../../models';
 
 @Component({
   selector: 'app-exercise-screen',
-  imports: [
-    IonicModule,
-    FormsModule
-  ],
+  imports: [IonicModule, FormsModule],
   templateUrl: './exercise-search-screen.html',
-  styleUrl: './exercise-search-screen.scss'
+  styleUrl: './exercise-search-screen.scss',
 })
 export class ExerciseSearchScreen {
   private readonly exerciseService = inject(ExerciseService);
@@ -33,10 +30,13 @@ export class ExerciseSearchScreen {
       page: this.page(),
       limit: this.pageSize(),
     }),
-    loader: ({params}) => lastValueFrom(this.exerciseService.findMany({
-      query: params.query,
-      page: params.page,
-      limit: params.limit,
-    })),
-  })
+    loader: ({ params }) =>
+      lastValueFrom(
+        this.exerciseService.findMany({
+          query: params.query,
+          page: params.page,
+          limit: params.limit,
+        }),
+      ),
+  });
 }

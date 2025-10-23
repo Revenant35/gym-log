@@ -1,4 +1,4 @@
-import {isString} from './is-string';
+import { isString } from './is-string';
 
 export function isUUID(v: unknown): v is string {
   if (!isString(v)) {

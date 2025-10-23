@@ -13,9 +13,9 @@ describe('isSchedule', () => {
               sets: 3,
               reps: 10,
               weight: 135,
-              weight_unit: 'LB'
-            }
-          ]
+              weight_unit: 'LB',
+            },
+          ],
         },
         wednesday: {
           name: 'Pull Day',
@@ -25,9 +25,9 @@ describe('isSchedule', () => {
               sets: 5,
               reps: 5,
               weight: 225,
-              weight_unit: 'LB'
-            }
-          ]
+              weight_unit: 'LB',
+            },
+          ],
         },
         friday: {
           name: 'Leg Day',
@@ -37,11 +37,11 @@ describe('isSchedule', () => {
               sets: 4,
               reps: 8,
               weight: 185,
-              weight_unit: 'LB'
-            }
-          ]
-        }
-      }
+              weight_unit: 'LB',
+            },
+          ],
+        },
+      },
     };
     expect(isSchedule(validSchedule)).toBeTrue();
   });
@@ -55,15 +55,15 @@ describe('isSchedule', () => {
         thursday: { name: 'Push', exercises: [] },
         friday: { name: 'Pull', exercises: [] },
         saturday: { name: 'Legs', exercises: [] },
-        sunday: { name: 'Rest', exercises: [] }
-      }
+        sunday: { name: 'Rest', exercises: [] },
+      },
     };
     expect(isSchedule(validSchedule)).toBeTrue();
   });
 
   it('should return true for Schedule with empty days object', () => {
     const validSchedule: Schedule = {
-      days: {}
+      days: {},
     };
     expect(isSchedule(validSchedule)).toBeTrue();
   });
@@ -79,11 +79,11 @@ describe('isSchedule', () => {
               sets: 3,
               reps: 10,
               weight: 135,
-              weight_unit: 'LB'
-            }
-          ]
-        }
-      }
+              weight_unit: 'LB',
+            },
+          ],
+        },
+      },
     };
     expect(isSchedule(validSchedule)).toBeTrue();
   });
@@ -95,7 +95,7 @@ describe('isSchedule', () => {
 
   it('should return false when days is not an object', () => {
     const invalidSchedule = {
-      days: 'not an object'
+      days: 'not an object',
     };
     expect(isSchedule(invalidSchedule)).toBeFalse();
   });
@@ -104,8 +104,8 @@ describe('isSchedule', () => {
     const invalidSchedule = {
       days: {
         monday: { name: 'Push', exercises: [] },
-        invalidDay: { name: 'Invalid', exercises: [] }
-      }
+        invalidDay: { name: 'Invalid', exercises: [] },
+      },
     };
     expect(isSchedule(invalidSchedule)).toBeFalse();
   });
@@ -121,11 +121,11 @@ describe('isSchedule', () => {
               sets: -3, // Invalid: negative sets
               reps: 10,
               weight: 135,
-              weight_unit: 'LB'
-            }
-          ]
-        }
-      }
+              weight_unit: 'LB',
+            },
+          ],
+        },
+      },
     };
     expect(isSchedule(invalidSchedule)).toBeFalse();
   });
@@ -134,8 +134,8 @@ describe('isSchedule', () => {
     const invalidSchedule = {
       days: {
         monday: { name: 'Push', exercises: [] },
-        tuesday: 'not a schedule day'
-      }
+        tuesday: 'not a schedule day',
+      },
     };
     expect(isSchedule(invalidSchedule)).toBeFalse();
   });
@@ -143,7 +143,7 @@ describe('isSchedule', () => {
   it('should return false when there are extra keys at the top level', () => {
     const invalidSchedule = {
       days: {},
-      extraKey: 'should not be here'
+      extraKey: 'should not be here',
     };
     expect(isSchedule(invalidSchedule)).toBeFalse();
   });

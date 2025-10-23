@@ -1,4 +1,4 @@
-import {ScheduleExercise} from './schedule-exercise';
+import { ScheduleExercise } from './schedule-exercise';
 
 export interface ScheduleDay {
   name: string;

@@ -63,7 +63,7 @@ export class ScheduleDetailScreen implements OnInit {
     },
   };
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       await this.loadSchedule(id);
@@ -134,9 +134,7 @@ export class ScheduleDetailScreen implements OnInit {
 
     try {
       await this.scheduleService.setActiveSchedule(item.id);
-      this.scheduleItem.update((current) => 
-        current ? { ...current, isActive: true } : current
-      );
+      this.scheduleItem.update((current) => (current ? { ...current, isActive: true } : current));
     } catch (error) {
       console.error('Error setting active schedule:', error);
       alert('Failed to set active schedule. Please try again.');

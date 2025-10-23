@@ -1,15 +1,23 @@
-import {Component, computed, inject, input, model} from '@angular/core';
-import {DayOfWeek, Schedule} from '../../models';
-import {DateProvider} from '../../services/date-provider';
+import { Component, computed, inject, input, model } from '@angular/core';
+import { DayOfWeek, Schedule } from '../../models';
+import { DateProvider } from '../../services/date-provider';
 
 @Component({
   selector: 'app-schedule-day-of-week-picker',
   imports: [],
   templateUrl: './schedule-day-of-week-picker.component.html',
-  styleUrl: './schedule-day-of-week-picker.component.scss'
+  styleUrl: './schedule-day-of-week-picker.component.scss',
 })
 export class ScheduleDayOfWeekPicker {
-  private readonly DAYS: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  private readonly DAYS: DayOfWeek[] = [
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+  ];
 
   private readonly dateProvider = inject(DateProvider);
 

@@ -1,13 +1,13 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {IonicModule} from '@ionic/angular';
-import {Router} from '@angular/router';
-import {FormsModule} from '@angular/forms';
-import {DayOfWeek, ScheduleDay} from '../../models';
-import {WorkoutSessionService} from '../../services/workout-session.service';
-import {ScheduleService} from '../../services/schedule.service';
-import {WorkoutSessionProgressBar} from '../../components/workout-session-progress-bar/workout-session-progress-bar';
-import {ExerciseLoggingCard} from '../../components/exercise-logging-card/exercise-logging-card';
-import {ExerciseLog} from '../../models';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { IonicModule } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { DayOfWeek, ScheduleDay } from '../../models';
+import { WorkoutSessionService } from '../../services/workout-session.service';
+import { ScheduleService } from '../../services/schedule.service';
+import { WorkoutSessionProgressBar } from '../../components/workout-session-progress-bar/workout-session-progress-bar';
+import { ExerciseLoggingCard } from '../../components/exercise-logging-card/exercise-logging-card';
+import { ExerciseLog } from '../../models';
 
 @Component({
   selector: 'app-workout-session-screen',
@@ -42,18 +42,17 @@ export class WorkoutSessionScreen implements OnInit {
   };
 
   readonly totalExercises = computed(() => this.exerciseLogs().length);
-  readonly completedExercises = computed(() =>
-    this.exerciseLogs().filter(log =>
-      log.sets.every(set => set.completed)
-    ).length
+  readonly completedExercises = computed(
+    () => this.exerciseLogs().filter((log) => log.sets.every((set) => set.completed)).length,
   );
   readonly totalSets = computed(() =>
-    this.exerciseLogs().reduce((sum, log) => sum + log.sets.length, 0)
+    this.exerciseLogs().reduce((sum, log) => sum + log.sets.length, 0),
   );
   readonly completedSets = computed(() =>
-    this.exerciseLogs().reduce((sum, log) =>
-      sum + log.sets.filter(set => set.completed).length, 0
-    )
+    this.exerciseLogs().reduce(
+      (sum, log) => sum + log.sets.filter((set) => set.completed).length,
+      0,
+    ),
   );
   readonly workoutDuration = computed(() => {
     const now = new Date();
@@ -61,7 +60,7 @@ export class WorkoutSessionScreen implements OnInit {
     return Math.floor(diff / 60000);
   });
 
-  async ngOnInit(): Promise<void> {
+  async ngOnInit() {
     await this.loadWorkout();
   }
 
@@ -73,11 +72,19 @@ export class WorkoutSessionScreen implements OnInit {
       if (activeSchedule) {
         // Get today's day of week
         const today = new Date().getDay();
-        const dayNames: DayOfWeek[] = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+        const dayNames: DayOfWeek[] = [
+          'sunday',
+          'monday',
+          'tuesday',
+          'wednesday',
+          'thursday',
+          'friday',
+          'saturday',
+        ];
         const todayName = dayNames[today];
 
         // Find today's workout
-        const todayWorkout = activeSchedule.days.find(d => d.day_of_week === todayName);
+        const todayWorkout = activeSchedule.days.find((d) => d.day_of_week === todayName);
 
         if (todayWorkout && todayWorkout.exercises.length > 0) {
           this.scheduleId = activeSchedule.id;
@@ -141,7 +148,7 @@ export class WorkoutSessionScreen implements OnInit {
   }
 
   updateLog(logIndex: number, updatedLog: ExerciseLog): void {
-    this.exerciseLogs.update(logs => {
+    this.exerciseLogs.update((logs) => {
       logs[logIndex] = updatedLog;
       return [...logs];
     });
@@ -160,9 +167,9 @@ export class WorkoutSessionScreen implements OnInit {
         startTime: this.startTime(),
         endTime: new Date(),
         duration: this.workoutDuration(),
-        exercises: this.exerciseLogs().map(log => ({
+        exercises: this.exerciseLogs().map((log) => ({
           name: log.exercise.name,
-          sets: log.sets.map(set => ({
+          sets: log.sets.map((set) => ({
             reps: set.reps,
             weight: set.weight,
             weight_unit: log.exercise.weight_unit,

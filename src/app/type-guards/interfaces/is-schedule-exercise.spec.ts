@@ -8,7 +8,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(validExercise)).toBeTrue();
   });
@@ -19,7 +19,7 @@ describe('isScheduleExercise', () => {
       sets: 5,
       reps: 5,
       weight: 100,
-      weight_unit: 'KG'
+      weight_unit: 'KG',
     };
     expect(isScheduleExercise(validExercise)).toBeTrue();
   });
@@ -29,7 +29,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -40,7 +40,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -50,7 +50,7 @@ describe('isScheduleExercise', () => {
       name: 'Bench Press',
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -61,7 +61,7 @@ describe('isScheduleExercise', () => {
       sets: 3.5,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -72,7 +72,7 @@ describe('isScheduleExercise', () => {
       sets: 0,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise1)).toBeFalse();
 
@@ -81,7 +81,7 @@ describe('isScheduleExercise', () => {
       sets: -3,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise2)).toBeFalse();
   });
@@ -92,7 +92,7 @@ describe('isScheduleExercise', () => {
       sets: Infinity,
       reps: 10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -103,7 +103,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10.5,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -114,7 +114,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 0,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise1)).toBeFalse();
 
@@ -123,7 +123,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: -10,
       weight: 135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise2)).toBeFalse();
   });
@@ -134,7 +134,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 135.5,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -145,7 +145,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 0,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise1)).toBeFalse();
 
@@ -154,7 +154,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: -135,
-      weight_unit: 'LB'
+      weight_unit: 'LB',
     };
     expect(isScheduleExercise(invalidExercise2)).toBeFalse();
   });
@@ -165,7 +165,7 @@ describe('isScheduleExercise', () => {
       sets: 3,
       reps: 10,
       weight: 135,
-      weight_unit: 'STONE'
+      weight_unit: 'STONE',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });
@@ -177,7 +177,7 @@ describe('isScheduleExercise', () => {
       reps: 10,
       weight: 135,
       weight_unit: 'LB',
-      extraKey: 'should not be here'
+      extraKey: 'should not be here',
     };
     expect(isScheduleExercise(invalidExercise)).toBeFalse();
   });

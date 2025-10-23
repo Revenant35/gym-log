@@ -1,20 +1,15 @@
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {
-  CreateExercise,
-  Exercise,
-  ExerciseSearchParams,
-  UpdateExercise
-} from '../models';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CreateExercise, Exercise, ExerciseSearchParams, UpdateExercise } from '../models';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ExerciseService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = "https://api.atlas-powerlifting.com/exercises";
+  private readonly apiUrl = 'https://api.atlas-powerlifting.com/exercises';
 
   findMany(params: ExerciseSearchParams): Observable<Exercise[]> {
     let httpParams = new HttpParams()

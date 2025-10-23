@@ -1,4 +1,4 @@
-import {SessionExercise} from './session-exercise';
+import { SessionExercise } from './session-exercise';
 
 export interface Session {
   id: string;

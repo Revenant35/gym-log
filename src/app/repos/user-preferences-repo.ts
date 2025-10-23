@@ -1,15 +1,15 @@
 import { inject, Injectable, signal } from '@angular/core';
-import {PREFERENCES} from '../injection-tokens';
-import {AppInitializer} from '../app-initializer';
+import { PREFERENCES } from '../injection-tokens';
+import { AppInitializer } from '../app-initializer';
 import {
   ClockUnit,
   DEFAULT_CLOCK_UNIT,
   DEFAULT_HEIGHT_UNIT,
   DEFAULT_WEIGHT_UNIT,
   HeightUnit,
-  WeightUnit
+  WeightUnit,
 } from '../models';
-import {isClockUnit, isHeightUnit, isWeightUnit} from '../type-guards';
+import { isClockUnit, isHeightUnit, isWeightUnit } from '../type-guards';
 
 const KEYS = {
   weightUnit: 'prefs.weightUnit.v1',
@@ -18,7 +18,7 @@ const KEYS = {
 } as const;
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserPreferencesRepo implements AppInitializer {
   private readonly _preferences = inject(PREFERENCES);
@@ -37,9 +37,9 @@ export class UserPreferencesRepo implements AppInitializer {
    * to load persisted values into memory.
    */
   async initialize(): Promise<void> {
-    await this.initWeightUnit()
-    await this.initHeightUnit()
-    await this.initClockUnit()
+    await this.initWeightUnit();
+    await this.initHeightUnit();
+    await this.initClockUnit();
   }
 
   /** Set and persist the weight unit */

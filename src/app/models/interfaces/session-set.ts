@@ -1,5 +1,5 @@
-import {WeightUnit} from '../enums/weight-unit';
-import {SessionSetType} from '../enums/session-set-type';
+import { WeightUnit } from '../enums/weight-unit';
+import { SessionSetType } from '../enums/session-set-type';
 
 export interface SessionSet {
   weight: number;

@@ -3,10 +3,10 @@ import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { DayOfWeek } from '../../models';
 import { ScheduleService } from '../../services/schedule.service';
-import {ScheduleDayOfWeekPicker} from '../../components/day-of-week-picker/schedule-day-of-week-picker.component';
-import {DateProvider} from '../../services/date-provider';
-import {DayOfWeekNavigator} from '../../components/day-of-week-navigator/day-of-week-navigator';
-import {ExerciseInfoCard} from '../../components/exercise-info-card/exercise-info-card';
+import { ScheduleDayOfWeekPicker } from '../../components/day-of-week-picker/schedule-day-of-week-picker.component';
+import { DateProvider } from '../../services/date-provider';
+import { DayOfWeekNavigator } from '../../components/day-of-week-navigator/day-of-week-navigator';
+import { ExerciseInfoCard } from '../../components/exercise-info-card/exercise-info-card';
 
 @Component({
   selector: 'app-current-schedule-screen',
@@ -29,6 +29,6 @@ export class CurrentScheduleScreen {
       }
 
       return this.scheduleService.convertToSchedule(activeSchedule);
-    }
+    },
   });
 }

@@ -13,6 +13,6 @@ export interface ExerciseSearchParams {
 
 export type CreateExercise = {
   name: string;
-}
+};
 
 export type UpdateExercise = Partial<Exercise>;

@@ -1,5 +1,5 @@
 import { isSessionSet } from './is-session-set';
-import {SessionSet} from '../../models';
+import { SessionSet } from '../../models';
 
 describe('isSessionSet', () => {
   it('should return true for valid SessionSet objects', () => {
@@ -9,7 +9,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date('2025-10-08')
+      created_at: new Date('2025-10-08'),
     };
     expect(isSessionSet(validSessionSet)).toBeTrue();
   });
@@ -21,7 +21,7 @@ describe('isSessionSet', () => {
       reps: 5,
       type: 'WARMUP',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(warmUpSet)).toBeTrue();
   });
@@ -33,7 +33,7 @@ describe('isSessionSet', () => {
       reps: 12,
       type: 'DROP',
       did_fail: true,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(dropSet)).toBeTrue();
   });
@@ -44,7 +44,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -56,7 +56,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -68,7 +68,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -80,7 +80,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -92,7 +92,7 @@ describe('isSessionSet', () => {
       reps: 10.5,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -104,7 +104,7 @@ describe('isSessionSet', () => {
       reps: 0,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -116,7 +116,7 @@ describe('isSessionSet', () => {
       reps: -5,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -128,7 +128,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'INVALID_TYPE',
       did_fail: false,
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -140,7 +140,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: 'false',
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -152,7 +152,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: 'not a date'
+      created_at: 'not a date',
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -164,7 +164,7 @@ describe('isSessionSet', () => {
       reps: 10,
       type: 'WORK',
       did_fail: false,
-      created_at: new Date('invalid')
+      created_at: new Date('invalid'),
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });
@@ -177,7 +177,7 @@ describe('isSessionSet', () => {
       type: 'WORK',
       did_fail: false,
       created_at: new Date(),
-      extraKey: 'should not be here'
+      extraKey: 'should not be here',
     };
     expect(isSessionSet(invalidSet)).toBeFalse();
   });

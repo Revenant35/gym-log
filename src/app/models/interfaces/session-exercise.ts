@@ -1,5 +1,5 @@
-import {SessionSet} from './session-set';
-import {Exercise} from './exercise';
+import { SessionSet } from './session-set';
+import { Exercise } from './exercise';
 
 export interface SessionExercise extends Exercise {
   sets: SessionSet[];

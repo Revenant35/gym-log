@@ -1,4 +1,4 @@
-import {WeightUnit} from '../enums';
+import { WeightUnit } from '../enums';
 
 export interface ScheduleExercise {
   name: string;

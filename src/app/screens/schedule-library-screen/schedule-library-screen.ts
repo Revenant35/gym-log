@@ -1,8 +1,8 @@
-import { Component, signal, inject, resource } from '@angular/core';
+import { Component, inject, resource } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { RouterLink } from '@angular/router';
 import { Schedule } from '../../models';
-import { ScheduleService, ScheduleWithDetails } from '../../services/schedule.service';
+import { ScheduleService } from '../../services/schedule.service';
 
 interface ScheduleItem {
   id: string;
@@ -37,7 +37,7 @@ export class ScheduleLibraryScreen {
       }));
 
       return items;
-    }
+    },
   });
 
   getWorkoutDaysCount(schedule: Schedule): number {
@@ -82,10 +82,7 @@ export class ScheduleLibraryScreen {
       const schedule = schedules.find((s) => s.id === scheduleId);
       if (!schedule) return;
 
-      await this.scheduleService.duplicateSchedule(
-        scheduleId,
-        `${schedule.name} (Copy)`
-      );
+      await this.scheduleService.duplicateSchedule(scheduleId, `${schedule.name} (Copy)`);
 
       // Reload the schedules to include the new one
       this.schedulesResource.reload();

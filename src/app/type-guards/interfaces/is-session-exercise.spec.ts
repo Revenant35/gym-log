@@ -1,5 +1,5 @@
 import { isSessionExercise } from './is-session-exercise';
-import {SessionExercise} from '../../models';
+import { SessionExercise } from '../../models';
 
 describe('isSessionExercise', () => {
   it('should return true for valid SessionExercise objects', () => {
@@ -13,10 +13,10 @@ describe('isSessionExercise', () => {
           reps: 10,
           type: 'WORK',
           did_fail: false,
-          created_at: new Date('2025-10-08')
-        }
+          created_at: new Date('2025-10-08'),
+        },
       ],
-      created_at: new Date('2025-10-08')
+      created_at: new Date('2025-10-08'),
     };
     expect(isSessionExercise(validSessionExercise)).toBeTrue();
   });
@@ -32,7 +32,7 @@ describe('isSessionExercise', () => {
           reps: 5,
           type: 'WARMUP',
           did_fail: false,
-          created_at: new Date()
+          created_at: new Date(),
         },
         {
           weight: 100,
@@ -40,7 +40,7 @@ describe('isSessionExercise', () => {
           reps: 8,
           type: 'WORK',
           did_fail: false,
-          created_at: new Date()
+          created_at: new Date(),
         },
         {
           weight: 80,
@@ -48,10 +48,10 @@ describe('isSessionExercise', () => {
           reps: 12,
           type: 'DROP',
           did_fail: true,
-          created_at: new Date()
-        }
+          created_at: new Date(),
+        },
       ],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(sessionExercise)).toBeTrue();
   });
@@ -61,7 +61,7 @@ describe('isSessionExercise', () => {
       id: '6ba7b810-9dad-41d1-80b4-00c04fd430c8',
       name: 'Deadlift',
       sets: [],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(sessionExercise)).toBeTrue();
   });
@@ -70,7 +70,7 @@ describe('isSessionExercise', () => {
     const invalidSessionExercise: Partial<SessionExercise> = {
       name: 'Bench Press',
       sets: [],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -80,7 +80,7 @@ describe('isSessionExercise', () => {
       id: 'not-a-uuid',
       name: 'Bench Press',
       sets: [],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -89,7 +89,7 @@ describe('isSessionExercise', () => {
     const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       sets: [],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -99,7 +99,7 @@ describe('isSessionExercise', () => {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 123,
       sets: [],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -108,7 +108,7 @@ describe('isSessionExercise', () => {
     const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -118,7 +118,7 @@ describe('isSessionExercise', () => {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       sets: 'not an array',
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -134,7 +134,7 @@ describe('isSessionExercise', () => {
           reps: 10,
           type: 'WORK',
           did_fail: false,
-          created_at: new Date()
+          created_at: new Date(),
         },
         {
           weight: -50, // Invalid: negative weight
@@ -142,10 +142,10 @@ describe('isSessionExercise', () => {
           reps: 10,
           type: 'WORK',
           did_fail: false,
-          created_at: new Date()
-        }
+          created_at: new Date(),
+        },
       ],
-      created_at: new Date()
+      created_at: new Date(),
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -154,7 +154,7 @@ describe('isSessionExercise', () => {
     const invalidSessionExercise: Partial<SessionExercise> = {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
-      sets: []
+      sets: [],
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -164,7 +164,7 @@ describe('isSessionExercise', () => {
       id: '123e4567-e89b-42d3-a456-426614174000',
       name: 'Bench Press',
       sets: [],
-      created_at: 'not a date'
+      created_at: 'not a date',
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });
@@ -175,7 +175,7 @@ describe('isSessionExercise', () => {
       name: 'Bench Press',
       sets: [],
       created_at: new Date(),
-      extraKey: 'should not be here'
+      extraKey: 'should not be here',
     };
     expect(isSessionExercise(invalidSessionExercise)).toBeFalse();
   });

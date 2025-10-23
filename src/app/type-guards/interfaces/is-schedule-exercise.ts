@@ -1,19 +1,19 @@
-import {ScheduleExercise} from '../../models';
-import {isRecord, isString, isNumber} from '../primitives';
-import {hasKeys} from '../helpers';
-import {isWeightUnit} from '../enums';
+import { ScheduleExercise } from '../../models';
+import { isRecord, isString, isNumber } from '../primitives';
+import { hasKeys } from '../helpers';
+import { isWeightUnit } from '../enums';
 
 export function isScheduleExercise(v: unknown): v is ScheduleExercise {
   if (!isRecord(v)) {
     return false;
   }
 
-  const requiredKeys = ["name", "sets", "reps", "weight", "weight_unit"] as const;
+  const requiredKeys = ['name', 'sets', 'reps', 'weight', 'weight_unit'] as const;
   if (!hasKeys(v, requiredKeys)) {
     return false;
   }
 
-  const {name, sets, reps, weight, weight_unit} = v;
+  const { name, sets, reps, weight, weight_unit } = v;
 
   return (
     isString(name) &&

@@ -2,7 +2,7 @@ import { Component, signal, computed, inject, OnInit } from '@angular/core';
 import { IonicModule, SegmentChangeEventDetail } from '@ionic/angular';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek, DAYS_OF_WEEK, WeightUnit } from '../../models';
+import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek, DAYS_OF_WEEK } from '../../models';
 import { ScheduleService } from '../../services/schedule.service';
 
 interface DayBuilder {
@@ -10,13 +10,6 @@ interface DayBuilder {
   dayName: string;
   isSelected: boolean;
   workout?: ScheduleDay;
-}
-
-interface ScheduleItem {
-  id: string;
-  name: string;
-  schedule: Schedule;
-  isActive: boolean;
 }
 
 @Component({
@@ -43,7 +36,7 @@ export class ScheduleBuilderScreen implements OnInit {
       dayName: day.charAt(0).toUpperCase() + day.slice(1),
       isSelected: false,
       workout: undefined,
-    }))
+    })),
   );
 
   readonly selectedDays = computed(() => this.days().filter((d) => d.isSelected));
@@ -53,46 +46,6 @@ export class ScheduleBuilderScreen implements OnInit {
     if (!day) return null;
     return this.days().find((d) => d.day === day);
   });
-
-  // Mock data for editing - would normally fetch from service
-  private readonly mockSchedules: ScheduleItem[] = [
-    {
-      id: '1',
-      name: 'Push Pull Legs',
-      isActive: true,
-      schedule: {
-        days: {
-          monday: {
-            name: 'Push Day',
-            exercises: [
-              { name: 'Bench Press', sets: 4, reps: 8, weight: 185, weight_unit: 'LB' },
-              { name: 'Overhead Press', sets: 3, reps: 10, weight: 95, weight_unit: 'LB' },
-              { name: 'Incline Dumbbell Press', sets: 3, reps: 12, weight: 60, weight_unit: 'LB' },
-              { name: 'Tricep Dips', sets: 3, reps: 12, weight: 0, weight_unit: 'LB' },
-            ],
-          },
-          wednesday: {
-            name: 'Pull Day',
-            exercises: [
-              { name: 'Deadlift', sets: 4, reps: 6, weight: 275, weight_unit: 'LB' },
-              { name: 'Pull-ups', sets: 3, reps: 10, weight: 0, weight_unit: 'LB' },
-              { name: 'Barbell Rows', sets: 3, reps: 10, weight: 135, weight_unit: 'LB' },
-              { name: 'Face Pulls', sets: 3, reps: 15, weight: 40, weight_unit: 'LB' },
-            ],
-          },
-          friday: {
-            name: 'Leg Day',
-            exercises: [
-              { name: 'Squat', sets: 4, reps: 8, weight: 225, weight_unit: 'LB' },
-              { name: 'Romanian Deadlift', sets: 3, reps: 10, weight: 185, weight_unit: 'LB' },
-              { name: 'Leg Press', sets: 3, reps: 12, weight: 360, weight_unit: 'LB' },
-              { name: 'Leg Curls', sets: 3, reps: 12, weight: 90, weight_unit: 'LB' },
-            ],
-          },
-        },
-      },
-    },
-  ];
 
   async ngOnInit(): Promise<void> {
     const id = this.route.snapshot.paramMap.get('id');
@@ -135,12 +88,10 @@ export class ScheduleBuilderScreen implements OnInit {
           ? {
               ...d,
               isSelected: !d.isSelected,
-              workout: !d.isSelected
-                ? { name: '', exercises: [] }
-                : undefined,
+              workout: !d.isSelected ? { name: '', exercises: [] } : undefined,
             }
-          : d
-      )
+          : d,
+      ),
     );
   }
 
@@ -157,11 +108,7 @@ export class ScheduleBuilderScreen implements OnInit {
     if (!day) return;
 
     this.days.update((days) =>
-      days.map((d) =>
-        d.day === day && d.workout
-          ? { ...d, workout: { ...d.workout, name } }
-          : d
-      )
+      days.map((d) => (d.day === day && d.workout ? { ...d, workout: { ...d.workout, name } } : d)),
     );
   }
 
@@ -187,8 +134,8 @@ export class ScheduleBuilderScreen implements OnInit {
                 exercises: [...d.workout.exercises, newExercise],
               },
             }
-          : d
-      )
+          : d,
+      ),
     );
   }
 
@@ -204,12 +151,12 @@ export class ScheduleBuilderScreen implements OnInit {
               workout: {
                 ...d.workout,
                 exercises: d.workout.exercises.map((ex, i) =>
-                  i === index ? { ...ex, [field]: value } : ex
+                  i === index ? { ...ex, [field]: value } : ex,
                 ),
               },
             }
-          : d
-      )
+          : d,
+      ),
     );
   }
 
@@ -227,8 +174,8 @@ export class ScheduleBuilderScreen implements OnInit {
                 exercises: d.workout.exercises.filter((_, i) => i !== index),
               },
             }
-          : d
-      )
+          : d,
+      ),
     );
   }
 
@@ -254,7 +201,7 @@ export class ScheduleBuilderScreen implements OnInit {
             exercises,
           },
         };
-      })
+      }),
     );
   }
 
@@ -278,7 +225,7 @@ export class ScheduleBuilderScreen implements OnInit {
         d.workout &&
         d.workout.name.trim() &&
         d.workout.exercises.length > 0 &&
-        d.workout.exercises.every((ex) => ex.name.trim())
+        d.workout.exercises.every((ex) => ex.name.trim()),
     );
   }
 
@@ -312,7 +259,7 @@ export class ScheduleBuilderScreen implements OnInit {
       }
 
       // Navigate back to schedules
-      this.router.navigate(['/schedules']);
+      await this.router.navigate(['/schedules']);
     } catch (error) {
       console.error('Error saving schedule:', error);
       alert('Failed to save schedule. Please try again.');

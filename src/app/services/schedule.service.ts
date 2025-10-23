@@ -1,8 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { Schedule, ScheduleDay, ScheduleExercise, DayOfWeek } from '../models';
+import { Schedule, DayOfWeek } from '../models';
 import { SUPABASE } from '../injection-tokens';
-import { Database } from '../util/database';
 
 interface ScheduleRow {
   id: string;
@@ -38,9 +36,11 @@ interface ScheduleExerciseRow {
 }
 
 export interface ScheduleWithDetails extends ScheduleRow {
-  days: Array<ScheduleDayRow & {
-    exercises: ScheduleExerciseRow[];
-  }>;
+  days: Array<
+    ScheduleDayRow & {
+      exercises: ScheduleExerciseRow[];
+    }
+  >;
 }
 
 @Injectable({
@@ -55,7 +55,8 @@ export class ScheduleService {
   async getSchedules(): Promise<ScheduleWithDetails[]> {
     const { data, error } = await this.supabase
       .from('schedule')
-      .select(`
+      .select(
+        `
         *,
         days:schedule_day(
           *,
@@ -64,7 +65,8 @@ export class ScheduleService {
             exercise:exercise_id(id, name)
           )
         )
-      `)
+      `,
+      )
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -81,7 +83,8 @@ export class ScheduleService {
   async getActiveSchedule(): Promise<ScheduleWithDetails | null> {
     const { data, error } = await this.supabase
       .from('schedule')
-      .select(`
+      .select(
+        `
         *,
         days:schedule_day(
           *,
@@ -90,7 +93,8 @@ export class ScheduleService {
             exercise:exercise_id(id, name)
           )
         )
-      `)
+      `,
+      )
       .eq('is_active', true)
       .maybeSingle();
 
@@ -113,7 +117,8 @@ export class ScheduleService {
   async getSchedule(scheduleId: string): Promise<ScheduleWithDetails> {
     const { data, error } = await this.supabase
       .from('schedule')
-      .select(`
+      .select(
+        `
         *,
         days:schedule_day(
           *,
@@ -122,7 +127,8 @@ export class ScheduleService {
             exercise:exercise_id(id, name)
           )
         )
-      `)
+      `,
+      )
       .eq('id', scheduleId)
       .single();
 
@@ -140,7 +146,7 @@ export class ScheduleService {
   async createSchedule(
     name: string,
     schedule: Schedule,
-    setAsActive: boolean = false
+    setAsActive: boolean = false,
   ): Promise<ScheduleWithDetails> {
     // If setting as active, deactivate all other schedules first
     if (setAsActive) {
@@ -187,7 +193,7 @@ export class ScheduleService {
         const exercise = dayData.exercises[i];
 
         // First, ensure the exercise exists in the exercise table
-        const { data: exerciseData, error: exerciseError } = await this.supabase
+        const { data: exerciseData } = await this.supabase
           .from('exercise')
           .select('id')
           .eq('name', exercise.name)
@@ -243,7 +249,7 @@ export class ScheduleService {
   async updateSchedule(
     scheduleId: string,
     name: string,
-    schedule: Schedule
+    schedule: Schedule,
   ): Promise<ScheduleWithDetails> {
     // Update schedule name
     const { error: updateError } = await this.supabase
@@ -355,10 +361,7 @@ export class ScheduleService {
    * Delete a schedule
    */
   async deleteSchedule(scheduleId: string): Promise<void> {
-    const { error } = await this.supabase
-      .from('schedule')
-      .delete()
-      .eq('id', scheduleId);
+    const { error } = await this.supabase.from('schedule').delete().eq('id', scheduleId);
 
     if (error) {
       console.error('Error deleting schedule:', error);
@@ -382,7 +385,7 @@ export class ScheduleService {
         name: day.name,
         exercises: day.exercises
           .sort((a, b) => a.exercise_index - b.exercise_index)
-          .map(ex => ({
+          .map((ex) => ({
             name: ex.exercise.name,
             sets: ex.sets,
             reps: ex.reps,
@@ -423,7 +426,7 @@ export class ScheduleService {
         name: day.name,
         exercises: day.exercises
           .sort((a, b) => a.exercise_index - b.exercise_index)
-          .map(ex => ({
+          .map((ex) => ({
             name: ex.exercise.name,
             sets: ex.sets,
             reps: ex.reps,

@@ -1,20 +1,20 @@
-import {DAYS_OF_WEEK, Schedule} from '../../models';
-import {isRecord} from '../primitives';
-import {hasNoExtraKeys} from '../helpers/has-no-extra-keys';
-import {isScheduleDay} from './is-schedule-day';
-import {hasKeys} from '../helpers';
+import { DAYS_OF_WEEK, Schedule } from '../../models';
+import { isRecord } from '../primitives';
+import { hasNoExtraKeys } from '../helpers/has-no-extra-keys';
+import { isScheduleDay } from './is-schedule-day';
+import { hasKeys } from '../helpers';
 
 export function isSchedule(v: unknown): v is Schedule {
   if (!isRecord(v)) {
     return false;
   }
 
-  const requiredKeys = ["days"] as const;
+  const requiredKeys = ['days'] as const;
   if (!hasKeys(v, requiredKeys)) {
     return false;
   }
 
-  const {days} = v;
+  const { days } = v;
 
   if (!isRecord(days)) {
     return false;

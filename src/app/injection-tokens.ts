@@ -1,8 +1,8 @@
-import {InjectionToken, ValueProvider} from '@angular/core';
-import {createClient, SupabaseClient} from '@supabase/supabase-js';
-import {Database} from './util/database';
-import {Preferences, PreferencesPlugin} from '@capacitor/preferences';
-import {SUPABASE_KEY, SUPABASE_URL} from './util/supabase-config';
+import { InjectionToken, ValueProvider } from '@angular/core';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Database } from './util/database';
+import { Preferences, PreferencesPlugin } from '@capacitor/preferences';
+import { SUPABASE_KEY, SUPABASE_URL } from './util/supabase-config';
 
 export const SUPABASE = new InjectionToken<SupabaseClient<Database>>('supabase-client');
 export const PREFERENCES = new InjectionToken<PreferencesPlugin>('preferences.injectionToken');
