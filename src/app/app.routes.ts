@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { isAuthenticatedGuard } from './guards/is-authenticated-guard';
+import { AuthGuard } from '@auth0/auth0-angular';
 
 export const routes: Routes = [
   {
@@ -8,24 +8,24 @@ export const routes: Routes = [
       import('./screens/exercise-search-screen/exercise-search-screen').then(
         (m) => m.ExerciseSearchScreen,
       ),
-    canActivate: [isAuthenticatedGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'more',
     loadComponent: () => import('./screens/more-screen/more-screen').then((m) => m.MoreScreen),
-    canActivate: [isAuthenticatedGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'units',
     loadComponent: () =>
       import('./screens/more-screen/units-screen/units-screen').then((m) => m.UnitsScreen),
-    canActivate: [isAuthenticatedGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: 'account',
     loadComponent: () =>
       import('./screens/more-screen/account-screen/account-screen').then((m) => m.AccountScreen),
-    canActivate: [isAuthenticatedGuard],
+    canActivate: [AuthGuard],
   },
   // {
   //   path: 'schedule',
@@ -33,7 +33,7 @@ export const routes: Routes = [
   //     import('./screens/current-schedule-screen/current-schedule-screen').then(
   //       (m) => m.CurrentScheduleScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   // {
   //   path: 'workout',
@@ -41,7 +41,7 @@ export const routes: Routes = [
   //     import('./screens/workout-session-screen/workout-session-screen').then(
   //       (m) => m.WorkoutSessionScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   // {
   //   path: 'schedules',
@@ -49,7 +49,7 @@ export const routes: Routes = [
   //     import('./screens/schedule-library-screen/schedule-library-screen').then(
   //       (m) => m.ScheduleLibraryScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   // {
   //   path: 'schedule/detail/:id',
@@ -57,7 +57,7 @@ export const routes: Routes = [
   //     import('./screens/schedule-detail-screen/schedule-detail-screen').then(
   //       (m) => m.ScheduleDetailScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   // {
   //   path: 'schedule/create',
@@ -65,7 +65,7 @@ export const routes: Routes = [
   //     import('./screens/schedule-builder-screen/schedule-builder-screen').then(
   //       (m) => m.ScheduleBuilderScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   // {
   //   path: 'schedule/edit/:id',
@@ -73,7 +73,7 @@ export const routes: Routes = [
   //     import('./screens/schedule-builder-screen/schedule-builder-screen').then(
   //       (m) => m.ScheduleBuilderScreen,
   //     ),
-  //   canActivate: [isAuthenticatedGuard],
+  //   canActivate: [AuthGuard],
   // },
   {
     path: '**',
