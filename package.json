@@ -29,6 +29,7 @@
     "@angular/forms": "^20.3.4",
     "@angular/platform-browser": "^20.3.4",
     "@angular/router": "^20.3.4",
+    "@auth0/auth0-angular": "^2.3.0",
     "@capacitor/android": "^7.4.3",
     "@capacitor/cli": "^7.4.3",
     "@capacitor/core": "^7.4.3",
