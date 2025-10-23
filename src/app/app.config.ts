@@ -1,10 +1,10 @@
 import {
   ApplicationConfig,
+  importProvidersFrom,
   inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
-  ValueProvider,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { IonicRouteStrategy } from '@ionic/angular';
@@ -16,24 +16,6 @@ import { AuthService } from './services/auth-service';
 import { providePreferences, provideSupabase } from './injection-tokens';
 import { provideHttpClient } from '@angular/common/http';
 import { AuthModule } from '@auth0/auth0-angular';
-import config from '../../capacitor.config';
-
-const redirect_uri = `${config.appId}://{yourDomain}/capacitor/${config.appId}/callback`;
-
-export function provideAuth0(): ValueProvider {
-  return {
-    provide: AuthModule,
-    useValue: AuthModule.forRoot({
-      domain: '{yourDomain}',
-      clientId: '{yourClientId}',
-      useRefreshTokens: true,
-      useRefreshTokensFallback: false,
-      authorizationParams: {
-        redirect_uri,
-      },
-    }),
-  };
-}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -51,6 +33,16 @@ export const appConfig: ApplicationConfig = {
     providePreferences(),
     provideSupabase(),
     provideHttpClient(),
-    provideAuth0(),
+    importProvidersFrom(
+      AuthModule.forRoot({
+        domain: 'atlas-powerlifting.us.auth0.com',
+        clientId: 'ztZWB81UI5gEJ77yhI601bCTMjGmevdE',
+        useRefreshTokens: true,
+        useRefreshTokensFallback: false,
+        authorizationParams: {
+          redirect_uri: window.location.origin,
+        },
+      }),
+    ),
   ],
 };

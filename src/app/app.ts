@@ -32,19 +32,19 @@ import {
   refreshOutline,
 } from 'ionicons/icons';
 import { IonicModule } from '@ionic/angular';
-import { RouterOutlet } from '@angular/router';
-import { AuthService } from './services/auth-service';
+import { AuthService } from '@auth0/auth0-angular';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
-  imports: [IonicModule, RouterOutlet],
+  imports: [IonicModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App {
   private readonly authService = inject(AuthService);
 
-  isAuthenticated = this.authService.isAuthenticated;
+  isAuthenticated = toSignal(this.authService.isAuthenticated$);
 
   constructor() {
     addIcons({
@@ -78,5 +78,9 @@ export class App {
       alertCircleOutline,
       refreshOutline,
     });
+  }
+
+  login() {
+    this.authService.loginWithRedirect();
   }
 }

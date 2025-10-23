@@ -1,121 +1,121 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/schedule"></ion-back-button>
-    </ion-buttons>
-    <ion-title>My Schedules</ion-title>
-    <ion-buttons slot="end">
-      <ion-button [routerLink]="['/schedule/create']">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<!--<ion-header>-->
+<!--  <ion-toolbar>-->
+<!--    <ion-buttons slot="start">-->
+<!--      <ion-back-button defaultHref="/schedule"></ion-back-button>-->
+<!--    </ion-buttons>-->
+<!--    <ion-title>My Schedules</ion-title>-->
+<!--    <ion-buttons slot="end">-->
+<!--      <ion-button [routerLink]="['/schedule/create']">-->
+<!--        <ion-icon slot="icon-only" name="add"></ion-icon>-->
+<!--      </ion-button>-->
+<!--    </ion-buttons>-->
+<!--  </ion-toolbar>-->
+<!--</ion-header>-->
 
-<ion-content>
-  <div class="schedules-container">
-    @if (schedulesResource.isLoading()) {
-      <div class="loading-container">
-        <ion-spinner name="crescent"></ion-spinner>
-        <p>Loading schedules...</p>
-      </div>
-    } @else {
-      @if (schedulesResource.error(); as error) {
-        <div class="error-container">
-          <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>
-          <h3>Error Loading Schedules</h3>
-          <p>{{ error?.message || 'An unexpected error occurred' }}</p>
-          <ion-button fill="outline" (click)="schedulesResource.reload()">
-            <ion-icon slot="start" name="refresh-outline"></ion-icon>
-            Retry
-          </ion-button>
-        </div>
-      }
+<!--<ion-content>-->
+<!--  <div class="schedules-container">-->
+<!--    @if (schedulesResource.isLoading()) {-->
+<!--      <div class="loading-container">-->
+<!--        <ion-spinner name="crescent"></ion-spinner>-->
+<!--        <p>Loading schedules...</p>-->
+<!--      </div>-->
+<!--    } @else {-->
+<!--      @if (schedulesResource.error(); as error) {-->
+<!--        <div class="error-container">-->
+<!--          <ion-icon name="alert-circle-outline" class="error-icon"></ion-icon>-->
+<!--          <h3>Error Loading Schedules</h3>-->
+<!--          <p>{{ error?.message || 'An unexpected error occurred' }}</p>-->
+<!--          <ion-button fill="outline" (click)="schedulesResource.reload()">-->
+<!--            <ion-icon slot="start" name="refresh-outline"></ion-icon>-->
+<!--            Retry-->
+<!--          </ion-button>-->
+<!--        </div>-->
+<!--      }-->
 
-      @if (schedulesResource.hasValue()) {
-        @if (schedulesResource.value(); as schedules) {
-          @if (schedules.length === 0) {
-            <div class="empty-state">
-              <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
-              <h3>No Schedules Yet</h3>
-              <p>Create your first workout schedule to get started</p>
-              <ion-button [routerLink]="['/schedule/create']">
-                <ion-icon slot="start" name="add"></ion-icon>
-                Create Schedule
-              </ion-button>
-            </div>
-          } @else {
-            <div class="schedules-list">
-              @for (schedule of schedules; track schedule.id) {
-                <ion-card class="schedule-card" [class.active]="schedule.isActive">
-                  <ion-card-content>
-                    <div class="schedule-header">
-                      <div class="schedule-info">
-                        <div class="schedule-title-row">
-                          <h3 class="schedule-name">{{ schedule.name }}</h3>
-                          @if (schedule.isActive) {
-                            <ion-badge color="primary">Active</ion-badge>
-                          }
-                        </div>
-                        <p class="schedule-summary">
-                          {{ getWorkoutDaysCount(schedule.schedule) }} days/week •
-                          {{ getAverageExerciseCount(schedule.schedule) }} exercises avg
-                        </p>
-                        @if (schedule.lastUsed) {
-                          <p class="schedule-date">Last used {{ formatDate(schedule.lastUsed) }}</p>
-                        } @else {
-                          <p class="schedule-date">Created {{ formatDate(schedule.createdAt) }}</p>
-                        }
-                      </div>
-                    </div>
+<!--      @if (schedulesResource.hasValue()) {-->
+<!--        @if (schedulesResource.value(); as schedules) {-->
+<!--          @if (schedules.length === 0) {-->
+<!--            <div class="empty-state">-->
+<!--              <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>-->
+<!--              <h3>No Schedules Yet</h3>-->
+<!--              <p>Create your first workout schedule to get started</p>-->
+<!--              <ion-button [routerLink]="['/schedule/create']">-->
+<!--                <ion-icon slot="start" name="add"></ion-icon>-->
+<!--                Create Schedule-->
+<!--              </ion-button>-->
+<!--            </div>-->
+<!--          } @else {-->
+<!--            <div class="schedules-list">-->
+<!--              @for (schedule of schedules; track schedule.id) {-->
+<!--                <ion-card class="schedule-card" [class.active]="schedule.isActive">-->
+<!--                  <ion-card-content>-->
+<!--                    <div class="schedule-header">-->
+<!--                      <div class="schedule-info">-->
+<!--                        <div class="schedule-title-row">-->
+<!--                          <h3 class="schedule-name">{{ schedule.name }}</h3>-->
+<!--                          @if (schedule.isActive) {-->
+<!--                            <ion-badge color="primary">Active</ion-badge>-->
+<!--                          }-->
+<!--                        </div>-->
+<!--                        <p class="schedule-summary">-->
+<!--                          {{ getWorkoutDaysCount(schedule.schedule) }} days/week •-->
+<!--                          {{ getAverageExerciseCount(schedule.schedule) }} exercises avg-->
+<!--                        </p>-->
+<!--                        @if (schedule.lastUsed) {-->
+<!--                          <p class="schedule-date">Last used {{ formatDate(schedule.lastUsed) }}</p>-->
+<!--                        } @else {-->
+<!--                          <p class="schedule-date">Created {{ formatDate(schedule.createdAt) }}</p>-->
+<!--                        }-->
+<!--                      </div>-->
+<!--                    </div>-->
 
-                    <div class="schedule-actions">
-                      <ion-button
-                        fill="clear"
-                        size="small"
-                        [routerLink]="['/schedule/detail', schedule.id]"
-                      >
-                        <ion-icon slot="start" name="eye-outline"></ion-icon>
-                        View
-                      </ion-button>
+<!--                    <div class="schedule-actions">-->
+<!--                      <ion-button-->
+<!--                        fill="clear"-->
+<!--                        size="small"-->
+<!--                        [routerLink]="['/schedule/detail', schedule.id]"-->
+<!--                      >-->
+<!--                        <ion-icon slot="start" name="eye-outline"></ion-icon>-->
+<!--                        View-->
+<!--                      </ion-button>-->
 
-                      @if (!schedule.isActive) {
-                        <ion-button fill="clear" size="small" (click)="setActive(schedule.id)">
-                          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-                          Set Active
-                        </ion-button>
-                      }
+<!--                      @if (!schedule.isActive) {-->
+<!--                        <ion-button fill="clear" size="small" (click)="setActive(schedule.id)">-->
+<!--                          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>-->
+<!--                          Set Active-->
+<!--                        </ion-button>-->
+<!--                      }-->
 
-                      <ion-button fill="clear" size="small" (click)="duplicateSchedule(schedule.id)">
-                        <ion-icon slot="start" name="copy-outline"></ion-icon>
-                        Duplicate
-                      </ion-button>
+<!--                      <ion-button fill="clear" size="small" (click)="duplicateSchedule(schedule.id)">-->
+<!--                        <ion-icon slot="start" name="copy-outline"></ion-icon>-->
+<!--                        Duplicate-->
+<!--                      </ion-button>-->
 
-                      @if (!schedule.isActive) {
-                        <ion-button
-                          fill="clear"
-                          size="small"
-                          color="danger"
-                          (click)="deleteSchedule(schedule.id)"
-                        >
-                          <ion-icon slot="start" name="trash-outline"></ion-icon>
-                          Delete
-                        </ion-button>
-                      }
-                    </div>
-                  </ion-card-content>
-                </ion-card>
-              }
-            </div>
-          }
-        }
-      }
-    }
-  </div>
-</ion-content>
+<!--                      @if (!schedule.isActive) {-->
+<!--                        <ion-button-->
+<!--                          fill="clear"-->
+<!--                          size="small"-->
+<!--                          color="danger"-->
+<!--                          (click)="deleteSchedule(schedule.id)"-->
+<!--                        >-->
+<!--                          <ion-icon slot="start" name="trash-outline"></ion-icon>-->
+<!--                          Delete-->
+<!--                        </ion-button>-->
+<!--                      }-->
+<!--                    </div>-->
+<!--                  </ion-card-content>-->
+<!--                </ion-card>-->
+<!--              }-->
+<!--            </div>-->
+<!--          }-->
+<!--        }-->
+<!--      }-->
+<!--    }-->
+<!--  </div>-->
+<!--</ion-content>-->
 
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button [routerLink]="['/schedule/create']">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+<!--<ion-fab slot="fixed" vertical="bottom" horizontal="end">-->
+<!--  <ion-fab-button [routerLink]="['/schedule/create']">-->
+<!--    <ion-icon name="add"></ion-icon>-->
+<!--  </ion-fab-button>-->
+<!--</ion-fab>-->

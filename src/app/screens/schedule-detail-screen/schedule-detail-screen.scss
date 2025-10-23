@@ -1,184 +1,184 @@
-.schedule-detail-container {
-  padding: 16px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.schedule-header {
-  margin-bottom: 24px;
-  padding: 20px;
-  background: var(--ion-color-light);
-  border-radius: 12px;
-
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16px;
-
-    .schedule-name {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--ion-color-dark);
-      flex: 1;
-    }
-
-    ion-badge {
-      font-size: 12px;
-      font-weight: 600;
-      padding: 6px 12px;
-    }
-  }
-}
-
-.week-overview {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-bottom: 24px;
-}
-
-.day-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: all 0.3s ease;
-
-  &.has-workout {
-    border-left: 4px solid var(--ion-color-primary);
-  }
-
-  &:not(.has-workout) {
-    opacity: 0.6;
-  }
-
-  .day-header {
-    width: 100%;
-    padding: 16px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-
-    &:hover {
-      background: var(--ion-color-light);
-    }
-
-    &:active {
-      background: var(--ion-color-light-shade);
-    }
-
-    .day-header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-align: left;
-
-      .day-info {
-        flex: 1;
-
-        .day-name {
-          margin: 0 0 4px 0;
-          font-size: 18px;
-          font-weight: 600;
-          color: var(--ion-color-dark);
-        }
-
-        .workout-name {
-          margin: 0 0 2px 0;
-          font-size: 15px;
-          color: var(--ion-color-medium-shade);
-          font-weight: 500;
-        }
-
-        .exercise-count {
-          margin: 0;
-          font-size: 13px;
-          color: var(--ion-color-medium);
-        }
-
-        .rest-day-label {
-          margin: 0;
-          font-size: 14px;
-          color: var(--ion-color-medium);
-          font-style: italic;
-        }
-      }
-
-      .expand-icon {
-        font-size: 24px;
-        color: var(--ion-color-medium);
-        transition: transform 0.3s ease;
-      }
-    }
-  }
-
-  .day-exercises {
-    padding: 0 16px 16px 16px;
-    border-top: 1px solid var(--ion-color-light);
-    animation: slideDown 0.3s ease;
-
-    .exercise-item {
-      display: flex;
-      gap: 12px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--ion-color-light);
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .exercise-number {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        background: var(--ion-color-primary);
-        color: white;
-        border-radius: 50%;
-        font-size: 13px;
-        font-weight: 600;
-        flex-shrink: 0;
-      }
-
-      .exercise-details {
-        flex: 1;
-
-        .exercise-name {
-          margin: 0 0 4px 0;
-          font-size: 15px;
-          font-weight: 600;
-          color: var(--ion-color-dark);
-        }
-
-        .exercise-specs {
-          margin: 0;
-          font-size: 13px;
-          color: var(--ion-color-medium);
-          font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
-        }
-      }
-    }
-  }
-}
-
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    max-height: 0;
-  }
-  to {
-    opacity: 1;
-    max-height: 1000px;
-  }
-}
+//.schedule-detail-container {
+//  padding: 16px;
+//  max-width: 800px;
+//  margin: 0 auto;
+//}
+//
+//.schedule-header {
+//  margin-bottom: 24px;
+//  padding: 20px;
+//  background: var(--ion-color-light);
+//  border-radius: 12px;
+//
+//  .header-content {
+//    display: flex;
+//    align-items: center;
+//    justify-content: space-between;
+//    margin-bottom: 16px;
+//
+//    .schedule-name {
+//      margin: 0;
+//      font-size: 24px;
+//      font-weight: 600;
+//      color: var(--ion-color-dark);
+//      flex: 1;
+//    }
+//
+//    ion-badge {
+//      font-size: 12px;
+//      font-weight: 600;
+//      padding: 6px 12px;
+//    }
+//  }
+//}
+//
+//.week-overview {
+//  display: flex;
+//  flex-direction: column;
+//  gap: 12px;
+//  margin-bottom: 24px;
+//}
+//
+//.day-card {
+//  background: white;
+//  border-radius: 12px;
+//  overflow: hidden;
+//  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+//  transition: all 0.3s ease;
+//
+//  &.has-workout {
+//    border-left: 4px solid var(--ion-color-primary);
+//  }
+//
+//  &:not(.has-workout) {
+//    opacity: 0.6;
+//  }
+//
+//  .day-header {
+//    width: 100%;
+//    padding: 16px;
+//    background: transparent;
+//    border: none;
+//    cursor: pointer;
+//    transition: background-color 0.2s ease;
+//
+//    &:hover {
+//      background: var(--ion-color-light);
+//    }
+//
+//    &:active {
+//      background: var(--ion-color-light-shade);
+//    }
+//
+//    .day-header-content {
+//      display: flex;
+//      align-items: center;
+//      justify-content: space-between;
+//      text-align: left;
+//
+//      .day-info {
+//        flex: 1;
+//
+//        .day-name {
+//          margin: 0 0 4px 0;
+//          font-size: 18px;
+//          font-weight: 600;
+//          color: var(--ion-color-dark);
+//        }
+//
+//        .workout-name {
+//          margin: 0 0 2px 0;
+//          font-size: 15px;
+//          color: var(--ion-color-medium-shade);
+//          font-weight: 500;
+//        }
+//
+//        .exercise-count {
+//          margin: 0;
+//          font-size: 13px;
+//          color: var(--ion-color-medium);
+//        }
+//
+//        .rest-day-label {
+//          margin: 0;
+//          font-size: 14px;
+//          color: var(--ion-color-medium);
+//          font-style: italic;
+//        }
+//      }
+//
+//      .expand-icon {
+//        font-size: 24px;
+//        color: var(--ion-color-medium);
+//        transition: transform 0.3s ease;
+//      }
+//    }
+//  }
+//
+//  .day-exercises {
+//    padding: 0 16px 16px 16px;
+//    border-top: 1px solid var(--ion-color-light);
+//    animation: slideDown 0.3s ease;
+//
+//    .exercise-item {
+//      display: flex;
+//      gap: 12px;
+//      padding: 12px 0;
+//      border-bottom: 1px solid var(--ion-color-light);
+//
+//      &:last-child {
+//        border-bottom: none;
+//      }
+//
+//      .exercise-number {
+//        display: flex;
+//        align-items: center;
+//        justify-content: center;
+//        width: 28px;
+//        height: 28px;
+//        background: var(--ion-color-primary);
+//        color: white;
+//        border-radius: 50%;
+//        font-size: 13px;
+//        font-weight: 600;
+//        flex-shrink: 0;
+//      }
+//
+//      .exercise-details {
+//        flex: 1;
+//
+//        .exercise-name {
+//          margin: 0 0 4px 0;
+//          font-size: 15px;
+//          font-weight: 600;
+//          color: var(--ion-color-dark);
+//        }
+//
+//        .exercise-specs {
+//          margin: 0;
+//          font-size: 13px;
+//          color: var(--ion-color-medium);
+//          font-family: 'SF Mono', 'Monaco', 'Courier New', monospace;
+//        }
+//      }
+//    }
+//  }
+//}
+//
+//.action-buttons {
+//  display: flex;
+//  flex-direction: column;
+//  gap: 12px;
+//  margin-top: 24px;
+//}
+//
+//@keyframes slideDown {
+//  from {
+//    opacity: 0;
+//    max-height: 0;
+//  }
+//  to {
+//    opacity: 1;
+//    max-height: 1000px;
+//  }
+//}
