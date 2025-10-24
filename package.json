@@ -1,5 +1,5 @@
 {
-  "name": "gym-progression-app",
+  "name": "atlas-powerlifting-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,8 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "ng test",
-    "supabase:sync": "npx supabase gen types typescript --project-id \"cywyqltuycrjdyahdkni\" --schema public > src/app/util/database.ts"
+    "test": "ng test"
   },
   "prettier": {
     "printWidth": 100,
@@ -31,13 +30,6 @@
     "@angular/platform-browser": "^20.3.4",
     "@angular/router": "^20.3.4",
     "@auth0/auth0-angular": "^2.3.0",
-    "@capacitor/android": "^7.4.3",
-    "@capacitor/cli": "^7.4.3",
-    "@capacitor/core": "^7.4.3",
-    "@capacitor/ios": "^7.4.3",
-    "@capacitor/preferences": "^7.0.2",
-    "@ionic/angular": "^8.7.3",
-    "@supabase/supabase-js": "^2.58.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
@@ -59,7 +51,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "supabase": "^2.48.3",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.20.0"
   }

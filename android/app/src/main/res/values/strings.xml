@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">gym-progression-app</string>
-    <string name="title_activity_main">gym-progression-app</string>
-    <string name="package_name">com.zachbrown.GymProgressionApp</string>
-    <string name="custom_url_scheme">com.zachbrown.GymProgressionApp</string>
-</resources>
