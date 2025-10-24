@@ -1,4 +1,4 @@
-import { Component, computed, inject, resource, signal } from '@angular/core';
+import { Component, computed, inject, resource, signal, ChangeDetectionStrategy } from '@angular/core';
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,6 +15,7 @@ import { lastValueFrom } from 'rxjs';
   selector: 'app-exercises',
   imports: [LucideAngularModule, DebounceDirective],
   templateUrl: './exercises.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExercisesComponent {
   private exerciseService = inject(ExerciseService);

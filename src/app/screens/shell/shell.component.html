@@ -1,0 +1,18 @@
+<div class="flex h-screen flex-col bg-gray-50 dark:bg-gray-900">
+  <!-- Main content area -->
+  <main class="flex-1 overflow-hidden">
+    <router-outlet />
+  </main>
+
+  <!-- Bottom tab bar -->
+  <nav
+    class="border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950"
+    role="navigation"
+    aria-label="Main navigation"
+  >
+    <div class="flex items-center justify-around px-4 py-2">
+      <app-tab-button route="/exercises" label="Exercises" [icon]="DumbbellIcon" />
+      <app-tab-button route="/profile" label="Profile" [icon]="UserIcon" />
+    </div>
+  </nav>
+</div>

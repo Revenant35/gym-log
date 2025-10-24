@@ -1,12 +1,30 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '@auth0/auth0-angular';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'exercises',
-    loadComponent: () =>
-      import('./screens/dashboard/exercises/exercises.component').then((m) => m.ExercisesComponent),
-    canActivate: [AuthGuard],
+    path: '',
+    loadComponent: () => import('./screens/shell/shell.component').then((m) => m.ShellComponent),
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'exercises',
+        loadComponent: () =>
+          import('./screens/dashboard/exercises/exercises.component').then(
+            (m) => m.ExercisesComponent,
+          ),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./screens/dashboard/profile/profile.component').then((m) => m.ProfileComponent),
+      },
+      {
+        path: '',
+        redirectTo: 'exercises',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: 'auth/login',
@@ -20,6 +38,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'exercises',
+    redirectTo: '',
   },
 ];
