@@ -1,4 +1,4 @@
-import { Component, inject, resource, signal } from '@angular/core';
+import { Component, computed, inject, resource, signal } from '@angular/core';
 import {
   ChevronLeft,
   ChevronRight,
@@ -8,22 +8,22 @@ import {
   Dumbbell,
 } from 'lucide-angular';
 import { ExerciseService } from '../../../services/exercise.service';
-import { Debounce } from '../../../directives/debounce';
+import { DebounceDirective } from '../../../directives/debounce.directive';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-exercises',
-  imports: [LucideAngularModule, Debounce],
+  imports: [LucideAngularModule, DebounceDirective],
   templateUrl: './exercises.component.html',
 })
 export class ExercisesComponent {
   private exerciseService = inject(ExerciseService);
 
-  public query = signal('');
-  public page = signal(1);
-  public limit = signal(10);
+  public readonly query = signal('');
+  public readonly page = signal(1);
+  public readonly limit = signal(10);
 
-  readonly exercisesResource = resource({
+  public readonly exercisesResource = resource({
     params: () => ({
       query: this.query(),
       page: this.page(),
@@ -37,22 +37,31 @@ export class ExercisesComponent {
           limit: params.limit,
         }),
       ),
-    defaultValue: [],
+    defaultValue: { exercises: [], count: 0 },
   });
 
-  setTake(v: number) {
-    if (v !== this.limit()) {
-      this.limit.set(v);
-      this.page.set(1);
+  public readonly canGoToNextPage = computed(() => {
+    if (!this.exercisesResource.hasValue()) {
+      return false;
     }
-  }
+
+    const totalExercises = this.exercisesResource.value().count;
+    const totalPages = Math.ceil(totalExercises / this.limit());
+    return this.page() < totalPages;
+  });
+
+  public readonly canGoToPrevPage = computed(() => this.page() > 1);
 
   nextPage() {
+    if (!this.canGoToNextPage()) {
+      return;
+    }
+
     this.page.set(this.page() + 1);
   }
 
   prevPage() {
-    if (this.page() <= 1) {
+    if (!this.canGoToPrevPage()) {
       return;
     }
 

@@ -20,16 +20,11 @@
         <!-- Primary actions -->
         <div class="grid gap-3">
           <button
-            (click)="login()"
+            login
             class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-gray-900 px-4 py-3 text-white transition hover:opacity-95 dark:border-gray-700 dark:bg-white dark:text-gray-900"
-            [disabled]="busy()"
           >
             <lucide-icon [img]="LogInIcon" class="w-5 h-5 text-gray-600"></lucide-icon>
-            @if (busy()) {
-              <span class="animate-pulse">Working…</span>
-            } @else {
-              <span>Log In</span>
-            }
+            <span>Log In</span>
           </button>
 
           <div class="relative my-2">
@@ -42,10 +37,10 @@
           </div>
 
           <button
-            (click)="signup()"
+            signup
             class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-transparent bg-indigo-600 px-4 py-3 font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
-            [disabled]="busy()"
           >
+            <lucide-icon [img]="UserPlusIcon" class="w-5 h-5 text-gray-600"></lucide-icon>
             Create a new account
           </button>
         </div>

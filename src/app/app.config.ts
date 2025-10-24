@@ -1,13 +1,13 @@
 import {
   ApplicationConfig,
-  importProvidersFrom,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
-import { AuthModule } from '@auth0/auth0-angular';
+import { provideAuth0 } from '@auth0/auth0-angular';
+import { environment } from './environments';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,16 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(),
-    importProvidersFrom(
-      AuthModule.forRoot({
-        domain: 'atlas-powerlifting.us.auth0.com',
-        clientId: 'ztZWB81UI5gEJ77yhI601bCTMjGmevdE',
-        useRefreshTokens: true,
-        useRefreshTokensFallback: false,
-        authorizationParams: {
-          redirect_uri: window.location.origin + '/auth/callback',
-        },
-      }),
-    ),
+    provideAuth0(environment.auth),
   ],
 };

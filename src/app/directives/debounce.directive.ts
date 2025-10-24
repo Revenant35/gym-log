@@ -7,7 +7,7 @@ import { Directive, input, model, numberAttribute } from '@angular/core';
     '(input)': 'handleInput($event)',
   },
 })
-export class Debounce {
+export class DebounceDirective {
   #debounceTimer?: ReturnType<typeof setTimeout>;
 
   readonly debounceTime = input(0, { transform: numberAttribute });

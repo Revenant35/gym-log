@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { CreateExercise, Exercise, ExerciseSearchParams, UpdateExercise } from '../models';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../environments';
 
 @Injectable({
   providedIn: 'root',
@@ -9,9 +10,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 export class ExerciseService {
   private readonly http = inject(HttpClient);
 
-  private readonly apiUrl = 'https://api.atlas-powerlifting.com/exercises';
+  private readonly apiUrl = `${environment.apiUrl}/exercises`;
 
-  findMany(params: ExerciseSearchParams): Observable<Exercise[]> {
+  findMany(params: ExerciseSearchParams): Observable<{exercises: Exercise[], count: number}> {
     let httpParams = new HttpParams()
       .set('skip', ((params.page - 1) * params.limit).toString())
       .set('take', params.limit.toString());
@@ -20,7 +21,9 @@ export class ExerciseService {
       httpParams = httpParams.set('query', params.query);
     }
 
-    return this.http.get<Exercise[]>(this.apiUrl, { params: httpParams });
+    return this.http.get<{data: Exercise[], count: number}>(this.apiUrl, { params: httpParams }).pipe(
+      map(response => ({ exercises: response.data, count: response.count }))
+    );
   }
 
   findOne(id: string): Observable<Exercise> {
