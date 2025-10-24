@@ -1,7 +1,13 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from '@auth0/auth0-angular';
 
 export const routes: Routes = [
-  // { path: '', loadComponent: () => import('./home.component').then(m => m.HomeComponent) },
+  {
+    path: 'exercises',
+    loadComponent: () =>
+      import('./screens/dashboard/exercises/exercises.component').then((m) => m.ExercisesComponent),
+    canActivate: [AuthGuard],
+  },
   {
     path: 'auth/login',
     loadComponent: () =>
