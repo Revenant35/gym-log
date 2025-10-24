@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
         useRefreshTokens: true,
         useRefreshTokensFallback: false,
         authorizationParams: {
-          redirect_uri: window.location.origin,
+          redirect_uri: window.location.origin + '/auth/callback',
         },
       }),
     ),

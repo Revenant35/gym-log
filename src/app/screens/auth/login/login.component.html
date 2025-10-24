@@ -1,0 +1,55 @@
+<div class="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-950 dark:to-gray-900">
+  <div class="mx-auto max-w-7xl px-6 py-12">
+    <header class="mb-10">
+      <a class="inline-flex items-center gap-2 text-xl font-semibold" href="/">
+        <span class="inline-block h-8 w-8 rounded-xl bg-black dark:bg-white"></span>
+        <span class="text-gray-900 dark:text-gray-50">Atlas Powerlifting</span>
+      </a>
+    </header>
+
+    <div class="mx-auto grid max-w-xl gap-6">
+      <!-- Card -->
+      <div class="rounded-2xl border border-gray-200/80 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <h1 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-gray-50">
+          Welcome back
+        </h1>
+        <p class="mb-6 text-gray-600 dark:text-gray-300">
+          Sign in or create an account to continue.
+        </p>
+
+        <!-- Primary actions -->
+        <div class="grid gap-3">
+          <button
+            (click)="login()"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-gray-900 px-4 py-3 text-white transition hover:opacity-95 dark:border-gray-700 dark:bg-white dark:text-gray-900"
+            [disabled]="busy()"
+          >
+            <lucide-icon [img]="LogInIcon" class="w-5 h-5 text-gray-600"></lucide-icon>
+            @if (busy()) {
+              <span class="animate-pulse">Working…</span>
+            } @else {
+              <span>Log In</span>
+            }
+          </button>
+
+          <div class="relative my-2">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-200 dark:border-gray-800"></div>
+            </div>
+            <div class="relative flex justify-center">
+              <span class="bg-white px-3 text-xs uppercase tracking-wide text-gray-400 dark:bg-gray-900 dark:text-gray-500">or</span>
+            </div>
+          </div>
+
+          <button
+            (click)="signup()"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-transparent bg-indigo-600 px-4 py-3 font-medium text-white transition hover:bg-indigo-500 disabled:opacity-50"
+            [disabled]="busy()"
+          >
+            Create a new account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
